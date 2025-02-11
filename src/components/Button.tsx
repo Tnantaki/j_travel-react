@@ -1,19 +1,22 @@
 import { ReactNode } from "react";
 
-type Size = 'sm' | 'md' | 'lg'
+type Size = 'sm' | 'md'
 
 interface Props {
   children: ReactNode
+  size: Size
+  primary: boolean
 }
 
-const Button = ({ children }: Props) => {
-  // const classSize: Record<Size, string> = {
-  //   sm: "rounded-xl pt-3.5 pb-3 px-[1.375rem] font-medium",
-  //   md: "rounded-2xl py-[1.375rem] px-10 font-bold tracking-[0.075em] uppercase",
-  //   lg: "rounded-2xl py-[1.375rem] px-16 font-bold tracking-[0.075em] uppercase",
-  // };
+const Button = ({ children, size, primary }: Props) => {
+  const classSize: Record<Size, string> = {
+    sm: "rounded-xl py-2 px-5 font-medium text-lg",
+    md: "rounded-xl py-3.5 px-6 font-semibold text-xl gap-3",
+  };
 
-  return <button className="">{children}</button>;
+  const classColor = primary ? 'bg-primary text-white hover:brightness-125' : 'text-primary hover:bg-[#2E2F35] hover:text-white'
+
+  return <button className={`border-2 border-primary flex items-center cursor-pointer ${classColor} ${classSize[size]}`}>{children}</button>;
 };
 
 export default Button;

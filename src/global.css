@@ -16,11 +16,20 @@
 
   --color-dark-primary: #252527;
   --color-dark-secondary: #343338;
-  --color-base: #3F97CF;
+  --color-primary: #3F97CF;
+}
+
+@utility wrapper {
+  @apply mx-auto px-8;
+
+  @variant md {
+    @apply px-30;
+  }
 }
 
 @layer components {
-  .custom {
+  .style-langar {
     -webkit-text-stroke: 1px black;
+    @apply drop-shadow-xl;
   }
 }
