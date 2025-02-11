@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "inter";
+  src: url("./assets/fonts/Inter-VariableFont.ttf");
+}
+
+@font-face {
+  font-family: "langar";
+  src: url("./assets/fonts/Langar-Regular.ttf");
+}
+
+@theme {
+  --font-inter: inter;
+  --font-langar: langar;
+
+  --color-dark-primary: #252527;
+  --color-dark-secondary: #343338;
+  --color-base: #3F97CF;
+}
+
+@layer components {
+  .custom {
+    -webkit-text-stroke: 1px black;
+  }
+}
