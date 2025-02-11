@@ -1,4 +1,4 @@
-import Button from '../components/Button';
+import Button from "../components/Button";
 
 const Hero = () => {
   return (
@@ -7,7 +7,7 @@ const Hero = () => {
         <h1 className="font-langar text-[11.25rem] style-langar">
           <span className="text-primary">J</span>·Travel
         </h1>
-        <p className='text-xl w-[650px] mb-8'>
+        <p className="text-xl w-[650px] mb-8">
           Discover breathtaking landscapes, rich culture, and unforgettable
           experiences tailored just for you. Let J-Travel guide you on your
           journey through Japan's hidden gems and iconic destinations.
@@ -20,10 +20,10 @@ const Hero = () => {
       </div>
       <img
         className="absolute top-0 w-full object-fill -z-30"
-        src="/background/fuji.png"
+        src="./background/fuji.png"
       />
     </section>
   );
-}
+};
 
-export default Hero
+export default Hero;

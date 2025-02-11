@@ -27,9 +27,9 @@ const Guide = () => {
               your interests, ensuring unforgettable memories.
             </p>
             <div className="grid grid-cols-2 gap-12">
-              {guides.map(g => (
+              {guides.map((g) => (
                 <div className="grid gap-4">
-                  <img className="size-12" src="/icons/box.svg" alt="box" />
+                  <img className="size-12" src="./icons/box.svg" alt="box" />
                   <p className="text-xl font-bold">{g.title}</p>
                   <p className="text-lg">{g.descition}</p>
                 </div>
@@ -38,11 +38,14 @@ const Guide = () => {
           </div>
         </div>
         <div>
-          <img className="size-[600px] border-1 border-[#888888] rounded-xl" src="/location/Osaka-Castle-osaka.png" alt="" />
+          <img
+            className="size-[600px] border-1 border-[#888888] rounded-xl"
+            src="./location/Osaka-Castle-osaka.png"
+          />
         </div>
       </div>
     </section>
   );
-}
+};
 
-export default Guide
+export default Guide;

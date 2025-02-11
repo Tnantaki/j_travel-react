@@ -65,7 +65,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="grid grid-cols-4 justify-between w-full">
-          <img className="stroke-white size-16" src="/logo.svg" alt="" />
+          <img className="stroke-white size-16" src="./logo.svg" alt="" />
           {links.map((link) => (
             <div className="flex flex-col gap-4">
               {link.map((item, i) =>
@@ -102,7 +102,7 @@ const Footer = () => {
           <div className="flex gap-4">
             {socialIcons.map((icon, i) => (
               <a key={i} href={icon.href}>
-                <img src={`/icons/${icon.image}`} alt="social icon" />
+                <img src={`./icons/${icon.image}`} alt="social icon" />
               </a>
             ))}
           </div>

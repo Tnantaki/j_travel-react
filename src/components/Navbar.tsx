@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="flex w-full wrapper bg-zinc-700 h-20 justify-between items-center absolute z-50">
       <a href="/">
-        <img src={"/logo.svg"} className="size-24" />
+        <img src={"./logo.svg"} className="size-24" />
       </a>
       <div className="uppercase flex justify-between gap-40 text-xl font-bold text-white font-inter">
         {menuItems.map((item) => (
@@ -19,7 +19,9 @@ const Navbar = () => {
         ))}
       </div>
       <a href="/login">
-        <Button size="sm" primary={true}>Login</Button>
+        <Button size="sm" primary={true}>
+          Login
+        </Button>
       </a>
     </nav>
   );
