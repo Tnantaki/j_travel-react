@@ -4,11 +4,11 @@ import Input from "../components/Input";
 
 const Register = () => {
   return (
-    <section className="relative min-h-screen flex overflow-hidden">
-      <div className="flex flex-col text-white mt-40 mx-40">
-        <div className="flex flex-col w-[1024px] bg-black/20 rounded-3xl backdrop-blur-xl p-16 gap-12 drop-shadow-xl">
-          <h1 className="font-bold text-4xl text-center">Create Account</h1>
-          <form className="flex flex-col gap-8">
+    <section className="hero">
+      <div className="flex mx-40 items-center w-full justify-end">
+        <div className="flex flex-col w-[1024px] bg-black/30 rounded-3xl backdrop-blur-xl py-8 px-16 gap-6 drop-shadow-xl">
+          <h3 className="text-center">Create Account</h3>
+          <form className="flex flex-col gap-6">
             <div className="grid grid-cols-2 gap-6">
               <Input name="username" label="Username" />
             </div>
@@ -22,7 +22,7 @@ const Register = () => {
             </div>
             <Input name="address" label="Address" />
             <Link className="flex justify-center" to={"#"}>
-              <Button size="lg" primary={true}>
+              <Button size="md" primary={true}>
                 SIGN UP
               </Button>
             </Link>

@@ -19,11 +19,30 @@
   --color-primary: #3F97CF;
 }
 
+@layer base {
+  body {
+    @apply font-inter text-white bg-dark-primary;
+  }
+
+  section.hero {
+    @apply pt-16 relative min-h-screen flex overflow-hidden;
+  }
+
+  h2 {@apply font-bold text-[2.5rem];}
+  h3 {@apply font-bold text-4xl;}
+  h4 {@apply font-semibold text-2xl;}
+
+}
+
 @utility wrapper {
   @apply mx-auto px-8;
 
   @variant md {
     @apply px-30;
+  }
+
+  @variant lg {
+    @apply px-50;
   }
 }
 

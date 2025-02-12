@@ -9,7 +9,7 @@ const Navbar = () => {
     { title: "About", href: "/about" },
   ];
   return (
-    <nav className="flex w-full wrapper bg-zinc-700 h-18 justify-between items-center absolute z-50">
+    <nav className="flex w-full wrapper bg-zinc-700 h-16 justify-between items-center absolute z-50">
       <NavLink to='/'>
         <img src={"./logo.svg"} className="size-24" />
       </NavLink>

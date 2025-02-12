@@ -10,8 +10,8 @@ interface Props {
 
 const Button = ({ children, size, primary }: Props) => {
   const classSize: Record<Size, string> = {
-    sm: "rounded-xl py-2 px-5 font-medium text-lg",
-    md: "rounded-xl py-3.5 px-6 font-semibold text-xl gap-3",
+    sm: "rounded-xl py-1 px-5 font-medium text-lg",
+    md: "rounded-xl py-3 px-5 font-semibold text-xl gap-3",
     lg: "rounded-xl py-3.5 px-6 font-semibold text-2xl gap-3",
   };
 

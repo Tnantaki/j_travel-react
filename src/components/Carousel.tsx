@@ -10,7 +10,7 @@ const Carousel = ({ images }: Props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 4000); // Change image every 3 seconds
+    }, 3000); // Change image every 3 seconds
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);

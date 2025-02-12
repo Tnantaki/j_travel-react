@@ -1,38 +1,19 @@
 import { Link, NavLink } from "react-router";
 import Button from "../components/Button";
+import Input from "../components/Input";
 
 const Login = () => {
   return (
-    <section className="relative min-h-screen flex overflow-hidden">
-      <div className="flex flex-col text-white mt-40 mx-40">
+    <section className="hero">
+      <div className="grid grid-cols-2 w-full text-white mx-20 items-center place-items-center">
         <div className="flex flex-col w-[650px] h-[800px] bg-black/20 rounded-3xl backdrop-blur-xl p-20 gap-12 drop-shadow-xl">
           <form className="flex flex-col gap-8">
-            <div className="flex flex-col font-inter font-medium gap-4">
-              <label htmlFor="email" className="text-2xl">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className="bg-white text-xl h-14 rounded-lg w-full text-dark-primary font-normal p-4 focus:outline-1 focus:outline-dark-secondary"
-              />
-            </div>
-            <div className="flex flex-col font-inter font-medium gap-4">
-              <label htmlFor="password" className="text-2xl">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                className="bg-white text-xl h-14 rounded-lg w-full text-dark-primary font-normal p-4 focus:outline-1 focus:outline-dark-secondary"
-              />
-            </div>
+            <Input type="email" label="Email" name="email" placeholder="Enter your email" />
+            <Input type="password" label="Password" name="password" placeholder="Enter your password" />
             <Link to="#" className="text-xl hover:underline text-right">
               Forgot Password
             </Link>
-            <Button size="lg" primary={true}>
+            <Button size="md" primary={true}>
               SIGN IN
             </Button>
           </form>
@@ -40,7 +21,7 @@ const Login = () => {
             <img
               src="./icons/google-icon.svg"
               alt="google icon"
-              className="size-9"
+              className="size-7"
             />
             Sign in with Google
           </button>
