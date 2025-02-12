@@ -5,6 +5,7 @@ const Navbar = () => {
   const menuItems = [
     { title: "Home", href: "/" },
     { title: "Packages", href: "/packages" },
+    { title: "Booking", href: "/booking" },
     { title: "About", href: "/about" },
   ];
   return (
@@ -14,7 +15,7 @@ const Navbar = () => {
       </NavLink>
       <div className="uppercase flex justify-between gap-40 text-xl font-bold text-white font-inter">
         {menuItems.map((item) => (
-          <NavLink key={item.title} to={item.href} className="hover:text-primary hover:scale-[1.1]">
+          <NavLink key={item.title} to={item.href} className={({isActive}) => `hover:text-primary hover:scale-[1.1] ${isActive && 'text-primary'}`}>
             {item.title}
           </NavLink>
         ))}
