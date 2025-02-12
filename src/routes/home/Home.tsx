@@ -1,5 +1,5 @@
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
+import Footer from '../../components/Footer'
+import Navbar from '../../components/Navbar'
 import Guide from './Guide'
 import Hero from './Hero'
 import Map from './Map'
