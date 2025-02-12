@@ -1,3 +1,5 @@
+import Carousel from "../../components/Carousel";
+
 const Guide = () => {
   const guides = [
     {
@@ -10,6 +12,12 @@ const Guide = () => {
       descition:
         "Enjoy exclusive activities that showcase the beauty and culture of Japan.",
     },
+  ];
+
+  const images = [
+    "./location/Osaka-Castle-osaka.png",
+    "./location/senso-ji-temple-tokyo.png",
+    "./location/kinkakuji-temple-kyoto.png",
   ];
 
   return (
@@ -37,11 +45,8 @@ const Guide = () => {
             </div>
           </div>
         </div>
-        <div>
-          <img
-            className="size-[600px] border-1 border-[#888888] rounded-xl"
-            src="./location/Osaka-Castle-osaka.png"
-          />
+        <div className="size-[560px] border-1 border-[#888888] rounded-xl overflow-hidden">
+          <Carousel images={images} />
         </div>
       </div>
     </section>
