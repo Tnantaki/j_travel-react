@@ -20,7 +20,7 @@ const Hero = () => {
         </NavLink>
       </div>
       <img
-        className="absolute top-0 w-full object-fill -z-30"
+        className="absolute top-0 h-[120vh] object-cover -z-30"
         src="./background/fuji.png"
       />
     </section>
