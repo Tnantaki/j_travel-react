@@ -27,8 +27,8 @@ const Guide = () => {
               your interests, ensuring unforgettable memories.
             </p>
             <div className="grid grid-cols-2 gap-12">
-              {guides.map((g) => (
-                <div className="grid gap-4">
+              {guides.map((g, i) => (
+                <div key={i} className="grid gap-4">
                   <img className="size-12" src="./icons/box.svg" alt="box" />
                   <p className="text-xl font-bold">{g.title}</p>
                   <p className="text-lg">{g.descition}</p>

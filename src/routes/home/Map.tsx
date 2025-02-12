@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import Button from "../../components/Button";
 
 const Map = () => {
@@ -20,7 +21,7 @@ const Map = () => {
         <div>
           <img
             className="size-[600px] border-1 border-[#888888] rounded-xl"
-            src="./Jpan_map.png"
+            src={"./Jpan_map.png"}
             alt=""
           />
         </div>
@@ -34,8 +35,8 @@ const Map = () => {
             something for every traveler.
           </p>
           <div className="grid grid-cols-2 gap-12">
-            {exps.map((exp) => (
-              <div className="grid gap-4">
+            {exps.map((exp, i) => (
+              <div key={i} className="grid gap-4">
                 <img className="size-12" src="./icons/box.svg" alt="box" />
                 <p className="text-xl font-bold">{exp.title}</p>
                 <p className="text-lg">{exp.descition}</p>
@@ -43,16 +44,16 @@ const Map = () => {
             ))}
           </div>
           <div className="flex gap-4">
-            <a href="/learnmore">
+            <NavLink to="/learnmore">
               <Button size="md" primary={true}>
                 Learn More
               </Button>
-            </a>
-            <a href="/signup">
+            </NavLink>
+            <NavLink to="/signup">
               <Button size="md" primary={false}>
                 Sign Up <img src="./icons/right-arrow.svg" alt="icon" /> 
               </Button>
-            </a>
+            </NavLink>
           </div>
         </div>
       </div>

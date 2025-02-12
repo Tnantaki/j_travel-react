@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import Button from "../../components/Button";
 
 const Hero = () => {
@@ -12,11 +13,11 @@ const Hero = () => {
           experiences tailored just for you. Let J-Travel guide you on your
           journey through Japan's hidden gems and iconic destinations.
         </p>
-        <a href="/book">
+        <NavLink to="/book">
           <Button size="md" primary={true}>
             Booking
           </Button>
-        </a>
+        </NavLink>
       </div>
       <img
         className="absolute top-0 w-full object-fill -z-30"

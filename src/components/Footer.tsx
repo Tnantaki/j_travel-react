@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 const Footer = () => {
   const links = [
     [
@@ -66,17 +68,17 @@ const Footer = () => {
         </div>
         <div className="grid grid-cols-4 justify-between w-full">
           <img className="stroke-white size-16" src="./logo.svg" alt="" />
-          {links.map((link) => (
-            <div className="flex flex-col gap-4">
+          {links.map((link, i) => (
+            <div key={i} className="flex flex-col gap-4">
               {link.map((item, i) =>
                 i === 0 ? (
                   <p key={i} className="font-semibold text-base">
                     {item.title}
                   </p>
                 ) : (
-                  <a key={i} href={item.href} className="hover:underline">
+                  <NavLink key={i} to={item.href} className="hover:underline">
                     <p>{item.title}</p>
-                  </a>
+                  </NavLink>
                 )
               )}
             </div>
@@ -86,24 +88,24 @@ const Footer = () => {
           <div className="flex gap-4">
             {credits.map((c, i) =>
               i === 0 ? (
-                <p>{c.title}</p>
+                <p key={i}>{c.title}</p>
               ) : (
-                <a
+                <NavLink
                   key={i}
-                  href={c.href}
+                  to={c.href}
                   className="hover:underline first:cursor-default"
                   target="_blank"
                 >
                   <p>{c.title}</p>
-                </a>
+                </NavLink>
               )
             )}
           </div>
           <div className="flex gap-4">
             {socialIcons.map((icon, i) => (
-              <a key={i} href={icon.href}>
+              <NavLink key={i} to={icon.href}>
                 <img src={`./icons/${icon.image}`} alt="social icon" />
-              </a>
+              </NavLink>
             ))}
           </div>
         </div>
