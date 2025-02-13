@@ -16,7 +16,7 @@
 
   --color-dark-primary: #252527;
   --color-dark-secondary: #343338;
-  --color-primary: #3F97CF;
+  --color-primary: #3f97cf;
 }
 
 @layer base {
@@ -25,24 +25,34 @@
   }
 
   section.hero {
-    @apply pt-16 relative min-h-screen flex overflow-hidden;
+    @apply pt-16 relative min-h-screen min-w-screen flex overflow-hidden;
   }
 
-  h2 {@apply font-bold text-[2.5rem];}
-  h3 {@apply font-bold text-4xl;}
-  h4 {@apply font-semibold text-2xl;}
+  h2 { @apply font-bold text-[1.5rem]; }
 
-}
-
-@utility wrapper {
-  @apply mx-auto px-8;
-
-  @variant md {
-    @apply px-30;
+  h3 {
+    @apply font-bold text-4xl;
+  }
+  h4 {
+    @apply font-semibold text-2xl;
   }
 
-  @variant lg {
-    @apply px-50;
+  .sec-padding { @apply px-4; }
+  .sec-margin { @apply my-20; }
+  .page-container { @apply w-[80rem] mx-auto; }
+
+  @media screen and (min-width: --theme(--breakpoint-sm)) {
+    .sec-padding { @apply px-[1.75rem]; }
+    h2 { @apply font-bold text-[2rem]; }
+  }
+
+  @media screen and (min-width: --theme(--breakpoint-md)) {
+    .sec-padding { @apply px-[2.5rem]; }
+    .sec-margin { @apply my-30; }
+    h2 { @apply font-bold text-[2.5rem]; }
+  }
+
+  @media screen and (min-width: --theme(--breakpoint-lg)) {
   }
 }
 

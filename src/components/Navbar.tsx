@@ -1,31 +1,83 @@
 import { NavLink } from "react-router";
 import Button from "./Button";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const menuItems = [
     { title: "Home", href: "/" },
     { title: "Packages", href: "/packages" },
     { title: "Booking", href: "/booking" },
     { title: "About", href: "/about" },
   ];
+
   return (
-    <nav className="flex w-full wrapper bg-zinc-700 h-16 justify-between items-center absolute z-50">
-      <NavLink to='/'>
-        <img src={"./logo.svg"} className="size-24" />
-      </NavLink>
-      <div className="uppercase flex justify-between gap-40 text-xl font-bold text-white font-inter">
-        {menuItems.map((item) => (
-          <NavLink key={item.title} to={item.href} className={({isActive}) => `hover:text-primary hover:scale-[1.1] ${isActive && 'text-primary'}`}>
-            {item.title}
+    <div className="bg-dark-secondary h-16 absolute flex w-full sec-padding z-50">
+      <div className="flex justify-between items-center page-container">
+        {/* Logo */}
+        <NavLink to="/">
+          <img src={"./logo.svg"} className="h-12" />
+        </NavLink>
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex uppercase justify-between items-center text-xl font-bold grow md:ms-10 lg:ms-30">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.title}
+              to={item.href}
+              className={({ isActive }) =>
+                `hover:text-primary hover:scale-[1.1] ${
+                  isActive && "text-primary"
+                }`
+              }
+            >
+              {item.title}
+            </NavLink>
+          ))}
+          <NavLink to="/login">
+            <Button size="sm" primary={true}>
+              Login
+            </Button>
           </NavLink>
-        ))}
+        </nav>
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden hover:text-primary hover:cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <svg
+            className="stroke-current fill-current size-7"
+            viewBox="0 0 18 12"
+          >
+            <path d="M1 12C0.71667 12 0.479337 11.904 0.288004 11.712C0.0966702 11.52 0.000670115 11.2827 3.44827e-06 11C-0.000663218 10.7173 0.0953369 10.48 0.288004 10.288C0.48067 10.096 0.718003 10 1 10H17C17.2833 10 17.521 10.096 17.713 10.288C17.905 10.48 18.0007 10.7173 18 11C17.9993 11.2827 17.9033 11.5203 17.712 11.713C17.5207 11.9057 17.2833 12.0013 17 12H1ZM1 7C0.71667 7 0.479337 6.904 0.288004 6.712C0.0966702 6.52 0.000670115 6.28267 3.44827e-06 6C-0.000663218 5.71733 0.0953369 5.48 0.288004 5.288C0.48067 5.096 0.718003 5 1 5H17C17.2833 5 17.521 5.096 17.713 5.288C17.905 5.48 18.0007 5.71733 18 6C17.9993 6.28267 17.9033 6.52033 17.712 6.713C17.5207 6.90567 17.2833 7.00133 17 7H1ZM1 2C0.71667 2 0.479337 1.904 0.288004 1.712C0.0966702 1.52 0.000670115 1.28267 3.44827e-06 1C-0.000663218 0.717333 0.0953369 0.48 0.288004 0.288C0.48067 0.0960001 0.718003 0 1 0H17C17.2833 0 17.521 0.0960001 17.713 0.288C17.905 0.48 18.0007 0.717333 18 1C17.9993 1.28267 17.9033 1.52033 17.712 1.713C17.5207 1.90567 17.2833 2.00133 17 2H1Z" />
+          </svg>
+        </button>
+
+        {/* Mobile Menu Dropdown Container */}
+        <div
+          className={`absolute right-0 top-full z-40 overflow-hidden bg-dark-secondary transition-all duration-300 ease-in-out ${
+            isOpen ? "border-gray-500 w-[220px] md:border-s" : "w-0"
+          } lg:hidden`}
+        >
+          <div className="flex flex-col p-6 text-xl font-medium gap-4">
+            {menuItems.map((item, idx) => (
+              <NavLink
+                key={idx}
+                to={item.href}
+                className={({ isActive }) =>
+                  `hover:text-primary hover:scale-[1.1] ${
+                    isActive && "text-primary"
+                  }`
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                {item.title}
+              </NavLink>
+            ))}
+          </div>
+        </div>
       </div>
-      <NavLink to="/login">
-        <Button size="sm" primary={true}>
-          Login
-        </Button>
-      </NavLink>
-    </nav>
+    </div>
   );
 };
 

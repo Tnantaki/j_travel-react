@@ -42,34 +42,35 @@ const Footer = () => {
   ];
 
   return (
-    <section className="flex bg-dark-secondary">
-      <div className="wrapper grid font-inter text-white items-center mt-30 mb-10 mx-20 text-sm gap-12 w-full">
-        <div className="flex justify-between">
-          <div className="flex flex-col">
+    <footer className="flex bg-dark-secondary sec-padding">
+      <div className="grid items-center text-sm gap-12 page-container mt-20 mb-0">
+        <div className="flex flex-col gap-6 items-center lg:flex-row lg:justify-between">
+          <div className="flex flex-col items-center lg:items-start">
             <p className="text-lg font-semibold">Subscribe to updates</p>
             <p className="text-base">
               Stay informed about our latest travel packages and offers.
             </p>
           </div>
-          <div className="flex flex-col text-base gap-2">
+          <div className="flex flex-col text-base gap-2 items-center lg:items-end">
             <form className="flex gap-4">
               <input
                 className="border-white border-1 h-12 px-4 focus:border-primary focus:outline-1 focus:outline-primary"
                 type="email"
-                size={30}
                 placeholder="Your email here"
               />
-              <button className="border-white border-1 h-12 px-12 hover:cursor-pointer hover:bg-primary hover:border-primary">
+              <button className="border-white border-1 px-4 h-12 sm:px-12 hover:cursor-pointer hover:bg-primary hover:border-primary">
                 Join
               </button>
             </form>
             <p>By subscribing, you accept our Privacy Policy and updates.</p>
           </div>
         </div>
-        <div className="grid grid-cols-4 justify-between w-full">
-          <img className="stroke-white size-16" src="./logo.svg" alt="" />
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-2">
+          <div className="flex justify-center">
+            <img className="stroke-white h-8" src="./logo.svg" alt="" />
+          </div>
           {links.map((link, i) => (
-            <div key={i} className="flex flex-col gap-4">
+            <div key={i} className="flex flex-col gap-3 items-center">
               {link.map((item, i) =>
                 i === 0 ? (
                   <p key={i} className="font-semibold text-base">
@@ -84,7 +85,7 @@ const Footer = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between border-t-1 border-white py-6">
+        <div className="flex flex-col gap-4 md:flex-row justify-between border-t-1 border-white py-6">
           <div className="flex gap-4">
             {credits.map((c, i) =>
               i === 0 ? (
@@ -110,7 +111,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </section>
+    </footer>
   );
 };
 

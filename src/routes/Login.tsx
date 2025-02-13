@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
@@ -28,9 +28,9 @@ const Login = () => {
           <p className="text-xl text-center">
             Are you new?{" "}
             <span>
-              <NavLink to="/register" className="font-semi-bold hover:underline">
+              <Link to="/signup" className="font-semi-bold hover:underline">
                 Create an Accout
-              </NavLink>
+              </Link>
             </span>
           </p>
         </div>

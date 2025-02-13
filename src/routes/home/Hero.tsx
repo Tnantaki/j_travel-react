@@ -1,30 +1,31 @@
-import { NavLink } from "react-router";
-import Button from "../../components/Button";
+import LinkButton from "../../components/LinkButton";
 
 const Hero = () => {
   return (
-    <section className="hero">
-      <div className="grid grid-cols-2 wrapper items-center">
-        <div className="flex flex-col">
-          <h1 className="font-langar text-[9.375rem] style-langar">
-            <span className="text-primary text-[11.25rem]">J</span>·Travel
+    <section className="hero bg-[url('./background/fuji.png')] bg-cover bg-center sec-padding">
+      <div className="grid lg:grid-cols-2 items-center page-container">
+        <div className="flex flex-col mb-20">
+          <h1 className="font-langar text-[5rem] sm:text-[7rem] md:text-[9.375rem] style-langar">
+            <span className="text-primary text-[7rem] sm:text-[9rem] md:text-[11.25rem]">
+              J
+            </span>
+            ·Travel
           </h1>
           <p className="text-xl mb-8 drop-shadow-sm">
             Discover breathtaking landscapes, rich culture, and unforgettable
             experiences tailored just for you. Let J-Travel guide you on your
             journey through Japan's hidden gems and iconic destinations.
           </p>
-          <NavLink to="/booking">
-            <Button size="md" primary={true}>
-              Booking
-            </Button>
-          </NavLink>
+          <LinkButton
+            to="/booking"
+            size="md"
+            primary={true}
+            className="self-start"
+          >
+            Booking
+          </LinkButton>
         </div>
       </div>
-      <img
-        className="absolute top-0 h-[120vh] object-cover -z-30"
-        src="./background/fuji.png"
-      />
     </section>
   );
 };

@@ -22,8 +22,11 @@ const Guide = () => {
   ];
 
   return (
-    <section className="flex bg-dark-secondary">
-      <div className="wrapper grid grid-cols-2 gap-20 items-center my-40 mx-20">
+    <section className="flex bg-dark-secondary sec-padding">
+      <div className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center page-container sec-margin">
+        <div className="sm:size-[400px] lg:size-[520px] border-1 border-[#888888] rounded-xl overflow-hidden lg:order-last">
+          <Carousel images={images} />
+        </div>
         <div className="flex flex-col">
           <div className="flex flex-col gap-10">
             <h2>
@@ -41,9 +44,6 @@ const Guide = () => {
               ))}
             </div>
           </div>
-        </div>
-        <div className="size-[560px] border-1 border-[#888888] rounded-xl overflow-hidden">
-          <Carousel images={images} />
         </div>
       </div>
     </section>

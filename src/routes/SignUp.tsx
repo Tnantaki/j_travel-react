@@ -1,8 +1,8 @@
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
-const Register = () => {
+const SignUp = () => {
   return (
     <section className="hero">
       <div className="flex mx-40 items-center w-full justify-end">
@@ -21,18 +21,18 @@ const Register = () => {
               <Input name="phone" label="Phone" />
             </div>
             <Input name="address" label="Address" />
-            <Link className="flex justify-center" to={"#"}>
+            <div className="flex justify-center">
               <Button size="md" primary={true}>
                 SIGN UP
               </Button>
-            </Link>
+            </div>
           </form>
-          <NavLink
+          <Link
             to="/login"
             className="text-xl text-center font-semi-bold hover:underline"
           >
             Back to Login
-          </NavLink>
+          </Link>
         </div>
       </div>
       <img
@@ -43,4 +43,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;
