@@ -22,7 +22,7 @@ const BaseButton = ({
 }: Props) => {
   const classSize: Record<SizeButton, string> = {
     sm: "rounded-xl py-1 px-5 font-medium text-lg",
-    md: "rounded-xl py-3 px-5 font-semibold text-xl gap-3",
+    md: "rounded-lg py-1.5 px-5 font-semibold text-base gap-1 sm:text-xl sm:py-2.5 sm:gap-3 md:text-xl md:py-3 md:rounded-xl",
     lg: "rounded-xl py-3.5 px-6 font-semibold text-2xl gap-3",
   };
 
