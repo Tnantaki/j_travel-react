@@ -9,6 +9,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   primary: boolean;
   className?: string;
   to?: string;
+  onClick?: () => void
 }
 
 const BaseButton = ({
@@ -18,6 +19,7 @@ const BaseButton = ({
   className,
   to,
   children,
+  onClick,
   ...props
 }: Props) => {
   const classSize: Record<SizeButton, string> = {
@@ -38,6 +40,7 @@ const BaseButton = ({
       <Link
         to={to}
         className={`${baseClass} ${classColor} ${classSize[size]} ${className}`}
+        onClick={onClick}
       >
         {children}
       </Link>

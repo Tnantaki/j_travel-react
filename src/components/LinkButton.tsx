@@ -7,9 +7,10 @@ interface Props {
   size: SizeButton;
   primary: boolean;
   className?: string;
+  onClick?: () => void
 }
 
-const LinkButton = ({ children, to, size, primary, className }: Props) => {
+const LinkButton = ({ children, to, size, primary, className, onClick }: Props) => {
   return (
     <BaseButton
       as="link"
@@ -17,6 +18,7 @@ const LinkButton = ({ children, to, size, primary, className }: Props) => {
       size={size}
       primary={primary}
       className={className}
+      onClick={onClick}
     >
       {children}
     </BaseButton>

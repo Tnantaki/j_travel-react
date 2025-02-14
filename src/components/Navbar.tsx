@@ -1,15 +1,15 @@
 import { NavLink } from "react-router";
-import Button from "./Button";
 import { useState } from "react";
+import Nav from "./Nav";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
-    { title: "Home", href: "/" },
-    { title: "Packages", href: "/packages" },
-    { title: "Booking", href: "/booking" },
-    { title: "About", href: "/about" },
+    { label: "Home", to: "/" },
+    { label: "Packages", to: "/packages" },
+    { label: "Booking", to: "/booking" },
+    { label: "About", to: "/about" },
   ];
 
   return (
@@ -20,26 +20,10 @@ const Navbar = () => {
           <img src={"./logo.svg"} className="h-8 sm:h-12" />
         </NavLink>
         {/* Desktop Menu */}
-        <nav className="hidden md:flex uppercase justify-between items-center text-xl font-bold grow md:ms-10 lg:ms-30">
-          {menuItems.map((item) => (
-            <NavLink
-              key={item.title}
-              to={item.href}
-              className={({ isActive }) =>
-                `hover:text-primary hover:scale-[1.1] ${
-                  isActive && "text-primary"
-                }`
-              }
-            >
-              {item.title}
-            </NavLink>
-          ))}
-          <NavLink to="/login">
-            <Button size="sm" primary={true}>
-              Login
-            </Button>
-          </NavLink>
-        </nav>
+        <Nav
+          className="hidden md:flex uppercase justify-between items-center text-xl font-bold grow md:ms-10 lg:ms-30"
+          menu={menuItems}
+        />
         {/* Mobile Menu Button */}
         <button
           className="md:hidden hover:text-primary hover:cursor-pointer"
@@ -59,22 +43,11 @@ const Navbar = () => {
             isOpen ? "border-gray-500 w-[220px] md:border-s" : "w-0"
           } lg:hidden`}
         >
-          <div className="flex flex-col p-6 text-xl font-medium gap-4">
-            {menuItems.map((item, idx) => (
-              <NavLink
-                key={idx}
-                to={item.href}
-                className={({ isActive }) =>
-                  `hover:text-primary hover:scale-[1.1] ${
-                    isActive && "text-primary"
-                  }`
-                }
-                onClick={() => setIsOpen(false)}
-              >
-                {item.title}
-              </NavLink>
-            ))}
-          </div>
+          <Nav
+            className="flex flex-col p-6 text-xl font-medium gap-4"
+            menu={menuItems}
+            closeMenu={() => setIsOpen(false)}
+          />
         </div>
       </div>
     </div>
