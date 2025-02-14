@@ -4,19 +4,19 @@ import Input from "../components/Input";
 
 const SignUp = () => {
   return (
-    <section className="hero">
-      <div className="flex mx-40 items-center w-full justify-end">
-        <div className="flex flex-col w-[1024px] bg-black/30 rounded-3xl backdrop-blur-xl py-8 px-16 gap-6 drop-shadow-xl">
+    <section className="hero sec-padding bg-[url('/background/fujiyoshida.png')] bg-cover bg-center">
+      <div className="flex items-center justify-center w-full lg:justify-end lg:mx-40">
+        <div className="flex flex-col bg-black/30 backdrop-blur-xl rounded-xl py-4 px-8 gap-3 drop-shadow-xl sm:py-5 sm:px-12 sm:rounded-2xl sm:gap-6 lg:w-[1024px] lg:py-8 lg:px-20 lg:gap-12 lg:rounded-3xl">
           <h3 className="text-center">Create Account</h3>
-          <form className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-6">
+          <form className="flex flex-col gap-2 sm:gap-3 lg:gap-6">
+            <div className="grid gap-3 sm:grid-cols-2 lg:gap-6">
               <Input name="username" label="Username" />
             </div>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid gap-3 sm:grid-cols-2 lg:gap-6">
               <Input name="password" label="Password" />
               <Input name="confirmPassword" label="Confirm Password" />
             </div>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid gap-3 sm:grid-cols-2 lg:gap-6">
               <Input name="email" label="Email" />
               <Input name="phone" label="Phone" />
             </div>
@@ -29,16 +29,12 @@ const SignUp = () => {
           </form>
           <Link
             to="/login"
-            className="text-xl text-center font-semi-bold hover:underline"
+            className="text-base text-center font-semi-bold hover:underline sm:text-lg md:text-xl"
           >
             Back to Login
           </Link>
         </div>
       </div>
-      <img
-        className="absolute top-0 h-[120vh] object-cover -z-30"
-        src="./background/fujiyoshida.png"
-      />
     </section>
   );
 };
