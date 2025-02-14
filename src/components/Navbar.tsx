@@ -17,11 +17,11 @@ const Navbar = () => {
       <div className="flex justify-between items-center page-container">
         {/* Logo */}
         <NavLink to="/">
-          <img src={"./logo.svg"} className="h-8 sm:h-12" />
+          <img src={"./logo.svg"} className="h-7 sm:h-10" />
         </NavLink>
         {/* Desktop Menu */}
         <Nav
-          className="hidden md:flex uppercase justify-between items-center text-xl font-bold grow md:ms-10 lg:ms-30"
+          className="hidden md:flex justify-between items-center grow md:ms-10 lg:ms-30"
           menu={menuItems}
         />
         {/* Mobile Menu Button */}
@@ -44,7 +44,7 @@ const Navbar = () => {
           } lg:hidden`}
         >
           <Nav
-            className="flex flex-col p-6 text-xl font-medium gap-4"
+            className="flex flex-col p-6 gap-4"
             menu={menuItems}
             closeMenu={() => setIsOpen(false)}
           />

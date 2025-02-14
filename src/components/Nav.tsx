@@ -14,20 +14,20 @@ interface Props {
 
 const Nav = ({ menu, className, closeMenu }: Props) => {
   return (
-    <nav className={className}>
+    <nav className={`${className} font-medium text-lg`}>
       {menu.map((link, idx) => (
         <NavLink
           key={idx}
           to={link.to}
           className={({ isActive }) =>
-            `hover:text-primary hover:scale-[1.1] ${isActive && "text-primary"}`
+            `uppercase hover:text-primary hover:scale-[1.1] ${isActive && "text-primary font-bold"}`
           }
           onClick={closeMenu}
         >
           {link.label}
         </NavLink>
       ))}
-      <LinkButton to="/login" size="sm" primary={true} className="capitalize" onClick={closeMenu}>Login</LinkButton>
+      <LinkButton to="/login" size="sm" primary={true} onClick={closeMenu}>Login</LinkButton>
     </nav>
   );
 };
