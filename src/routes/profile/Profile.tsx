@@ -87,8 +87,8 @@ const Profile = () => {
               <InputInfo type="number" label="Postal Code" name="postalCode" />
             </div>
             <div className="flex flex-col gap-4">
-              <InputInfo type="text" label="Province" name="province" />
               <InputInfo type="text" label="Sub District" name="subDistrict" />
+              <InputInfo type="text" label="Province" name="province" />
               <InputInfo type="text" label="Country" name="country" />
             </div>
           </div>

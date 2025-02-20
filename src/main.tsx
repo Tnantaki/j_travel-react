@@ -25,8 +25,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
-          <Route path="profile" element={<ProfileLayout />}>
-            <Route index element={<Profile />} />
+          <Route path="account" element={<ProfileLayout />}>
+            <Route path="profile" element={<Profile />} />
             <Route path="history" element={<History />} />
             <Route path="book" element={<MyBooking />} />
           </Route>

@@ -32,7 +32,7 @@ const Nav = ({ menu, className, closeMenu }: Props) => {
       <LinkButton to="/login" size="sm" onClick={closeMenu}>
         Login
       </LinkButton>
-      <Link to="/profile" onClick={closeMenu} className="size-12 bg-gray-600 rounded-full">
+      <Link to="/account/profile" onClick={closeMenu} className="size-12 bg-gray-600 rounded-full">
         <img src="" alt="" />
       </Link>
     </nav>

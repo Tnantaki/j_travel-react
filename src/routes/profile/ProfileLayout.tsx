@@ -3,9 +3,9 @@ import Sidebar from "./Sidebar";
 
 const ProfileLayout = () => {
   const profileMenu = [
-    { label: "Profile", to: "/profile/" },
-    { label: "My Booking", to: "/profile/book" },
-    { label: "Travel History", to: "/profile/history" },
+    { label: "Profile", to: "/account/profile" },
+    { label: "My Booking", to: "/account/book" },
+    { label: "Travel History", to: "/account/history" },
   ];
 
   return (
@@ -14,9 +14,7 @@ const ProfileLayout = () => {
         <h3 className="text-white self-start mb-4">My Account</h3>
         <div className="flex flex-row bg-dark-grey w-full p-8 rounded-2xl gap-6 h-full">
           <Sidebar menu={profileMenu}  />
-          <div className="flex w-full">
-            <Outlet />
-          </div>
+          <Outlet />
         </div>
       </div>
     </section>
