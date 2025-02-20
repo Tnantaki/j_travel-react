@@ -10,7 +10,7 @@ const ProfileLayout = () => {
 
   return (
     <section className="bg-dark-primary justify-center hero sec-padding">
-      <div className="page-container flex flex-col items-center mt-5 sm:mt-10 min-h-full mb-10">
+      <div className="page-container flex flex-col items-center my-5 min-h-full">
         <h3 className="text-white self-start mb-4">My Account</h3>
         <div className="flex flex-row bg-dark-grey w-full p-8 rounded-2xl gap-6 h-full">
           <Sidebar menu={profileMenu}  />
