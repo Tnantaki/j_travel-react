@@ -1,0 +1,34 @@
+import { NavLink } from "react-router";
+
+export interface ProfileMenu {
+  label: string;
+  to: string;
+}
+
+interface Props {
+  menu: ProfileMenu[];
+  closeMenu?: () => void;
+}
+
+const Sidebar = ({ menu, closeMenu }: Props) => {
+  return (
+    <div className="flex flex-col rounded-lg border-1 border-lg border-grey w-[200px] px-4 py-6 text-2xl gap-4">
+      {menu.map((link, idx) => (
+        <NavLink
+          key={idx}
+          to={link.to}
+          className={({ isActive }) =>
+            `px-4 text-center hover:text-primary hover:border-1 hover:scale-[1.1] ${
+              isActive && "text-primary font-bold"
+            }`
+          }
+          onClick={closeMenu}
+        >
+          {link.label}
+        </NavLink>
+      ))}
+    </div>
+  );
+};
+
+export default Sidebar;
