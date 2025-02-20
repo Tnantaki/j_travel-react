@@ -2,10 +2,9 @@ import { cva } from "class-variance-authority";
 import { InputHTMLAttributes } from "react";
 import { cn } from "../utils/cn";
 
-type SizeInput = 'md' | 'lg'
+type SizeInput = "md" | "lg";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  showLabel?: boolean;
   label: string;
   name: string;
   sizeInput?: SizeInput;
@@ -21,13 +20,13 @@ const InputInfoVariants = cva(
         true: "",
       },
       sizeInput: {
-        md: 'font-medium text-lg',
-        lg: 'font-semibold text-2xl',
-      }
+        md: "font-medium text-lg",
+        lg: "font-semibold text-2xl",
+      },
     },
     defaultVariants: {
       disabled: false,
-      sizeInput: 'md'
+      sizeInput: "md",
     },
   }
 );
@@ -37,22 +36,19 @@ const InputInfo = ({
   name,
   type,
   disabled,
-  showLabel = true,
   sizeInput,
   ...props
 }: Props) => {
   return (
     <div className="flex flex-col font-inter">
-      {showLabel && (
-        <label
-          htmlFor={name}
-          className={`ps-3 text-base font-normal ${
-            disabled ? "text-grey" : "text-light-grey "
-          }`}
-        >
-          {label}
-        </label>
-      )}
+      <label
+        htmlFor={name}
+        className={`ps-3 text-base font-normal ${
+          disabled ? "text-grey" : "text-light-grey "
+        }`}
+      >
+        {label}
+      </label>
       <input
         id={name}
         type={type}

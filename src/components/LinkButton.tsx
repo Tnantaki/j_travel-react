@@ -1,28 +1,17 @@
-import { ReactNode } from "react";
-import BaseButton, { SizeButton } from "./BaseButton";
+import { Link, LinkProps } from "react-router";
+import { cn } from "../utils/cn";
+import { ButtonProps, ButtonVariants } from "./Button";
 
-interface Props {
-  children: ReactNode;
-  to: string;
-  size: SizeButton;
-  primary: boolean;
-  className?: string;
-  onClick?: () => void
-}
+interface Props extends LinkProps, ButtonProps {}
 
-const LinkButton = ({ children, to, size, primary, className, onClick }: Props) => {
+const LinkButton = ({ variant, size, rounded, className, to, ...props }: Props) => {
   return (
-    <BaseButton
-      as="link"
+    <Link
       to={to}
-      size={size}
-      primary={primary}
-      className={className}
-      onClick={onClick}
-    >
-      {children}
-    </BaseButton>
-  );
+      {...props}
+      className={cn(ButtonVariants({ variant, size, rounded, className }))}
+     />
+  )
 };
 
 export default LinkButton;

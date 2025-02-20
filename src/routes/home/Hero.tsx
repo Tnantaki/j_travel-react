@@ -16,12 +16,7 @@ const Hero = () => {
             experiences tailored just for you. Let J-Travel guide you on your
             journey through Japan's hidden gems and iconic destinations.
           </p>
-          <LinkButton
-            to="/booking"
-            size="md"
-            primary={true}
-            className="self-start"
-          >
+          <LinkButton to="/booking" className="self-start">
             Booking
           </LinkButton>
         </div>

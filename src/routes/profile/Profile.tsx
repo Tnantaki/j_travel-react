@@ -15,7 +15,6 @@ const Profile = () => {
             <InputInfo
               type="text"
               label=""
-              showLabel={false}
               name="name"
               sizeInput="lg"
               placeholder="First name"
@@ -23,22 +22,15 @@ const Profile = () => {
             <InputInfo
               type="text"
               label=""
-              showLabel={false}
               name="name"
               sizeInput="lg"
               placeholder="Last name"
             />
-            <InputInfo
-              type="text"
-              label=""
-              showLabel={false}
-              name="name"
-              placeholder="region"
-            />
+            <InputInfo type="text" label="" name="name" placeholder="region" />
           </div>
         </div>
         <div>
-          <Button size="md" primary={false}>
+          <Button variant="outline" rounded="full" className="rounded-4xl">
             <FaEdit />
             Edit
           </Button>
@@ -101,7 +93,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <Button size="md" primary={true} className="self-center rounded-full">
+        <Button rounded="full" className="self-center">
           <FaRegSave />
           Save
         </Button>

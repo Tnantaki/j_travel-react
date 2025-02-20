@@ -9,14 +9,25 @@ const Login = () => {
       <div className="page-container flex flex-col justify-center items-center lg:items-start">
         <div className="flex flex-col max-w-[420px]  bg-black/20 backdrop-blur-xl rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
           <form className="flex flex-col gap-4 md:gap-8">
-            <Input type="email" label="Email" name="email" placeholder="Enter your email" />
-            <Input type="password" label="Password" name="password" placeholder="Enter your password" />
-            <Link to="#" className="text-base sm:text-lg md:text-xl hover:underline text-right">
+            <Input
+              type="email"
+              label="Email"
+              name="email"
+              placeholder="Enter your email"
+            />
+            <Input
+              type="password"
+              label="Password"
+              name="password"
+              placeholder="Enter your password"
+            />
+            <Link
+              to="#"
+              className="text-base sm:text-lg md:text-xl hover:underline text-right"
+            >
               Forgot Password
             </Link>
-            <Button size="md" primary={true}>
-              SIGN IN
-            </Button>
+            <Button>SIGN IN</Button>
           </form>
           <OAuthButton>
             <img
