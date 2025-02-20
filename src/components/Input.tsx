@@ -5,6 +5,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   inputClass?: string
 }
+
 const Input = ({label, name, inputClass, ...otherProps}: Props) => {
   return (
     <div className="flex flex-col font-inter font-medium gap-1 sm:gap-2 md:gap-4">

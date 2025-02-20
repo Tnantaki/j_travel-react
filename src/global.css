@@ -16,12 +16,18 @@
 
   --color-dark-primary: #252527;
   --color-dark-secondary: #343338;
+  --color-neutral-white: #F0F0F0;
   --color-primary: #3f97cf;
+  --color-grey: #888888;
+  --color-light-grey: #BFBFBF;
+  --color-dark-grey: #343338;
+  --color-dark-grey-shade: #2C2B30;
+  --color-dark-grey-tint: #403F44;
 }
 
 @layer base {
   body {
-    @apply font-inter text-white bg-dark-primary;
+    @apply font-inter text-neutral-white bg-dark-primary;
   }
 
   section.hero {
@@ -36,7 +42,7 @@
 
   .sec-padding { @apply px-2; }
   .sec-margin { @apply my-5; }
-  .page-container { @apply w-[80rem] mx-auto; }
+  .page-container { @apply max-w-[86rem] mx-auto container; }
 
   @media screen and (min-width: --theme(--breakpoint-sm)) {
     .sec-padding { @apply px-[1.75rem]; }
