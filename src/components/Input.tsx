@@ -5,24 +5,22 @@ import { FieldError } from "react-hook-form";
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   inputClass?: string;
-  error?: FieldError
+  error?: FieldError;
 }
 
 const Input = forwardRef<HTMLInputElement, Props>(
-  ({ label, inputClass, error, ...props }, ref) => {
-
+  ({ name, label, inputClass, error, ...props }, ref) => {
     return (
       <div className="flex flex-col font-inter font-medium sm:gap-2 md:gap-4">
         {label && (
-          <label
-            htmlFor={props.name}
-            className="text-lg sm:text-xl lg:text-2xl"
-          >
+          <label htmlFor={name} className="text-lg sm:text-xl lg:text-2xl">
             {label}
           </label>
         )}
         <div className="relative mb-6">
           <input
+            id={name}
+            name={name}
             {...props}
             ref={ref}
             className={cn(
@@ -30,7 +28,11 @@ const Input = forwardRef<HTMLInputElement, Props>(
               inputClass
             )}
           />
-          {error && <p className="text-error text-sm mt-0.5 absolute drop-shadow-lg sm:text-base sm:mt-1">{error.message}</p>}
+          {error && (
+            <p className="text-error text-sm mt-0.5 absolute drop-shadow-lg sm:text-base sm:mt-1">
+              {error.message}
+            </p>
+          )}
         </div>
       </div>
     );

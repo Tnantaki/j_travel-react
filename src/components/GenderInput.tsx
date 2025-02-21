@@ -1,16 +1,20 @@
-const GenderInput = () => {
+import { forwardRef, InputHTMLAttributes } from "react";
+
+interface Props extends InputHTMLAttributes<HTMLInputElement> {}
+
+const GenderInput = forwardRef<HTMLInputElement, Props>(({ ...props }, ref) => {
   return (
     <div className="flex flex-col gap-1">
       <p className="body2 text-light-grey ps-3">Gender</p>
       <div className="flex flex-row gap-2">
-        <input type="radio" name="gender" id="female" value="female" />
+        <input type="radio" id="female" value="Female" {...props} ref={ref} />
         <label
           htmlFor="female"
           className="text-neutral-white text-lg font-normal me-2"
         >
           Female
         </label>
-        <input type="radio" name="gender" id="male" value="male" />
+        <input type="radio" id="male" value="Male" {...props} ref={ref} />
         <label
           htmlFor="male"
           className="text-neutral-white text-lg font-normal"
@@ -20,6 +24,6 @@ const GenderInput = () => {
       </div>
     </div>
   );
-};
+});
 
 export default GenderInput;

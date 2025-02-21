@@ -6,67 +6,84 @@ import { FaRegSave } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+type Gender = "Male" | "Female";
+
 export interface ProfileInputs {
-  firstName: string
-  lastName: string
+  firstName: string;
+  lastName: string;
+  region: string;
+  birthday: string;
+  age: number;
+  phone: string;
+  email: string;
+  street: string;
+  subDistrict: string;
+  district: string;
+  province: string;
+  postalCode: number;
+  country: string;
+  gender: Gender;
 }
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [gender, setGender] = useState<Gender>();
   const { register, handleSubmit } = useForm<ProfileInputs>();
 
   const onSubmit: SubmitHandler<ProfileInputs> = (data) => {
-    // event.preventDefault();
-    console.log(data)
+    setFullName(`${data.firstName} ${data.lastName}`);
+
+    setGender(data.gender);
+
+    console.log(data);
     setEdit(false);
   };
 
   return (
-    <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-4 w-full"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex flex-row rounded-lg border-1 border-lg border-grey px-8 py-4 justify-between">
         <div className="flex gap-4">
           <div className="rounded-full size-24 bg-amber-50">
             {/* <img src="" alt="" /> */}
           </div>
-          <div className="grid grid-cols-2 gap-2 w-[700px]">
+          <div className="grid grid-cols-2 gap-x-2 w-[700px]">
             {!edit ? (
               <div className="col-span-2">
-                {/* <InputInfo
+                <InputInfo
                   type="text"
-                  label=""
-                  // name="name"
                   sizeInput="lg"
-                  disabled={!edit}
-                /> */}
+                  value={fullName}
+                  disabled
+                />
               </div>
             ) : (
               <>
-              <input type="text" {...register("firstName")} />
-                {/* <InputInfo
+                <InputInfo
                   type="text"
-                  {...register('firstName')}
-                  // name="firstName"
                   sizeInput="lg"
+                  {...register("firstName")}
                   placeholder="First name"
-                  // disabled={!edit}
-                /> */}
-                {/* <InputInfo
+                  disabled={!edit}
+                />
+                <InputInfo
                   type="text"
-                  // name="lastName"
-                  {...register('lastName')}
+                  {...register("lastName")}
                   sizeInput="lg"
                   placeholder="Last name"
                   disabled={!edit}
-                /> */}
+                />
               </>
             )}
-            {/* <InputInfo
+            <InputInfo
               type="text"
-              label=""
-              name="name"
+              {...register("region")}
               placeholder="region"
               disabled={!edit}
-            /> */}
+            />
           </div>
         </div>
         <div>
@@ -84,35 +101,39 @@ const Profile = () => {
         </div>
       </div>
       <div className="flex flex-col rounded-lg border-1 border-lg border-grey px-8 py-4 gap-6 h-full">
-        {/* <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <h4>Personal Information</h4>
           <div className="grid grid-cols-2 gap-8">
             <div className="flex flex-col gap-4">
               <InputInfo
                 type="date"
                 label="Birthday"
-                name="birthday"
+                {...register("birthday")}
                 disabled={!edit}
               />
               <InputInfo
                 type="tel"
                 label="Phone"
-                name="phone"
+                {...register("phone")}
                 disabled={!edit}
               />
-              <GenderInput />
+              {!edit ? (
+                <InputInfo type="text" label="Gender" value={gender} disabled />
+              ) : (
+                <GenderInput {...register("gender")} />
+              )}
             </div>
             <div className="flex flex-col gap-4">
               <InputInfo
                 type="number"
                 label="Age"
-                name="age"
+                {...register("age")}
                 disabled={!edit}
               />
               <InputInfo
                 type="email"
                 label="Email"
-                name="email"
+                {...register("email")}
                 disabled={!edit}
               />
             </div>
@@ -125,18 +146,19 @@ const Profile = () => {
               <InputInfo
                 type="text"
                 label="Street, Building, House No."
-                name="street"
+                {...register("street")}
                 disabled={!edit}
               />
               <InputInfo
                 type="text"
                 label="District"
-                name="district"
+                {...register("district")}
                 disabled={!edit}
               />
               <InputInfo
                 type="number"
                 label="Postal Code"
+                {...register("postalCode")}
                 name="postalCode"
                 disabled={!edit}
               />
@@ -145,24 +167,24 @@ const Profile = () => {
               <InputInfo
                 type="text"
                 label="Sub District"
-                name="subDistrict"
+                {...register("subDistrict")}
                 disabled={!edit}
               />
               <InputInfo
                 type="text"
                 label="Province"
-                name="province"
+                {...register("province")}
                 disabled={!edit}
               />
               <InputInfo
                 type="text"
                 label="Country"
-                name="country"
+                {...register("country")}
                 disabled={!edit}
               />
             </div>
           </div>
-        </div> */}
+        </div>
         {edit && (
           <Button type="submit" rounded="full" className="self-center">
             <FaRegSave />
