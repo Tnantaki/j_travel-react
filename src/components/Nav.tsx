@@ -33,7 +33,7 @@ const Nav = ({ menu, className, closeMenu }: Props) => {
         Login
       </LinkButton>
       <Link to="/account/profile" onClick={closeMenu} className="size-12 bg-gray-600 rounded-full">
-        <img src="" alt="" />
+        {/* <img src="" alt="" /> */}
       </Link>
     </nav>
   );

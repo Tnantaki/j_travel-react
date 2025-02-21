@@ -1,14 +1,16 @@
 import { cva } from "class-variance-authority";
 import { InputHTMLAttributes } from "react";
 import { cn } from "../utils/cn";
+import { UseFormRegister } from "react-hook-form";
+import { ProfileInputs } from "../routes/profile/Profile";
 
 type SizeInput = "md" | "lg";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  name: string;
+  name: keyof ProfileInputs;
+  label?: string;
+  register: UseFormRegister<ProfileInputs>;
   sizeInput?: SizeInput;
-  inputClass?: string;
 }
 
 const InputInfoVariants = cva(
@@ -34,28 +36,32 @@ const InputInfoVariants = cva(
 const InputInfo = ({
   label,
   name,
-  type,
   disabled,
   sizeInput,
+  className,
+  register,
   ...props
 }: Props) => {
+  console.log(props);
   return (
     <div className="flex flex-col font-inter">
-      <label
-        htmlFor={name}
-        className={`ps-3 text-base font-normal ${
-          disabled ? "text-grey" : "text-light-grey "
-        }`}
-      >
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={name}
+          className={`ps-3 text-base font-normal ${
+            disabled ? "text-grey" : "text-light-grey "
+          }`}
+        >
+          {label}
+        </label>
+      )}
       <input
         id={name}
-        type={type}
-        {...props}
-        className={cn(InputInfoVariants({ disabled, sizeInput }))}
         disabled={disabled}
-        style={{ colorScheme: "dark" }}
+        {...register(name)}
+        {...props}
+        className={cn(InputInfoVariants({ disabled, sizeInput, className }))}
+        style={{ colorScheme: "dark" }} // for caledar picker icon
       />
     </div>
   );

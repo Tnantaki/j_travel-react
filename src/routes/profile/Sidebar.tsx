@@ -18,7 +18,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           key={idx}
           to={link.to}
           className={({ isActive }) =>
-            `p-2 text-center rounded-r-lg hover:bg-dark-grey-shade hover:border-1 hover:scale-[1.1] ${
+            `p-2 text-center rounded-r-lg hover:bg-dark-grey-shade hover:scale-[1.1] ${
               isActive && "text-primary font-bold bg-dark-grey-shade border-l-2"
             }`
           }

@@ -2,24 +2,52 @@ import { Link } from "react-router";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import OAuthButton from "../components/OAuthButton";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(4, { message: "Must be 4 or more characters long" }),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log(errors);
+    console.log(data);
+  };
+
   return (
     <section className="hero sec-padding bg-[url('/background/Itsukushima_shrine.png')] bg-cover bg-center">
       <div className="page-container flex flex-col justify-center items-center lg:items-start">
-        <div className="flex flex-col max-w-[420px]  bg-black/20 backdrop-blur-xl rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
-          <form className="flex flex-col gap-4 md:gap-8">
+        <div className="flex flex-col max-w-[420px]  bg-black/30 backdrop-blur-xl rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Input
               type="email"
               label="Email"
-              name="email"
               placeholder="Enter your email"
+              {...register("email")}
+              error={errors.email}
             />
             <Input
               type="password"
               label="Password"
-              name="password"
               placeholder="Enter your password"
+              {...register("password")}
+              error={errors.password}
             />
             <Link
               to="#"
@@ -27,7 +55,7 @@ const Login = () => {
             >
               Forgot Password
             </Link>
-            <Button>SIGN IN</Button>
+            <Button type="submit">SIGN IN</Button>
           </form>
           <OAuthButton>
             <img

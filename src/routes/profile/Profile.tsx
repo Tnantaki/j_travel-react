@@ -4,49 +4,77 @@ import GenderInput from "../../components/GenderInput";
 import InputInfo from "../../components/InputInfo";
 import { FaRegSave } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+export interface ProfileInputs {
+  firstName: string
+  lastName: string
+}
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
+  const { register, handleSubmit } = useForm<ProfileInputs>();
+
+  const onSubmit: SubmitHandler<ProfileInputs> = (data) => {
+    // event.preventDefault();
+    console.log(data)
+    setEdit(false);
+  };
 
   return (
-    <form className="flex flex-col gap-4 w-full">
+    <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-row rounded-lg border-1 border-lg border-grey px-8 py-4 justify-between">
         <div className="flex gap-4">
           <div className="rounded-full size-24 bg-amber-50">
-            <img src="" alt="" />
+            {/* <img src="" alt="" /> */}
           </div>
           <div className="grid grid-cols-2 gap-2 w-[700px]">
-            <InputInfo
-              type="text"
-              label=""
-              name="name"
-              sizeInput="lg"
-              placeholder="First name"
-              disabled={!edit}
-            />
-            <InputInfo
-              type="text"
-              label=""
-              name="name"
-              sizeInput="lg"
-              placeholder="Last name"
-              disabled={!edit}
-            />
-            <InputInfo
+            {!edit ? (
+              <div className="col-span-2">
+                {/* <InputInfo
+                  type="text"
+                  label=""
+                  // name="name"
+                  sizeInput="lg"
+                  disabled={!edit}
+                /> */}
+              </div>
+            ) : (
+              <>
+              <input type="text" {...register("firstName")} />
+                {/* <InputInfo
+                  type="text"
+                  {...register('firstName')}
+                  // name="firstName"
+                  sizeInput="lg"
+                  placeholder="First name"
+                  // disabled={!edit}
+                /> */}
+                {/* <InputInfo
+                  type="text"
+                  // name="lastName"
+                  {...register('lastName')}
+                  sizeInput="lg"
+                  placeholder="Last name"
+                  disabled={!edit}
+                /> */}
+              </>
+            )}
+            {/* <InputInfo
               type="text"
               label=""
               name="name"
               placeholder="region"
               disabled={!edit}
-            />
+            /> */}
           </div>
         </div>
         <div>
           <Button
             type="button"
+            size="sm"
             variant="outline"
             rounded="full"
-            className="rounded-4xl"
             onClick={() => setEdit(true)}
             disabled={edit}
           >
@@ -56,7 +84,7 @@ const Profile = () => {
         </div>
       </div>
       <div className="flex flex-col rounded-lg border-1 border-lg border-grey px-8 py-4 gap-6 h-full">
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           <h4>Personal Information</h4>
           <div className="grid grid-cols-2 gap-8">
             <div className="flex flex-col gap-4">
@@ -134,9 +162,9 @@ const Profile = () => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
         {edit && (
-          <Button type="button" rounded="full" className="self-center" onClick={() => setEdit(false)}>
+          <Button type="submit" rounded="full" className="self-center">
             <FaRegSave />
             Save
           </Button>

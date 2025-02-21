@@ -1,6 +1,7 @@
 import { Link, LinkProps } from "react-router";
 import { cn } from "../utils/cn";
-import { ButtonProps, ButtonVariants } from "./Button";
+import { ButtonProps } from "./Button";
+import { buttonVariants } from "../variants/button";
 
 interface Props extends LinkProps, ButtonProps {}
 
@@ -9,7 +10,7 @@ const LinkButton = ({ variant, size, rounded, className, to, ...props }: Props) 
     <Link
       to={to}
       {...props}
-      className={cn(ButtonVariants({ variant, size, rounded, className }))}
+      className={cn(buttonVariants({ variant, size, rounded, className }))}
      />
   )
 };

@@ -23,6 +23,7 @@
   --color-dark-grey: #343338;
   --color-dark-grey-shade: #2C2B30;
   --color-dark-grey-tint: #403F44;
+  --color-error: #E53835;
 }
 
 @layer base {
