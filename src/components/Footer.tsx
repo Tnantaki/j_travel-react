@@ -1,4 +1,10 @@
 import { NavLink } from "react-router";
+import logo from '@img/logo.svg'
+import logoFacebook from "@img/icons/Facebook.svg";
+import logoInstagram from "@img/icons/Instagram.svg";
+import logoX from "@img/icons/X.svg";
+import logoLinkedIn from "@img/icons/LinkedIn.svg";
+import logoYoutube from "@img/icons/Youtube.svg";
 
 const Footer = () => {
   const links = [
@@ -34,11 +40,11 @@ const Footer = () => {
     { href: "#", title: "Cookie Settings" },
   ];
   const socialIcons = [
-    { href: "#", image: "Facebook.svg" },
-    { href: "#", image: "Instagram.svg" },
-    { href: "#", image: "X.svg" },
-    { href: "#", image: "LinkedIn.svg" },
-    { href: "#", image: "Youtube.svg" },
+    { href: "#", image: logoFacebook },
+    { href: "#", image: logoInstagram },
+    { href: "#", image: logoX },
+    { href: "#", image: logoLinkedIn },
+    { href: "#", image: logoYoutube },
   ];
 
   return (
@@ -67,7 +73,11 @@ const Footer = () => {
         </div>
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-2">
           <div className="flex justify-center">
-            <img className="stroke-white h-8" src="./logo.svg" alt="" />
+            <img
+              className="stroke-white h-8"
+              src={logo}
+              alt="logo image"
+            />
           </div>
           {links.map((link, i) => (
             <div key={i} className="flex flex-col gap-3 items-center">
@@ -105,7 +115,10 @@ const Footer = () => {
           <div className="flex gap-4">
             {socialIcons.map((icon, i) => (
               <NavLink key={i} to={icon.href}>
-                <img src={`./icons/${icon.image}`} alt="social icon" />
+                <img
+                  src={icon.image}
+                  alt="social icon"
+                />
               </NavLink>
             ))}
           </div>

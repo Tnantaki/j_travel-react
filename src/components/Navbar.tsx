@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { useState } from "react";
 import Nav from "./Nav";
+import logo from "@img/logo.svg"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ const Navbar = () => {
       <div className="flex justify-between items-center page-container">
         {/* Logo */}
         <NavLink to="/">
-          <img src={"./logo.svg"} className="h-7 sm:h-10" />
+          <img src={logo} className="h-7 sm:h-10" />
         </NavLink>
         {/* Desktop Menu */}
         <Nav

@@ -1,5 +1,8 @@
 import Carousel from "../../components/Carousel";
 import ListItem from "../../components/ListItem";
+import osaka from "@img/location/Osaka-Castle-osaka.png";
+import senso from "@img/location/senso-ji-temple-tokyo.png";
+import kinkakuji from "@img/location/kinkakuji-temple-kyoto.png";
 
 const Guide = () => {
   const guides = [
@@ -15,11 +18,7 @@ const Guide = () => {
     },
   ];
 
-  const images = [
-    "./location/Osaka-Castle-osaka.png",
-    "./location/senso-ji-temple-tokyo.png",
-    "./location/kinkakuji-temple-kyoto.png",
-  ];
+  const images = [osaka, senso, kinkakuji];
 
   return (
     <section className="flex bg-dark-secondary sec-padding">

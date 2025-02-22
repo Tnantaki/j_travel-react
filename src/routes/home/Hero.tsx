@@ -2,7 +2,7 @@ import LinkButton from "../../components/LinkButton";
 
 const Hero = () => {
   return (
-    <section className="hero sec-padding bg-[url('/background/fuji.png')] bg-cover bg-center">
+    <section className="hero sec-padding bg-[url('/src/assets/img/background/fuji.png')] bg-cover bg-center">
       <div className="grid lg:grid-cols-2 items-center page-container">
         <div className="flex flex-col mb-20">
           <h1 className="font-langar text-[5rem] sm:text-[7rem] md:text-[9.375rem] style-langar">

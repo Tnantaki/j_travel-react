@@ -5,6 +5,7 @@ import OAuthButton from "../components/OAuthButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import iconGoogle from "@img/icons/google-icon.svg";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -28,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <section className="hero sec-padding bg-[url('/background/Itsukushima_shrine.png')] bg-cover bg-center">
+    <section className="hero sec-padding bg-[url('/src/assets/img/background/Itsukushima_shrine.png')] bg-cover bg-center">
       <div className="page-container flex flex-col justify-center items-center lg:items-start">
         <div className="flex flex-col max-w-[420px]  bg-black/30 backdrop-blur-xl rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
           <form
@@ -59,7 +60,7 @@ const Login = () => {
           </form>
           <OAuthButton>
             <img
-              src="./icons/google-icon.svg"
+              src={iconGoogle}
               alt="google icon"
               className="size-5 sm:size-7"
             />

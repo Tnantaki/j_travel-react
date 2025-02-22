@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import Button from "../../components/Button";
 import ListItem from "../../components/ListItem";
 import LinkButton from "../../components/LinkButton";
+import jpanMapUrl from '@img/Jpan_map.png'
 
 const Map = () => {
   const exps = [
@@ -22,7 +23,7 @@ const Map = () => {
       <div className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
         <img
           className="sm:size-[400px] lg:size-[520px] border-1 border-[#888888] rounded-xl"
-          src={"./Jpan_map.png"}
+          src={jpanMapUrl}
         />
         <div className="flex flex-col gap-10">
           <h2>Discover Japan's Most Enchanting Tour Packages</h2>
