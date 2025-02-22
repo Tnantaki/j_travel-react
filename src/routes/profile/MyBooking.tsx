@@ -27,19 +27,19 @@ const MyBooking = () => {
               <div className="flex flex-row gap-3">
                 <img className="size-20  rounded-sm" src={book.image} />
                 <div className="flex flex-col justify-between">
-                  <div className="flex">
+                  <div className="flex items-center">
                     <p className="body3 text-light-grey me-1">member:</p>
                     <p className="body2 text-white">{book.member}</p>
                   </div>
-                  <div className="flex">
+                  <div className="flex items-center">
                     <p className="body3 text-light-grey me-1">date:</p>
                     <p className="body2 text-white">{book.date}</p>
                   </div>
                 </div>
               </div>
               <div className="flex flex-col justify-between">
-                <div className="flex">
-                  <p className="body3 text-light-grey self-end me-1">status:</p>
+                <div className="flex items-center">
+                  <p className="body3 text-light-grey me-1">status:</p>
                   <p className="body2 text-white">{book.status}</p>
                 </div>
                 <a href="#" className="body3 text-white self-end">
