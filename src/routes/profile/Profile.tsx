@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import GenderInput from "../../components/GenderInput";
 import InputInfo from "../../components/InputInfo";
 import { FaRegSave } from "react-icons/fa";

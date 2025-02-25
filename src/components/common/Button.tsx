@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
-import { cn } from "../utils/cn";
-import { buttonVariants } from "../variants/button";
+import { cn } from "../../utils/cn";
+import { buttonVariants } from "../../variants/button";
 
 type ButtonVariant = "primary" | "outline";
 type SizeButton = "sm" | "md" | "lg";
@@ -14,12 +14,21 @@ export interface ButtonProps {
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement>, ButtonProps {}
 
-const Button = ({ variant, size, rounded, disabled, className, ...props }: Props) => {
+const Button = ({
+  variant,
+  size,
+  rounded,
+  disabled,
+  className,
+  ...props
+}: Props) => {
   return (
     <button
       {...props}
       disabled={disabled}
-      className={cn(buttonVariants({ variant, size, rounded, disabled, className }))}
+      className={cn(
+        buttonVariants({ variant, size, rounded, disabled, className })
+      )}
     />
   );
 };

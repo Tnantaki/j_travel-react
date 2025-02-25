@@ -5,7 +5,7 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white hover:brightness-125",
+        primary: "bg-primary text-white enabled:hover:brightness-125",
         outline: "text-primary enabled:hover:bg-primary enabled:hover:text-white",
       },
       size: {
@@ -19,9 +19,21 @@ export const buttonVariants = cva(
       },
       disabled: {
         false: null,
-        true: "border-grey text-grey"
+        true: "border-grey"
       },
     },
+    compoundVariants: [
+      {
+        variant: 'primary',
+        disabled: true,
+        class: 'bg-grey'
+      },
+      {
+        variant: 'outline',
+        disabled: true,
+        class: 'text-grey'
+      }
+    ],
     defaultVariants: {
       variant: "primary",
       size: "md",

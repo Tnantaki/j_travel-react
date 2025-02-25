@@ -1,6 +1,6 @@
 import { Link } from "react-router";
-import Button from "../components/Button";
-import Input from "../components/Input";
+import Button from "../components/common/Button";
+import Input from "../components/common/Input";
 import OAuthButton from "../components/OAuthButton";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,7 +37,7 @@ const Login = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <Input
-              type="email"
+              type="text"
               label="Email"
               placeholder="Enter your email"
               {...register("email")}

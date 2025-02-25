@@ -1,8 +1,8 @@
 import { NavLink } from "react-router";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import ListItem from "../../components/ListItem";
 import LinkButton from "../../components/LinkButton";
-import jpanMapUrl from '@img/Jpan_map.png'
+import jpanMapUrl from "@img/Jpan_map.png";
 
 const Map = () => {
   const exps = [

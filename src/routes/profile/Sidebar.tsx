@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 
 export interface ProfileMenu {
   label: string;
@@ -31,7 +31,9 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           </NavLink>
         ))}
       </div>
-      <Button size="sm" rounded="full" className="bg-error border-error">Delete Account</Button>
+      <Button size="sm" rounded="full" className="bg-error border-error">
+        Delete Account
+      </Button>
     </div>
   );
 };

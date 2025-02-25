@@ -16,7 +16,7 @@ import MyBooking from "./routes/profile/MyBooking.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="j_travel-react/">
+    <BrowserRouter basename="j_travel-react">
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
