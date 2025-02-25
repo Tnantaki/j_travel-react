@@ -4,6 +4,7 @@ import Input from "../components/common/Input";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerUser } from "../services/user";
 
 const formSchema = z
   .object({
@@ -29,9 +30,16 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
-
+    try {
+      await registerUser({
+        email: data.email,
+        password: data.password
+      })
+    } catch (error) {
+      console.log(error)
+    }
     // for mock test
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
   };
 
   return (

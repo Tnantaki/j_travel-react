@@ -23,9 +23,14 @@ const Login = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(errors);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
+
+    try {
+    } catch (error) {
+      
+    }
+    console.log(errors);
   };
 
   return (

@@ -30,17 +30,21 @@ const Input = forwardRef<HTMLInputElement, Props>(
             )}
           >
             <input
-              type={toggleEye ? 'text' : type}
+              type={toggleEye ? "text" : type}
               id={name}
               name={name}
               {...props}
               ref={ref}
               className="focus:outline-0 w-full"
             />
-            {type !== "password" ? null : toggleEye ? (
-              <FaEyeSlash className="cursor-pointer ms-2" onClick={() => setToggleEye(!toggleEye)} />
-            ) : (
-              <FaEye className="cursor-pointer ms-2" onClick={() => setToggleEye(!toggleEye)} />
+            {type === "password" && (
+              <div className="cursor-pointer ms-2 text-dark-primary">
+                {toggleEye ? (
+                  <FaEyeSlash onClick={() => setToggleEye(!toggleEye)} />
+                ) : (
+                  <FaEye onClick={() => setToggleEye(!toggleEye)} />
+                )}
+              </div>
             )}
           </div>
           {error && (
