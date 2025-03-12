@@ -9,7 +9,7 @@ const Navbar = () => {
   const menuItems = [
     { label: "Home", to: "/" },
     { label: "Packages", to: "/packages" },
-    { label: "Booking", to: "/booking" },
+    { label: "Booking", to: "/booking/member" },
     { label: "About", to: "/about" },
   ];
 

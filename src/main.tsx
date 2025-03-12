@@ -6,13 +6,15 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Home from "./routes/home/Home.tsx";
 import Login from "./routes/Login.tsx";
 import About from "./routes/About.tsx";
-import Packages from "./routes/packages/Packages.tsx";
+import Packages from "./routes/Packages.tsx";
 import SignUp from "./routes/SignUp.tsx";
 import Booking from "./routes/booking/Booking.tsx";
 import Profile from "./routes/profile/Profile.tsx";
 import ProfileLayout from "./routes/profile/ProfileLayout.tsx";
 import History from "./routes/profile/History.tsx";
 import MyBooking from "./routes/profile/MyBooking.tsx";
+import Member from "./routes/booking/Member.tsx";
+import Package from "./routes/booking/Package.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -21,7 +23,11 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="packages" element={<Packages />} />
-          <Route path="booking" element={<Booking />} />
+          {/* <Route path="booking" element={<Booking />} /> */}
+          <Route path="booking" element={<Booking />}>
+            <Route path="member" element={<Member />} />
+            <Route path="package" element={<Package />} />
+          </Route>
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />

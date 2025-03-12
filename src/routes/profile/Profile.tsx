@@ -1,39 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/common/Button";
 import GenderInput from "../../components/GenderInput";
 import InputInfo from "../../components/InputInfo";
 import { FaRegSave } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-type Gender = "Male" | "Female";
-
-export interface ProfileInputs {
-  firstName: string;
-  lastName: string;
-  region: string;
-  birthday: string;
-  age: number;
-  phone: string;
-  email: string;
-  street: string;
-  subDistrict: string;
-  district: string;
-  province: string;
-  postalCode: number;
-  country: string;
-  gender: Gender;
-}
+import profileService, {
+  Gender,
+  ProfileType,
+} from "../../services/profile-service";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [fullName, setFullName] = useState("");
   const [gender, setGender] = useState<Gender>();
-  const { register, handleSubmit } = useForm<ProfileInputs>();
+  const { register, handleSubmit, reset } = useForm<ProfileType>();
 
-  const onSubmit: SubmitHandler<ProfileInputs> = (data) => {
+  useEffect(() => {
+    const requset = profileService.getProfile();
+    requset.then((res) => {
+      if (res.data) {
+        console.log(res.data);
+
+        reset({
+          email: res.data.email,
+        });
+      } else {
+        setEdit(true);
+      }
+    });
+  }, []);
+
+  const onSubmit: SubmitHandler<ProfileType> = (data) => {
     setFullName(`${data.firstName} ${data.lastName}`);
-
     setGender(data.gender);
 
     console.log(data);
@@ -117,6 +116,12 @@ const Profile = () => {
                 {...register("phone")}
                 disabled={!edit}
               />
+              <InputInfo
+                type="number"
+                label="Identification Number"
+                {...register("age")}
+                disabled={!edit}
+              />
               {!edit ? (
                 <InputInfo type="text" label="Gender" value={gender} disabled />
               ) : (
@@ -133,6 +138,12 @@ const Profile = () => {
               <InputInfo
                 type="email"
                 label="Email"
+                {...register("email")}
+                disabled={!edit}
+              />
+              <InputInfo
+                type="number"
+                label="Passport Number"
                 {...register("email")}
                 disabled={!edit}
               />
