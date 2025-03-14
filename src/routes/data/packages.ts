@@ -7,6 +7,7 @@ const packages = [
     id: "osaka",
     imgPath: osaka,
     title: "Osaka Castle, Osaka",
+    price: 6300,
     description:
       "a symbol of Japan’s feudal past and a must-visit historical site. Originally built in the late 16th century by Toyotomi Hideyoshi.",
   },
@@ -14,6 +15,7 @@ const packages = [
     id: "kinkakuji",
     imgPath: kinkakuji,
     title: "Kinkaku-ji Temple (Golden Pavilion), Kyoto",
+    price: 7000,
     description:
       "one of Kyoto’s most iconic landmarks. This Zen Buddhist temple is covered in gold leaf, reflecting beautifully in the surrounding Kyoko-chi (Mirror Pond).",
   },
@@ -21,6 +23,7 @@ const packages = [
     id: "senso",
     imgPath: senso,
     title: "Senso-ji Temple, Tokyo",
+    price: 7200,
     description:
       "Tokyo’s oldest and most famous Buddhist temple, located in the Asakusa district. The temple is dedicated to Kannon, the Goddess of Mercy.",
   },

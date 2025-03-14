@@ -16,6 +16,7 @@ import MyBooking from "./routes/profile/MyBooking.tsx";
 import Member from "./routes/booking/Member.tsx";
 import Package from "./routes/booking/Package.tsx";
 import DateSelect from "./routes/booking/DateSelect.tsx";
+import Pay from "./routes/booking/Pay.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="member" element={<Member />} />
             <Route path="package" element={<Package />} />
             <Route path="date" element={<DateSelect />} />
+            <Route path="pay" element={<Pay />} />
           </Route>
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
