@@ -1,9 +1,26 @@
+import { useState } from "react";
+import Modal from "../components/Modal";
+import MemberModal from "./booking/MemberModal";
+
 const About = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   return (
+    <>
     <section className="hero ">
       <div>About</div>
-    </section>
-  )
-}
+      <button onClick={() => setIsModalOpen(!isModalOpen)}>Open</button>
 
-export default About
+    </section>
+      <Modal
+        hasCloseBtn={true}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <MemberModal />
+      </Modal>
+    </>
+  );
+};
+
+export default About;
