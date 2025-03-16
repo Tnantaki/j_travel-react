@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const cors = require('cors')
 // Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const express = require('express');
@@ -9,6 +10,8 @@ const app = express();
 mongoose.connect('mongodb://localhost/jTravel')
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Error connecting to MongoDB...', err));
+
+app.use(cors())
 
 app.use(express.json());
 app.use('/api/users', user)

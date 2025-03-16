@@ -6,7 +6,7 @@ interface UserInput {
 }
 
 const registerUser = (user: UserInput) => {
-  return axios.post('test', user)
+  return axios.post('http://localhost:3000/api/users', user)
 }
 
 export {
