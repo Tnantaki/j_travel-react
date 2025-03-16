@@ -3,6 +3,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const express = require('express');
 const user = require('./routers/user');
+const profile = require('./routers/profile');
 const app = express();
 
 mongoose.connect('mongodb://localhost/jTravel')
@@ -11,6 +12,7 @@ mongoose.connect('mongodb://localhost/jTravel')
 
 app.use(express.json());
 app.use('/api/users', user)
+app.use('/api/profiles', profile)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`listening on ${port}...`));
