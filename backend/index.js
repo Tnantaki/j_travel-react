@@ -1,6 +1,6 @@
 const Joi = require('joi');
-const cors = require('cors')
 // Joi.objectId = require('joi-objectid')(Joi);
+const cors = require('cors')
 const mongoose = require('mongoose');
 const express = require('express');
 const user = require('./routers/user');
