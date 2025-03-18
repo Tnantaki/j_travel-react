@@ -8,7 +8,13 @@ interface Props extends DialogHTMLAttributes<HTMLDialogElement> {
   children: ReactNode;
 }
 
-const Modal = ({ children, isOpen, onClose, hasCloseBtn, className }: Props) => {
+const Modal = ({
+  children,
+  isOpen,
+  onClose,
+  hasCloseBtn,
+  className,
+}: Props) => {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -38,18 +44,19 @@ const Modal = ({ children, isOpen, onClose, hasCloseBtn, className }: Props) => 
     <dialog
       ref={modalRef}
       onKeyDown={handleKeydown}
-      className={cn("backdrop:bg-black/40 mx-auto my-auto rounded-2xl border-1 border-grey shadow-gray-500/30 shadow-2xl", className)}
+      className={cn(
+        "backdrop:bg-black/40 mx-auto my-auto rounded-lg border-1 border-gray-600 shadow-gray-500/30 shadow-2xl",
+        className
+      )}
       data-modal
     >
-      <div className="bg-dark-grey p-2 w-full">
-        {children}
-        <div className="flex justify-center">
-          {hasCloseBtn && (
-            <button className="rounded-lg border-2" onClick={handleCloseModal}>
-              Close
-            </button>
-          )}
-        </div>
+      {children}
+      <div className="flex justify-center">
+        {hasCloseBtn && (
+          <button className="rounded-lg border-2" onClick={handleCloseModal}>
+            Close
+          </button>
+        )}
       </div>
     </dialog>
   );
