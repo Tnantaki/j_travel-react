@@ -1,3 +1,4 @@
+const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const cors = require('cors')
@@ -7,6 +8,11 @@ const user = require('./routers/user');
 const auth = require('./routers/auth');
 const profile = require('./routers/profile');
 const app = express();
+
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/jTravel')
     .then(() => console.log('Connected to MongoDB...'))
