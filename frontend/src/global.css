@@ -24,6 +24,7 @@
   --color-dark-grey-shade: #2c2b30;
   --color-dark-grey-tint: #403f44;
   --color-error: #F25F5C;
+  --color-success: #2E7D31;
 }
 
 @layer base {

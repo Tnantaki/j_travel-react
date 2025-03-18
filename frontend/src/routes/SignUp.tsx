@@ -2,9 +2,12 @@ import { Link } from "react-router";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import { z } from "zod";
+import { FaCircleCheck } from "react-icons/fa6";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "../services/user";
+import Modal from "../components/Modal";
+import { useState } from "react";
 
 const formSchema = z
   .object({
@@ -27,6 +30,10 @@ const SignUp = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
+
+  const [successModal, setSuccessModal] = useState<boolean>(false)
+
+  const toggleSuccessModal = () => setSuccessModal(!successModal)
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
@@ -84,6 +91,9 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
+      <Modal isOpen={successModal} hasCloseBtn={false}>
+        <FaCircleCheck />
+      </Modal>
     </section>
   );
 };

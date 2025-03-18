@@ -7,6 +7,7 @@ export const buttonVariants = cva(
       variant: {
         primary: "bg-primary text-white enabled:hover:brightness-125",
         outline: "text-primary enabled:hover:bg-primary enabled:hover:text-white",
+        success: "bg-success border-success text-white enabled:hover:brightness-125",
       },
       size: {
         sm: "rounded-md py-1 px-5 font-medium text-lg",
@@ -32,7 +33,12 @@ export const buttonVariants = cva(
         variant: 'outline',
         disabled: true,
         class: 'text-grey'
-      }
+      },
+      {
+        variant: 'success',
+        disabled: true,
+        class: 'bg-grey'
+      },
     ],
     defaultVariants: {
       variant: "primary",
