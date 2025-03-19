@@ -26,12 +26,7 @@ createRoot(document.getElementById("root")!).render(
           <Route index element={<Home />} />
           <Route path="packages" element={<Packages />} />
           {/* <Route path="booking" element={<Booking />} /> */}
-          <Route path="booking" element={<Booking />}>
-            <Route path="member" element={<Member />} />
-            <Route path="package" element={<Package />} />
-            <Route path="date" element={<DateSelect />} />
-            <Route path="pay" element={<Pay />} />
-          </Route>
+          <Route path="booking" element={<Booking />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
