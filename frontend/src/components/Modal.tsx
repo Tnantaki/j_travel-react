@@ -1,5 +1,7 @@
 import { DialogHTMLAttributes, ReactNode, useEffect, useRef } from "react";
+import { IoClose } from "react-icons/io5";
 import { cn } from "../utils/cn";
+
 
 interface Props extends DialogHTMLAttributes<HTMLDialogElement> {
   isOpen: boolean;
@@ -53,8 +55,8 @@ const Modal = ({
       {children}
       <div className="flex justify-center">
         {hasCloseBtn && (
-          <button className="rounded-lg border-2" onClick={handleCloseModal}>
-            Close
+          <button className="absolute top-0 right-0 m-2 p-1 rounded-full hover:cursor-pointer hover:bg-dark-primary" onClick={handleCloseModal}>
+            <IoClose className="size-8 fill-gray-500" />
           </button>
         )}
       </div>

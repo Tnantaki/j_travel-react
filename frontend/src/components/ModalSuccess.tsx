@@ -9,7 +9,7 @@ interface Props {
 const ModalSuccess = ({ isOpen }: Props) => {
   return (
     <Modal isOpen={isOpen} hasCloseBtn={false}>
-      <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-to-br from-dark-primary to-dark-grey ">
+      <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-to-br from-dark-primary to-dark-grey">
         <h3 className="text-success">SUCCESS</h3>
         <p className="body2 text-light-grey w-[260px]">Your account has been created</p>
         <div className="text-success pt-4 pb-8">

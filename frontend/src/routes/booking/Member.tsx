@@ -1,5 +1,6 @@
 import Button from "../../components/common/Button";
 import { useState } from "react";
+import MemberModal from "./MemberModal";
 
 interface Member {
   name: string;
@@ -24,6 +25,9 @@ const Member = () => {
     setMember([...members, testMe])
   }
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const toggleModal = () => setOpenModal(!openModal);
+
   return (
     <div className="flex flex-col w-full h-full">
       <h4 className="mb-2">Member</h4>
@@ -46,9 +50,10 @@ const Member = () => {
               </div>
             </li>
           ))}
-          <Button rounded="full" size="sm" className="self-center" onClick={handleAddMember}>
+          <Button rounded="full" size="sm" className="self-center" onClick={toggleModal}>
             + Member
           </Button>
+          <MemberModal isOpen={openModal} onClose={() => setOpenModal(!openModal)} />
         </ul>
       </div>
     </div>
