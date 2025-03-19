@@ -74,7 +74,7 @@ const Login = () => {
           <p className="text-base text-center sm:text-lg md:text-xl">
             Are you new?{" "}
             <span>
-              <Link to="/signup" className="font-semi-bold hover:underline">
+              <Link to="/signup" className="font-semibold text-primary hover:underline">
                 Create an Accout
               </Link>
             </span>
