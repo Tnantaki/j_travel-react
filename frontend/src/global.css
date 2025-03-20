@@ -23,8 +23,8 @@
   --color-dark-grey: #343338;
   --color-dark-grey-shade: #2c2b30;
   --color-dark-grey-tint: #403f44;
-  --color-error: #F75656;
-  --color-success: #2E7D31;
+  --color-error: #f75656;
+  --color-success: #2e7d31;
 }
 
 @layer base {
@@ -44,6 +44,12 @@
   }
   h4 {
     @apply font-semibold text-[1.25rem];
+  }
+  h5 {
+    @apply font-semibold text-[1.125rem];
+  }
+  h6 {
+    @apply font-semibold text-[1rem];
   }
 
   .body1 {
@@ -96,6 +102,12 @@
     }
     h4 {
       @apply text-[1.5rem];
+    }
+    h5 {
+      @apply font-semibold text-[1.375rem];
+    }
+    h6 {
+      @apply font-semibold text-[1.25rem];
     }
   }
 

@@ -1,40 +1,22 @@
-import osaka from "@img/location/Osaka-Castle-osaka.png";
-import senso from "@img/location/senso-ji-temple-tokyo.png";
-import kinkakuji from "@img/location/kinkakuji-temple-kyoto.png";
 import fujiyoshida from "@img/tours/classic/Fujiyoshida-Yamanashi.jpg";
+import asakusa from "@img/tours/classic/Asakusa-SensoJiTemple.jpg"
+import kinkakuJi from "@img/tours/classic/Kinkaku-ji.jpg"
+import todiaJi from "@img/tours/classic/Todia-jiTemple.jpg"
+
 import hakone from "@img/tours/adventure/Hakone.jpg";
+import lakeAshi from "@img/tours/adventure/LakeAshi.jpg";
+import shijuku from "@img/tours/adventure/Shijuku.jpg";
+import uenoPark from "@img/tours/adventure/UenoPark.jpg";
+
 import osakaCastle from "@img/tours/cultural/OsakaCastle.jpg";
+import dotonburi from "@img/tours/cultural/Dotonbori.jpg";
+import hiroshima from "@img/tours/cultural/Hiroshima-Peace-Memorial.jpg";
+import kiyomizu from "@img/tours/cultural/Kiyomizu-DeraTemple.jpg";
+
 
 const classicImgs = import.meta.glob("@img/tours/classic/*");
 const adventureImgs = import.meta.glob("@img/tours/adventure/*");
 const culturalImgs = import.meta.glob("@img/tours/cultural/*");
-
-// const packages = [
-//   {
-//     id: "osaka",
-//     imgPath: osaka,
-//     title: "Osaka Castle, Osaka",
-//     price: 6300,
-//     description:
-//       "a symbol of Japan’s feudal past and a must-visit historical site. Originally built in the late 16th century by Toyotomi Hideyoshi.",
-//   },
-//   {
-//     id: "kinkakuji",
-//     imgPath: kinkakuji,
-//     title: "Kinkaku-ji Temple (Golden Pavilion), Kyoto",
-//     price: 7000,
-//     description:
-//       "one of Kyoto’s most iconic landmarks. This Zen Buddhist temple is covered in gold leaf, reflecting beautifully in the surrounding Kyoko-chi (Mirror Pond).",
-//   },
-//   {
-//     id: "senso",
-//     imgPath: senso,
-//     title: "Senso-ji Temple, Tokyo",
-//     price: 7200,
-//     description:
-//       "Tokyo’s oldest and most famous Buddhist temple, located in the Asakusa district. The temple is dedicated to Kannon, the Goddess of Mercy.",
-//   },
-// ];
 
 const tours = [
   {
@@ -43,7 +25,11 @@ const tours = [
       "Experience the best of traditional and modern Japan with this balanced tour.",
     name: "Classic Japan (Tokyo & Kyoto)",
     imgCover: fujiyoshida,
-    imgLocations: classicImgs,
+    photos: [
+      {name: "Asakusa-Sensoji Temple", img: asakusa},
+      {name: "Kinkaku-Ji", img: kinkakuJi},
+      {name: "Todia-Ji Temple", img: todiaJi},
+    ],
     price: 6300,
     duration: "5 Days",
     itinerary: [
@@ -102,7 +88,11 @@ const tours = [
     name: "Adventure & Nature (Tokyo, Hakone & Mt. Fuji)",
     description: "A perfect tour for nature lovers and adventure seekers.",
     imgCover: hakone,
-    imgLocations: adventureImgs,
+    photos: [
+      {name: "Lake Ashi", img: lakeAshi},
+      {name: "Shijuku", img: shijuku},
+      {name: "Ueno Park", img: uenoPark},
+    ],
     price: 7000,
     duration: "5 Days",
     itinerary: [
@@ -163,7 +153,11 @@ const tours = [
     description:
       "A tour focused on rich culture and the best Japanese cuisine.",
     imgCover: osakaCastle,
-    imgLocations: culturalImgs,
+    photos: [
+      {name: "Dotonbori", img: dotonburi},
+      {name: "Hiroshima-Peace Memorial", img: hiroshima},
+      {name: "Kiyomizu-Dera Temple", img: kiyomizu},
+    ],
     price: 7200,
     duration: "5 Days",
     itinerary: [
