@@ -1,8 +1,9 @@
 import { useState } from "react";
-import packages from "../data/packages";
+import tours from "../data/tours";
+import Button from "../../components/common/Button";
 
 const Package = () => {
-  const [selected, setSelected] = useState(packages[0].id)
+  const [selected, setSelected] = useState(tours[0].id);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -10,16 +11,44 @@ const Package = () => {
       <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-4 h-full">
         <form>
           <ul className="flex flex-col p-2 gap-2">
-            {packages.map((item, idx) => (
+            {tours.map((tour, idx) => (
               <li key={idx}>
-                <input type="radio" id={item.id} name="package" value={item.id} className="hidden peer" checked={selected === item.id} onChange={(e) => setSelected(e.target.value)} />
-                <label htmlFor={item.id} className="bg-dark-grey-shade border-grey border-1 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:text-primary peer-checked:border-primary">
-                  <img className="size-20  rounded-sm" src={item.imgPath} />
+                <input
+                  type="radio"
+                  id={tour.id}
+                  name="package"
+                  value={tour.id}
+                  className="hidden peer"
+                  checked={selected === tour.id}
+                  onChange={(e) => setSelected(e.target.value)}
+                />
+                <label
+                  htmlFor={tour.id}
+                  className="bg-dark-grey-shade border-grey border-1 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:border-primary"
+                >
+                  <img className="size-20  rounded-sm" src={tour.imgCover} />
                   <div className="flex flex-col px-6 w-full gap-1">
                     <p className="body1 font-medium border-b-1 border-primary/20 w-full">
-                      {item.title}
+                      {tour.name}
                     </p>
-                    <p>{item.description}</p>
+                    <p>{tour.description}</p>
+                    <div className="flex flex-row justify-between items-end mt-4">
+                      <div className="flex flex-row items-center">
+                        <p>Price :&nbsp;</p>
+                        <p className="text-lg font-semibold">
+                          {tour.price} Bath
+                        </p>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        rounded="full"
+                        variant="outline"
+                        className="self-end text-base text-nowrap"
+                      >
+                        More Detail
+                      </Button>
+                    </div>
                   </div>
                 </label>
               </li>

@@ -1,4 +1,4 @@
-import packages from "../data/packages";
+import packages from "../data/tours";
 import datePackages from "../data/datePackages";
 import { format } from "date-fns";
 
@@ -57,11 +57,15 @@ const Pay = () => {
         </table>
         <div className="flex flex-row items-center">
           <p className="body2 text-light-grey me-4">Total Member:</p>
-          <p className="body1 font-medium text-white">{mockMembers.length} People</p>
+          <p className="body1 font-medium text-white">
+            {mockMembers.length} People
+          </p>
         </div>
         <div className="flex flex-row items-center">
           <p className="body2 text-light-grey me-4">Total Price:</p>
-          <p className="body1 font-medium text-white">{mockMembers.length * tour.price} Bath</p>
+          <p className="body1 font-medium text-white">
+            {mockMembers.length * tour.price} Bath
+          </p>
         </div>
       </div>
     </div>
