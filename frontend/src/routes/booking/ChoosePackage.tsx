@@ -13,7 +13,7 @@ const ChoosePackage = () => {
     <div className="flex flex-col w-full h-full">
       <h4 className="mb-2">Choose Package</h4>
       <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-4 h-full">
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <ul className="flex flex-col p-2 gap-2">
             {tours.map((tour, idx) => (
               <li key={idx}>

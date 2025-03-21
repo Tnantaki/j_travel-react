@@ -16,22 +16,22 @@ import MyBooking from "./routes/profile/MyBooking.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="j_travel-react">
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="packages" element={<Packages />} />
-          <Route path="booking" element={<Booking />} />
-          <Route path="about" element={<About />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="account" element={<ProfileLayout />}>
-            <Route path="profile" element={<Profile />} />
-            <Route path="history" element={<History />} />
-            <Route path="book" element={<MyBooking />} />
+      <BrowserRouter basename="j_travel-react">
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="packages" element={<Packages />} />
+            <Route path="booking" element={<Booking />} />
+            <Route path="about" element={<About />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="account" element={<ProfileLayout />}>
+              <Route path="profile" element={<Profile />} />
+              <Route path="history" element={<History />} />
+              <Route path="book" element={<MyBooking />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
   </StrictMode>
 );
