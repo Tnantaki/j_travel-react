@@ -5,7 +5,7 @@ import { MdPaid } from "react-icons/md";
 import { Fragment, useState } from "react";
 import Button from "../../components/common/Button";
 import Member from "./Member";
-import Package from "./Package";
+import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
 import Pay from "./Pay";
 import { cn } from "../../utils/cn";
@@ -40,7 +40,7 @@ const Booking = () => {
                 </p>
                 <div
                   className={cn(
-                    "rounded-full bg-transparent size-11 flex items-center justify-center",
+                    "rounded-full bg-transparent size-11 flex items-center justify-center transition-colors duration-300",
                     idx < stepNum ? "bg-primary" : "bg-dark-primary"
                   )}
                 >
@@ -66,7 +66,7 @@ const Booking = () => {
         </ul>
         <div className="flex flex-col bg-dark-grey w-full p-8 rounded-2xl gap-6 h-full">
           {stepNum === 1 && <Member />}
-          {stepNum === 2 && <Package />}
+          {stepNum === 2 && <ChoosePackage />}
           {stepNum === 3 && <DateSelect />}
           {stepNum === 4 && <Pay />}
           <div className="flex justify-between">

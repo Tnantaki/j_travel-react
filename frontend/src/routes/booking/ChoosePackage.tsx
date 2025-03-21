@@ -1,9 +1,13 @@
 import { useState } from "react";
 import tours from "../data/tours";
 import Button from "../../components/common/Button";
+import { FaRegClock } from "react-icons/fa";
+import { FaBahtSign } from "react-icons/fa6";
+import ModalPackage from "../../components/ModalPackage";
 
-const Package = () => {
+const ChoosePackage = () => {
   const [selected, setSelected] = useState(tours[0].id);
+  const [isOpenPackage, setIsOpenPackage] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -13,6 +17,12 @@ const Package = () => {
           <ul className="flex flex-col p-2 gap-2">
             {tours.map((tour, idx) => (
               <li key={idx}>
+                <ModalPackage
+                  isOpen={isOpenPackage}
+                  onClose={() => setIsOpenPackage(false)}
+                  tour={tour}
+                  hasBookingBtn={false}
+                />
                 <input
                   type="radio"
                   id={tour.id}
@@ -26,18 +36,30 @@ const Package = () => {
                   htmlFor={tour.id}
                   className="bg-dark-grey-shade border-grey border-1 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:border-primary"
                 >
-                  <img className="size-20  rounded-sm" src={tour.imgCover} />
+                  <img className="size-28  rounded-sm" src={tour.imgCover} />
                   <div className="flex flex-col px-6 w-full gap-1">
                     <p className="body1 font-medium border-b-1 border-primary/20 w-full">
                       {tour.name}
                     </p>
-                    <p>{tour.description}</p>
+                    <p className="indent-4">{tour.description}</p>
                     <div className="flex flex-row justify-between items-end mt-4">
-                      <div className="flex flex-row items-center">
-                        <p>Price :&nbsp;</p>
-                        <p className="text-lg font-semibold">
-                          {tour.price} Bath
-                        </p>
+                      <div className="flex flex-col">
+                        <div className="flex flex-row items-center">
+                          <p className="flex items-center">
+                            <FaRegClock />
+                            &nbsp;:&nbsp;
+                          </p>
+                          <p className="body2">{tour.duration}</p>
+                        </div>
+                        <div className="flex flex-row items-center">
+                          <p className="flex items-center">
+                            <FaBahtSign />
+                            &nbsp;:&nbsp;
+                          </p>
+                          <p className="body2 font-semibold">
+                            {tour.price.toLocaleString()}
+                          </p>
+                        </div>
                       </div>
                       <Button
                         type="button"
@@ -45,6 +67,7 @@ const Package = () => {
                         rounded="full"
                         variant="outline"
                         className="self-end text-base text-nowrap"
+                        onClick={() => setIsOpenPackage(true)}
                       >
                         More Detail
                       </Button>
@@ -60,4 +83,4 @@ const Package = () => {
   );
 };
 
-export default Package;
+export default ChoosePackage;

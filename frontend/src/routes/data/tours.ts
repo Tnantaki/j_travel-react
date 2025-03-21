@@ -13,11 +13,6 @@ import dotonburi from "@img/tours/cultural/Dotonbori.jpg";
 import hiroshima from "@img/tours/cultural/Hiroshima-Peace-Memorial.jpg";
 import kiyomizu from "@img/tours/cultural/Kiyomizu-DeraTemple.jpg";
 
-
-const classicImgs = import.meta.glob("@img/tours/classic/*");
-const adventureImgs = import.meta.glob("@img/tours/adventure/*");
-const culturalImgs = import.meta.glob("@img/tours/cultural/*");
-
 const tours = [
   {
     id: "classic",

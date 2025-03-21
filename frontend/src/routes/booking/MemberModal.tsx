@@ -3,25 +3,26 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from "../../components/Modal";
 import Button from "../../components/common/Button";
 import GenderInput from "../../components/GenderInput";
-
-export interface MemberType {
-  name: string;
-  region: string;
-  age: number;
-  gender: "male" | "female";
-  phone: string;
-}
+import bookingService, { MemberType } from "../../services/booking-service";
+import { AxiosError } from "axios";
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
+  fetchMemberData: () => void
 }
 
-const MemberModal = ({ isOpen, onClose }: Props) => {
-  const { register, handleSubmit, reset } = useForm<MemberType>();
+const MemberModal = ({ isOpen, onClose, fetchMemberData }: Props) => {
+  const { register, handleSubmit } = useForm<MemberType>();
 
-  const onSubmit: SubmitHandler<MemberType> = (data) => {
+  const onSubmit: SubmitHandler<MemberType> = async (data) => {
     console.log(data);
+    try {
+      await bookingService.addMember(data);
+      fetchMemberData()
+    } catch (error: any | AxiosError) {
+      console.log(error);
+    }
   };
 
   return (

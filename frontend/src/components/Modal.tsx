@@ -2,7 +2,6 @@ import { DialogHTMLAttributes, ReactNode, useEffect, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import { cn } from "../utils/cn";
 
-
 interface Props extends DialogHTMLAttributes<HTMLDialogElement> {
   isOpen: boolean;
   hasCloseBtn: boolean;

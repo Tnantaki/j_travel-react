@@ -19,10 +19,10 @@ const Pay = () => {
       <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-2 h-full">
         <h4 className="mb-2">Package</h4>
         <div className="flex gap-4">
-          <img src={tour.imgPath} className="size-32 rounded-md" />
+          <img src={tour.imgCover} className="size-32 rounded-md" />
           <div className="grid grid-cols-2 justify-between">
             <p className="body2 text-light-grey me-1">Package:</p>
-            <p className="body1 font-medium text-white">{tour.title}</p>
+            <p className="body1 font-medium text-white">{tour.name}</p>
             <p className="body2 text-light-grey me-1">Departure date:</p>
             <p className="body1 text-white">
               {format(tourDate.start, "dd MMM yyyy")}

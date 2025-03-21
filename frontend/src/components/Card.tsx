@@ -64,7 +64,12 @@ const Card = ({ tour }: Props) => {
           </div>
         </div>
       </div>
-      <ModalPackage isOpen={openModal} onClose={toggleModal} tour={tour} />
+      <ModalPackage
+        isOpen={openModal}
+        onClose={toggleModal}
+        tour={tour}
+        hasBookingBtn={true}
+      />
     </div>
   );
 };

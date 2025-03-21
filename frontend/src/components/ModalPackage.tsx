@@ -1,16 +1,25 @@
-import { FaBahtSign, FaCircleCheck, FaRegClock } from "react-icons/fa6";
+import { FaBahtSign, FaRegClock } from "react-icons/fa6";
 import Modal from "./Modal";
 import { TourType } from "../routes/data/tours";
 import Button from "./common/Button";
 import { AiFillSchedule } from "react-icons/ai";
+import { useNavigate } from "react-router";
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
   tour: TourType;
+  hasBookingBtn: boolean;
 }
 
-const ModalPackage = ({ isOpen, onClose, tour }: Props) => {
+const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
+  let navigate = useNavigate();
+
+  const bookPackage = () => {
+    navigate("/booking");
+    return;
+  };
+
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>
       <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-to-br from-dark-primary to-dark-grey w-[1000px]">
@@ -49,9 +58,11 @@ const ModalPackage = ({ isOpen, onClose, tour }: Props) => {
                 </div>
               </div>
               <div className="flex items-end">
-                <Button variant="primary" size="md">
-                  Book
-                </Button>
+                {hasBookingBtn && (
+                  <Button variant="primary" size="md" onClick={bookPackage}>
+                    Booking
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -59,31 +70,42 @@ const ModalPackage = ({ isOpen, onClose, tour }: Props) => {
         <div className="flex flex-row justify-between w-full">
           <div className="flex flex-col justify-items-start text-start">
             <div className="flex items-center text-neutral-white mb-2">
-              <AiFillSchedule className="size-6" />&nbsp;
+              <AiFillSchedule className="size-6" />
+              &nbsp;
               <h6>Schedule</h6>
             </div>
             <ul className="flex flex-col items-start gap-6">
               {tour.itinerary.map((item, idx) => (
                 <li key={idx} className="flex flex-col text-light-grey gap-2">
-                  <p className="text-lg"><span className="font-langar text-xl text-primary">Day {item.day} - </span>{item.title}</p>
+                  <p className="text-lg">
+                    <span className="font-langar text-xl text-primary">
+                      Day {item.day} -{" "}
+                    </span>
+                    {item.title}
+                  </p>
                   <ul className="list-disc ps-4 flex flex-col gap-1">
                     {item.events.map((event, idx) => (
                       <li key={idx}>{event}</li>
                     ))}
                   </ul>
-
                 </li>
               ))}
-
             </ul>
           </div>
-            <ul className="flex flex-col justify-evenly w-[300px]">
-              {tour.photos.map((photo, idx) => (
-                <li key={idx} className="w-[200px] h-[150px] rounded-sm border-1 border-gray-400 overflow-hidden odd:rotate-6 even:-rotate-6 hover:rotate-0">
-                  <img src={photo.img} alt="Travel Location photo" className="object-center object-cover inset-0 w-full h-full" />
-                </li>
-              ))}
-            </ul>
+          <ul className="flex flex-col justify-evenly w-[300px]">
+            {tour.photos.map((photo, idx) => (
+              <li
+                key={idx}
+                className="w-[200px] h-[150px] rounded-sm border-1 border-gray-400 overflow-hidden odd:rotate-6 even:-rotate-6 hover:rotate-0"
+              >
+                <img
+                  src={photo.img}
+                  alt="Travel Location photo"
+                  className="object-center object-cover inset-0 w-full h-full"
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </Modal>
