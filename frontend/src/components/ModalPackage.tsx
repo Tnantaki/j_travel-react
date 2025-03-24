@@ -4,6 +4,7 @@ import { TourType } from "../routes/data/tours";
 import Button from "./common/Button";
 import { AiFillSchedule } from "react-icons/ai";
 import { useNavigate } from "react-router";
+import ModalPhotoList from "./ModalPhotoList";
 
 interface Props {
   isOpen: boolean;
@@ -94,16 +95,7 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
           </div>
           <ul className="flex flex-col justify-evenly w-[300px]">
             {tour.photos.map((photo, idx) => (
-              <li
-                key={idx}
-                className="w-[200px] h-[150px] rounded-sm border-1 border-gray-400 overflow-hidden odd:rotate-6 even:-rotate-6 hover:rotate-0"
-              >
-                <img
-                  src={photo.img}
-                  alt="Travel Location photo"
-                  className="object-center object-cover inset-0 w-full h-full"
-                />
-              </li>
+              <ModalPhotoList key={idx} img={photo.img} name={photo.name} />
             ))}
           </ul>
         </div>

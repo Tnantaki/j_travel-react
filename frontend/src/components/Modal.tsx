@@ -54,7 +54,7 @@ const Modal = ({
       {children}
       <div className="flex justify-center">
         {hasCloseBtn && (
-          <button className="absolute top-0 right-0 m-2 p-1 rounded-full hover:cursor-pointer hover:bg-dark-primary" onClick={handleCloseModal}>
+          <button className="absolute top-0 right-0 m-2 p-1 rounded-full bg-dark-grey-shade hover:cursor-pointer hover:bg-dark-primary" onClick={handleCloseModal}>
             <IoClose className="size-8 fill-gray-500" />
           </button>
         )}
