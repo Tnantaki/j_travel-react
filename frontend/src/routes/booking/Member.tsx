@@ -42,13 +42,13 @@ const Member = () => {
           {members.map((member, idx) => (
             <li
               key={idx}
-              className="bg-dark-grey-shade border-grey border-1 flex flex-col px-6 py-4 rounded-md"
+              className="bg-frame-sec border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
             >
               <div className="grid grid-cols-3 w-full gap-2">
                 {Object.keys(member).map((key) => (
                   <div key={key} className="flex flex-col">
-                    <p className="body3 text-light-grey me-1">{key}</p>
-                    <p className="text-lg font-normal text-white">
+                    <p className="body3 text-char-pri-tint me-1">{key}</p>
+                    <p className="text-lg font-normal text-char-pri">
                       {member[key as keyof MemberType]}
                     </p>
                   </div>

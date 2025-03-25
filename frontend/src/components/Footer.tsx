@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import logo from '@img/logo.svg'
+import logo from "@img/logo.svg";
 import logoFacebook from "@img/icons/Facebook.svg";
 import logoInstagram from "@img/icons/Instagram.svg";
 import logoX from "@img/icons/X.svg";
@@ -48,7 +48,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="flex bg-dark-secondary sec-padding">
+    <footer className="flex bg-frame-sec sec-padding">
       <div className="grid items-center text-sm gap-12 page-container mt-20 mb-0">
         <div className="flex flex-col gap-6 items-center lg:flex-row lg:justify-between">
           <div className="flex flex-col items-center lg:items-start">
@@ -73,11 +73,7 @@ const Footer = () => {
         </div>
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-2">
           <div className="flex justify-center">
-            <img
-              className="stroke-white h-8"
-              src={logo}
-              alt="logo image"
-            />
+            <img className="stroke-white h-8" src={logo} alt="logo image" />
           </div>
           {links.map((link, i) => (
             <div key={i} className="flex flex-col gap-3 items-center">
@@ -115,10 +111,7 @@ const Footer = () => {
           <div className="flex gap-4">
             {socialIcons.map((icon, i) => (
               <NavLink key={i} to={icon.href}>
-                <img
-                  src={icon.image}
-                  alt="social icon"
-                />
+                <img src={icon.image} alt="social icon" />
               </NavLink>
             ))}
           </div>

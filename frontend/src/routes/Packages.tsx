@@ -3,7 +3,7 @@ import tours from "./data/tours";
 
 const Packages = () => {
   return (
-    <section className="bg-dark-primary justify-center hero sec-padding">
+    <section className="bg-linear-light justify-center hero sec-padding">
       <div className="page-container mt-5 flex flex-col items-center gap-12 sm:mt-10">
         <div className="flex flex-col items-center gap-2 lg:gap-10 text-center">
           <h2>Discover Our Top Japan Tour Packages</h2>

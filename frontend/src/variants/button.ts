@@ -6,8 +6,10 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary: "bg-primary text-white enabled:hover:brightness-125",
-        outline: "text-primary enabled:hover:bg-primary enabled:hover:text-white",
-        success: "bg-success border-success text-white enabled:hover:brightness-125",
+        outline:
+          "text-primary enabled:hover:bg-primary enabled:hover:text-white",
+        success:
+          "bg-info-success border-info-success text-white enabled:hover:brightness-125",
       },
       size: {
         sm: "rounded-md py-1 px-5 font-medium text-lg",
@@ -20,31 +22,31 @@ export const buttonVariants = cva(
       },
       disabled: {
         false: null,
-        true: "border-grey"
+        true: "border-grey",
       },
     },
     compoundVariants: [
       {
-        variant: 'primary',
+        variant: "primary",
         disabled: true,
-        class: 'bg-grey'
+        class: "bg-grey",
       },
       {
-        variant: 'outline',
+        variant: "outline",
         disabled: true,
-        class: 'text-grey'
+        class: "text-grey",
       },
       {
-        variant: 'success',
+        variant: "success",
         disabled: true,
-        class: 'bg-grey'
+        class: "bg-grey",
       },
     ],
     defaultVariants: {
       variant: "primary",
       size: "md",
       rounded: "round",
-      disabled: false
+      disabled: false,
     },
   }
 );

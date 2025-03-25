@@ -107,16 +107,16 @@ const Calendar = ({ onDateChange }: Props) => {
           onClick={() => handleDateClick(day)}
           disabled={isDisabled}
           className={`size-12 rounded-full flex items-center justify-center text-md font-medium
-            ${isSelected ? "bg-primary text-white text-bold" : ""}
+            ${isSelected ? "bg-primary text-char-sec text-bold" : ""}
             ${
               isDisabled
-                ? "bg-dark-grey-shade text-dark-grey-tint cursor-not-allowed"
+                ? "bg-frame-qua text-dark-grey-tint cursor-not-allowed"
                 : "hover:bg-light-grey"
             }
-            ${isToday && !isSelected ? "border-1 border-dark-grey-tint" : ""}
+            ${isToday && !isSelected ? "border-1 border-slate-400" : ""}
             ${
               !isSelected && !isDisabled
-                ? "text-neutral-white bg-dark-grey-tint"
+                ? "text-char-pri bg-frame-sec-tint"
                 : ""
             }
           `}
@@ -139,29 +139,29 @@ const Calendar = ({ onDateChange }: Props) => {
   };
 
   return (
-    <div className="w-140 border-1 border-gray-600 rounded-md shadow-lg bg-dark-primary p-4">
+    <div className="w-140 border-1 border-gray-600 rounded-md shadow-lg bg-frame-sec p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-light-grey">
+        <h2 className="text-lg font-semibold text-char-pri">
           {currentMonth.toLocaleDateString("en-US", {
             month: "long",
             year: "numeric",
           })}
         </h2>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 text-char-pri-tint">
           <button
             onClick={handlePrevMonth}
             disabled={!isCurrentMonthHavingSelectableDates()}
             className={`p-2 rounded-full ${
               !isCurrentMonthHavingSelectableDates()
-                ? "text-gray-300 cursor-not-allowed"
-                : "hover:bg-dark-grey"
+                ? "cursor-not-allowed"
+                : "hover:bg-frame-sec-shade"
             }`}
           >
             &lt;
           </button>
           <button
             onClick={handleNextMonth}
-            className="p-2 rounded-full hover:bg-dark-grey"
+            className="p-2 rounded-full hover:bg-frame-sec-shade"
           >
             &gt;
           </button>
@@ -172,7 +172,7 @@ const Calendar = ({ onDateChange }: Props) => {
         {["Sun", "Mon", "Tue", "Wen", "Thu", "Fri", "Sat"].map((day) => (
           <div
             key={day}
-            className="w-10 h-6 flex items-center justify-center text-lg text-light-grey"
+            className="w-10 h-6 flex items-center justify-center text-lg text-char-pri-tint"
           >
             {day}
           </div>
@@ -181,11 +181,11 @@ const Calendar = ({ onDateChange }: Props) => {
 
       <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
 
-      <div className="mt-4 text-md text-gray-600">
+      <div className="mt-4 font-medium text-lg text-char-pri-tint">
         Selected: {selectedDate ? formatDate(selectedDate) : "None"}
       </div>
 
-      <div className="mt-2 text-md text-grey">
+      <div className="mt-2 text-md text-char-pri-tint">
         Note: Dates before{" "}
         {minSelectableDate ? formatDate(minSelectableDate) : "loading..."} are
         not available

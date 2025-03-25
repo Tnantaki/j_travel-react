@@ -10,7 +10,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputInfoVariants = cva(
-  "px-3 py-1.5 text-neutral-white w-full focus:outline-1 focus:outline-dark-secondary",
+  "px-3 py-1.5 text-char-pri w-full focus:outline-1 focus:outline-frame-sec",
   {
     variants: {
       disabled: {
@@ -31,14 +31,13 @@ const InputInfoVariants = cva(
 
 const InputInfo = forwardRef<HTMLInputElement, Props>(
   ({ label, name, disabled, sizeInput, className, ...props }: Props, ref) => {
-
     return (
       <div className="flex flex-col font-inter">
         {label && (
           <label
             htmlFor={name}
             className={`ps-3 text-base font-normal ${
-              disabled ? "text-grey" : "text-light-grey "
+              disabled ? "text-char-pri-tint" : "text-char-ter"
             }`}
           >
             {label}

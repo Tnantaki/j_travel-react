@@ -27,7 +27,7 @@ const Card = ({ tour }: Props) => {
   const toggleModal = () => setOpenModal(!openModal);
 
   return (
-    <div className="grid grid-rows-[auto_1fr] max-w-[400px] rounded-xl overflow-hidden items-center bg-dark-secondary">
+    <div className="grid grid-rows-[auto_1fr] max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-300">
       <div className="w-full overflow-hidden max-h-[250px]">
         <img
           src={tour.imgCover}

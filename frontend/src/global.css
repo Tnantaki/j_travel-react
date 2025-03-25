@@ -14,22 +14,36 @@
   --font-inter: inter;
   --font-langar: langar;
 
-  --color-dark-primary: #252527;
-  --color-dark-secondary: #343338;
-  --color-neutral-white: #f0f0f0;
+  /* Text */
+  --color-char-pri: #112750;
+  --color-char-pri-tint: #23417A;
+  --color-char-sec: #eaeef1;
+  --color-char-ter: #a6a4a4;
+
+  /* Background */
+  --color-frame-pri: #f0f3fa;
+  --color-frame-sec: #b1c9ef;
+  --color-frame-sec-tint: #D5DEEF;
+  --color-frame-sec-shade: #8AAEE0;
+  --color-frame-ter: #314158;
+  --color-frame-qua: #C7C8CC;
+
   --color-primary: #3f97cf;
   --color-grey: #888888;
   --color-light-grey: #bfbfbf;
   --color-dark-grey: #343338;
   --color-dark-grey-shade: #2c2b30;
   --color-dark-grey-tint: #403f44;
-  --color-error: #f75656;
-  --color-success: #2e7d31;
+
+  /* Info */
+  --color-info-error: #f75656;
+  --color-info-success: #2e7d31;
+  --color-info-warning: #fbc02d;
 }
 
 @layer base {
   body {
-    @apply font-inter text-neutral-white bg-dark-primary;
+    @apply font-inter text-char-pri bg-frame-pri;
   }
 
   section.hero {
@@ -119,5 +133,9 @@
   .style-langar {
     -webkit-text-stroke: 1px black;
     @apply drop-shadow-xl;
+  }
+
+  .bg-linear-light {
+    @apply bg-linear-to-b from-[#D5DEEF] to-[#F0F3FA];
   }
 }

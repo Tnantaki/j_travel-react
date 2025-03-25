@@ -9,11 +9,11 @@ const ProfileLayout = () => {
   ];
 
   return (
-    <section className="bg-dark-primary justify-center hero sec-padding">
+    <section className="bg-linear-light justify-center hero sec-padding">
       <div className="page-container flex flex-col items-center my-5 min-h-full">
-        <h3 className="text-white self-start mb-4">My Account</h3>
-        <div className="flex flex-row bg-dark-grey w-full p-8 rounded-2xl gap-6 h-full">
-          <Sidebar menu={profileMenu}  />
+        <h3 className="text-char-pri self-start mb-4">My Account</h3>
+        <div className="flex flex-row bg-frame-sec-tint border-slate-400 border-1 shadow-lg w-full p-8 rounded-2xl gap-6 h-full">
+          <Sidebar menu={profileMenu} />
           <Outlet />
         </div>
       </div>

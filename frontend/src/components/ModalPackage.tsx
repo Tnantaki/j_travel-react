@@ -23,8 +23,8 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
 
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>
-      <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-to-br from-dark-primary to-dark-grey w-[1000px]">
-        <div className="flex flex-row rounded-md overflow-hidden gap-8 bg-dark-primary">
+      <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-light w-[1000px]">
+        <div className="flex flex-row rounded-md overflow-hidden gap-8 bg-frame-sec-tint border-slate-400 border-1">
           <div className="overflow-hidden size-[300px] shrink-0">
             <img
               src={tour.imgCover}
@@ -32,10 +32,10 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
               className="object-center object-cover size-[300px]"
             />
           </div>
-          <div className="flex flex-col text-neutral-white items-start text-start py-4 pe-6 justify-between shrink">
+          <div className="flex flex-col text-char-pri items-start text-start py-4 pe-6 justify-between shrink">
             <div className="grid gap-4">
               <h4>{tour.name}</h4>
-              <p className="body2 text-light-grey indent-4">
+              <p className="body2 text-char-pri-tint indent-4">
                 {tour.description}
               </p>
             </div>
@@ -69,15 +69,15 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
           </div>
         </div>
         <div className="flex flex-row justify-between w-full">
-          <div className="flex flex-col justify-items-start text-start">
-            <div className="flex items-center text-neutral-white mb-2">
+          <div className="flex flex-col justify-items-start text-start bg-frame-sec-tint border-slate-400 border-1 p-4 rounded-md">
+            <div className="flex items-center text-char-pri mb-2">
               <AiFillSchedule className="size-6" />
               &nbsp;
               <h6>Schedule</h6>
             </div>
             <ul className="flex flex-col items-start gap-6">
               {tour.itinerary.map((item, idx) => (
-                <li key={idx} className="flex flex-col text-light-grey gap-2">
+                <li key={idx} className="flex flex-col text-char-pri-tint gap-2">
                   <p className="text-lg">
                     <span className="font-langar text-xl text-primary">
                       Day {item.day} -{" "}

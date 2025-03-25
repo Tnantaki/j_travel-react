@@ -19,7 +19,7 @@ const Map = () => {
   ];
 
   return (
-    <section className="flex bg-dark-primary sec-padding">
+    <section className="flex bg-frame-sec-tint sec-padding">
       <div className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
         <img
           className="sm:size-[400px] lg:size-[520px] border-1 border-[#888888] rounded-xl"

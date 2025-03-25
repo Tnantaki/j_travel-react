@@ -23,17 +23,17 @@ const Booking = () => {
   ];
 
   return (
-    <section className="bg-dark-primary justify-center hero sec-padding">
+    <section className="bg-linear-light justify-center hero sec-padding">
       <div className="page-container flex flex-col items-center my-5 min-h-full">
-        <h3 className="text-white self-start mb-4">Booking</h3>
-        <ul className="flex flex-row items-center bg-dark-grey w-full rounded-2xl justify-evenly mb-6 px-12 pt-9 pb-2">
+        <h3 className="text-char-pri self-start mb-4">Booking</h3>
+        <ul className="flex flex-row items-center bg-frame-sec-tint border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-12 pt-9 pb-2">
           {steps.map((step, idx) => (
             <Fragment key={idx}>
               <li className="flex flex-col items-center gap-2 relative">
                 <p
                   className={cn(
                     "body3 font-semibold absolute -top-7 text-nowrap",
-                    idx < stepNum ? "text-primary" : "text-neutral-white"
+                    idx < stepNum ? "text-primary" : "text-char-pri"
                   )}
                 >
                   {step.label}
@@ -41,17 +41,17 @@ const Booking = () => {
                 <div
                   className={cn(
                     "rounded-full bg-transparent size-11 flex items-center justify-center transition-colors duration-300",
-                    idx < stepNum ? "bg-primary" : "bg-dark-primary"
+                    idx < stepNum ? "bg-primary" : "bg-char-ter"
                   )}
                 >
-                  <step.image className="size-7 fill-neutral-white" />
+                  <step.image className="size-7 fill-char-sec" />
                 </div>
               </li>
 
               {/* Connecting Line */}
               {idx + 1 < steps.length && (
                 <div className="flex-1 h-1 relative items-center">
-                  <div className="absolute inset-0 bg-dark-primary"></div>
+                  <div className="absolute inset-0 bg-char-ter"></div>
                   <div
                     className="absolute inset-0 bg-primary transition-all duration-300"
                     style={{
@@ -64,7 +64,7 @@ const Booking = () => {
             </Fragment>
           ))}
         </ul>
-        <div className="flex flex-col bg-dark-grey w-full p-8 rounded-2xl gap-6 h-full">
+        <div className="flex flex-col bg-frame-sec-tint border-slate-300 border-1 shadow-lg text-char-pri w-full p-8 rounded-2xl gap-6 h-full">
           {stepNum === 1 && <Member />}
           {stepNum === 2 && <ChoosePackage />}
           {stepNum === 3 && <DateSelect />}

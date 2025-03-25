@@ -28,7 +28,9 @@ const ModalPhotoList = ({ img, name }: Props) => {
             alt="Travel Location photo"
             className="object-center object-cover self-center max-w-[1200px] h-auto"
           />
-          <figcaption className="text-neutral-white text-2xl py-1">{name}</figcaption>
+          <figcaption className="text-char-pri text-2xl py-1">
+            {name}
+          </figcaption>
         </figure>
       </Modal>
     </li>

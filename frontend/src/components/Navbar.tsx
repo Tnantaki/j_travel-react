@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import { useState } from "react";
 import Nav from "./Nav";
-import logo from "@img/logo.svg"
+import logo from "@img/logo.svg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +14,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="bg-dark-secondary h-10 sm:h-16 absolute flex w-full sec-padding z-50">
+    <div className="bg-frame-ter h-10 sm:h-16 absolute flex w-full sec-padding z-50">
       <div className="flex justify-between items-center page-container">
         {/* Logo */}
         <NavLink to="/">
@@ -40,7 +40,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Dropdown Container */}
         <div
-          className={`absolute right-0 top-full z-40 overflow-hidden bg-dark-secondary transition-all duration-300 ease-in-out ${
+          className={`absolute right-0 top-full z-40 overflow-hidden bg-frame-sec transition-all duration-300 ease-in-out ${
             isOpen ? "border-gray-500 w-[220px] md:border-s" : "w-0"
           } lg:hidden`}
         >

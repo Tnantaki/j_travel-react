@@ -12,7 +12,7 @@ const ChoosePackage = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h4 className="mb-2">Choose Package</h4>
-      <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-4 h-full">
+      <div className="flex flex-col w-full rounded-lg border-1 border-slate-400  p-6 gap-4 h-full">
         <form onSubmit={(e) => e.preventDefault()}>
           <ul className="flex flex-col p-2 gap-2">
             {tours.map((tour, idx) => (
@@ -34,7 +34,7 @@ const ChoosePackage = () => {
                 />
                 <label
                   htmlFor={tour.id}
-                  className="bg-dark-grey-shade border-grey border-1 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:border-primary"
+                  className="bg-slate-300 border-slate-400 border-2 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:border-primary"
                 >
                   <img className="size-28  rounded-sm" src={tour.imgCover} />
                   <div className="flex flex-col px-6 w-full gap-1">

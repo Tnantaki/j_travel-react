@@ -13,16 +13,16 @@ interface Props {
 
 const Sidebar = ({ menu, closeMenu }: Props) => {
   return (
-    <div className="flex flex-col justify-between rounded-lg border-1 border-lg border-grey w-[200px] px-4 py-6 font-semibold text-lg gap-4">
-      <div className="flex flex-col">
+    <div className="flex flex-col justify-between rounded-lg border-1 border-slate-400 w-[200px] px-4 py-6 font-semibold text-lg gap-4">
+      <div className="flex flex-col gap-2">
         {menu.map((link, idx) => (
           <NavLink
             key={idx}
             to={link.to}
             className={({ isActive }) =>
-              `p-2 text-center rounded-r-lg hover:bg-dark-grey-shade ${
+              `p-2 text-center rounded-r-lg hover:bg-frame-pri ${
                 isActive &&
-                "text-primary font-bold bg-dark-grey-shade border-l-2"
+                "text-primary font-bold bg-frame-qua border-l-2"
               }`
             }
             onClick={closeMenu}
@@ -31,7 +31,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           </NavLink>
         ))}
       </div>
-      <Button size="sm" rounded="full" className="bg-error border-error">
+      <Button size="sm" rounded="full" className="bg-info-error border-info-error">
         Delete Account
       </Button>
     </div>

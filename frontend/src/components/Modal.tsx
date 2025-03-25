@@ -46,7 +46,7 @@ const Modal = ({
       ref={modalRef}
       onKeyDown={handleKeydown}
       className={cn(
-        "backdrop:bg-black/40 mx-auto my-auto rounded-lg border-1 border-gray-600 shadow-gray-500/30 shadow-2xl",
+        "backdrop:bg-black/40 mx-auto my-auto rounded-lg border-1 border-gray-300 shadow-gray-500/30 shadow-2xl",
         className
       )}
       data-modal
@@ -54,7 +54,10 @@ const Modal = ({
       {children}
       <div className="flex justify-center">
         {hasCloseBtn && (
-          <button className="absolute top-0 right-0 m-2 p-1 rounded-full bg-dark-grey-shade hover:cursor-pointer hover:bg-dark-primary" onClick={handleCloseModal}>
+          <button
+            className="absolute top-0 right-0 m-2 p-1 rounded-full bg-frame-ter hover:cursor-pointer hover:bg-frame-sec"
+            onClick={handleCloseModal}
+          >
             <IoClose className="size-8 fill-gray-500" />
           </button>
         )}
