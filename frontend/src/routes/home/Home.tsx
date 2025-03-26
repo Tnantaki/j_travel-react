@@ -2,6 +2,8 @@ import Footer from '../../components/Footer'
 import Guide from './Guide'
 import Hero from './Hero'
 import Map from './Map'
+import SimpleSteps from './SimpleSteps'
+import Testimonial from './Testimonial'
 
 const Home = () => {
   return (
@@ -9,6 +11,8 @@ const Home = () => {
       <Hero />
       <Guide />
       <Map />
+      <Testimonial />
+      <SimpleSteps />
       <Footer />
     </div>
   )

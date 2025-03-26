@@ -13,7 +13,7 @@ interface Props {
 
 const Sidebar = ({ menu, closeMenu }: Props) => {
   return (
-    <div className="flex flex-col justify-between rounded-lg border-1 border-slate-400 w-[200px] px-4 py-6 font-semibold text-lg gap-4">
+    <div className="flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint w-[200px] px-4 py-6 font-semibold text-lg gap-4">
       <div className="flex flex-col gap-2">
         {menu.map((link, idx) => (
           <NavLink
@@ -22,7 +22,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
             className={({ isActive }) =>
               `p-2 text-center rounded-r-lg hover:bg-frame-pri ${
                 isActive &&
-                "text-primary font-bold bg-frame-qua border-l-2"
+                "text-primary font-bold bg-frame-ter border-l-2"
               }`
             }
             onClick={closeMenu}

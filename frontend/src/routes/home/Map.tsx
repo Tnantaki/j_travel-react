@@ -22,7 +22,7 @@ const Map = () => {
     <section className="flex bg-frame-sec-tint sec-padding">
       <div className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
         <img
-          className="sm:size-[400px] lg:size-[520px] border-1 border-[#888888] rounded-xl"
+          className="sm:size-[400px] lg:size-[520px] border-1 border-slate-400 rounded-xl"
           src={jpanMapUrl}
         />
         <div className="flex flex-col gap-10">

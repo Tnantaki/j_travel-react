@@ -106,7 +106,7 @@
       @apply px-[2.5rem];
     }
     .sec-margin {
-      @apply my-30;
+      @apply my-40;
     }
     h2 {
       @apply text-[2.5rem];
@@ -137,5 +137,9 @@
 
   .bg-linear-light {
     @apply bg-linear-to-b from-[#D5DEEF] to-[#F0F3FA];
+  }
+
+  .profile-layout {
+    @apply rounded-lg border-1 border-slate-400 bg-frame-sec-tint;
   }
 }

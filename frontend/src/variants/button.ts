@@ -1,15 +1,15 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "font-inter border-2 border-primary flex justify-center items-center enabled:hover:cursor-pointer",
+  "font-inter border-2 border-primary flex justify-center items-center hover:cursor-pointer",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white enabled:hover:brightness-125",
+        primary: "bg-primary text-white hover:brightness-125",
         outline:
-          "text-primary enabled:hover:bg-primary enabled:hover:text-white",
+          "text-primary hover:bg-primary hover:text-white",
         success:
-          "bg-info-success border-info-success text-white enabled:hover:brightness-125",
+          "bg-info-success border-info-success text-white hover:brightness-125",
       },
       size: {
         sm: "rounded-md py-1 px-5 font-medium text-lg",
@@ -22,7 +22,7 @@ export const buttonVariants = cva(
       },
       disabled: {
         false: null,
-        true: "border-grey",
+        true: "border-grey hover:cursor-not-allowed hover:bg-trasparent hover:text-grey",
       },
     },
     compoundVariants: [

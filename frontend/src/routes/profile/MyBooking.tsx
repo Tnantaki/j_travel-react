@@ -12,7 +12,7 @@ const MyBooking = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full rounded-lg border-1 border-slate-400 p-6 gap-4 h-full">
+    <div className="flex flex-col w-full profile-layout p-6 gap-4 h-full">
       <h4>My Booking</h4>
       <ul className="flex flex-col p-2">
         {books.map((book, idx) => (

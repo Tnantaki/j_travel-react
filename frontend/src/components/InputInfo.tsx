@@ -14,7 +14,7 @@ const InputInfoVariants = cva(
   {
     variants: {
       disabled: {
-        false: "rounded-lg border-1 bg-dark-grey-tint border-dark-grey-shade",
+        false: "rounded-lg border-1 border-frame-ter bg-char-sec",
         true: "",
       },
       sizeInput: {
@@ -37,7 +37,7 @@ const InputInfo = forwardRef<HTMLInputElement, Props>(
           <label
             htmlFor={name}
             className={`ps-3 text-base font-normal ${
-              disabled ? "text-char-pri-tint" : "text-char-ter"
+              disabled ? "text-char-pri" : "text-char-pri-tint"
             }`}
           >
             {label}
@@ -50,7 +50,7 @@ const InputInfo = forwardRef<HTMLInputElement, Props>(
           name={name}
           {...props}
           className={cn(InputInfoVariants({ disabled, sizeInput, className }))}
-          style={{ colorScheme: "dark" }} // for caledar picker icon
+          style={{ colorScheme: "light" }} // for caledar picker icon
         />
       </div>
     );

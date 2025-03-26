@@ -16,9 +16,9 @@ const Carousel = ({ images }: Props) => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto overflow-hidden">
+    <div className="relative w-full h-full max-w-3xl mx-auto overflow-hidden">
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out h-full"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((src, index) => (
@@ -26,7 +26,7 @@ const Carousel = ({ images }: Props) => {
             key={index}
             src={src}
             alt={`Slide ${index}`}
-            className="w-full flex-shrink-0"
+            className="object-center object-cover"
           />
         ))}
       </div>

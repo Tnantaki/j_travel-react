@@ -44,9 +44,9 @@ const Profile = () => {
       className="flex flex-col gap-4 w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-row rounded-lg border-1 border-slate-400 px-8 py-4 justify-between">
+      <div className="flex flex-row profile-layout px-8 py-4 justify-between">
         <div className="flex gap-4">
-          <div className="rounded-full size-24 bg-amber-50">
+          <div className="rounded-full size-24 bg-slate-700">
             {/* <img src="" alt="" /> */}
           </div>
           <div className="grid grid-cols-2 gap-x-2 w-[700px]">
@@ -99,7 +99,7 @@ const Profile = () => {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col rounded-lg border-1 border-slate-400 px-8 py-4 gap-6 h-full">
+      <div className="flex flex-col profile-layout px-8 py-4 gap-6 h-full">
         <div className="flex flex-col gap-2">
           <h4>Personal Information</h4>
           <div className="grid grid-cols-2 gap-8">

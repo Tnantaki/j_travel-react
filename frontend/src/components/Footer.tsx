@@ -48,7 +48,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="flex bg-frame-sec sec-padding">
+    <footer className="flex bg-frame-ter text-char-sec sec-padding">
       <div className="grid items-center text-sm gap-12 page-container mt-20 mb-0">
         <div className="flex flex-col gap-6 items-center lg:flex-row lg:justify-between">
           <div className="flex flex-col items-center lg:items-start">

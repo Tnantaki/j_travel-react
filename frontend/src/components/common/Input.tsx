@@ -25,7 +25,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
         <div className="relative mb-6">
           <div
             className={cn(
-              "bg-white flex items-center text-base h-10 rounded-md w-full font-normal p-4 focus-within:outline-1 focus-within:outline-frame-sec sm:text-lg sm:h-12 sm:rounded-lg lg:text-xl lg:h-14",
+              "bg-white text-char-pri flex items-center text-base h-10 rounded-md w-full font-normal p-4 focus-within:outline-2 focus-within:outline-primary sm:text-lg sm:h-12 sm:rounded-lg lg:text-xl lg:h-14",
               inputClass
             )}
           >

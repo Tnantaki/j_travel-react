@@ -14,7 +14,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="bg-frame-ter h-10 sm:h-16 absolute flex w-full sec-padding z-50">
+    <div className="bg-frame-ter h-10 sm:h-16 absolute flex w-full sec-padding z-50 shadow-lg">
       <div className="flex justify-between items-center page-container">
         {/* Logo */}
         <NavLink to="/">

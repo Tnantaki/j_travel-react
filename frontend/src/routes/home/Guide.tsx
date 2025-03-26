@@ -1,8 +1,8 @@
 import Carousel from "../../components/Carousel";
 import ListItem from "../../components/ListItem";
-import osaka from "@img/location/Osaka-Castle-osaka.png";
-import senso from "@img/location/senso-ji-temple-tokyo.png";
-import kinkakuji from "@img/location/kinkakuji-temple-kyoto.png";
+import fujiyoshida from "@img/tours/classic/Fujiyoshida-Yamanashi.jpg";
+import hakone from "@img/tours/adventure/Hakone.jpg";
+import osakaCastle from "@img/tours/cultural/OsakaCastle.jpg";
 
 const Guide = () => {
   const guides = [
@@ -18,12 +18,12 @@ const Guide = () => {
     },
   ];
 
-  const images = [osaka, senso, kinkakuji];
+  const images = [fujiyoshida, hakone, osakaCastle];
 
   return (
-    <section className="flex bg-frame-sec-shade sec-padding">
+    <section className="flex bg-frame-ter sec-padding text-char-sec">
       <div className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center page-container sec-margin">
-        <div className="sm:size-[400px] lg:size-[520px] border-1 border-[#888888] rounded-xl overflow-hidden lg:order-last">
+        <div className="sm:size-[400px] lg:size-[520px] border-1 border-slate-400 rounded-xl overflow-hidden lg:order-last">
           <Carousel images={images} />
         </div>
         <div className="flex flex-col">
