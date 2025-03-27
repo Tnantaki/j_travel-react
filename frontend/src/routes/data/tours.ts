@@ -25,7 +25,8 @@ const tours = [
       {name: "Kinkaku-Ji", img: kinkakuJi},
       {name: "Todia-Ji Temple", img: todiaJi},
     ],
-    price: 6300,
+    price: 26300,
+    privateGuide: 28000,
     duration: "5 Days",
     itinerary: [
       {
@@ -88,7 +89,8 @@ const tours = [
       {name: "Shijuku", img: shijuku},
       {name: "Ueno Park", img: uenoPark},
     ],
-    price: 7000,
+    price: 28000,
+    privateGuide: 30000,
     duration: "5 Days",
     itinerary: [
       {
@@ -153,7 +155,8 @@ const tours = [
       {name: "Hiroshima-Peace Memorial", img: hiroshima},
       {name: "Kiyomizu-Dera Temple", img: kiyomizu},
     ],
-    price: 7200,
+    price: 29300,
+    privateGuide: 31500,
     duration: "5 Days",
     itinerary: [
       {

@@ -57,6 +57,11 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
                     {tour.price.toLocaleString()}
                   </p>
                 </div>
+                <div className="flex flex-row items-center border-red-400 border-1 rounded-sm px-2 py-1 bg-red-200 text-char-pri-tint">
+                  <p className="body2 font-medium flex items-center">
+                    For private guide +{tour.privateGuide.toLocaleString()} <FaBahtSign className="body2" /> per group.
+                  </p>
+                </div>
               </div>
               <div className="flex items-end">
                 {hasBookingBtn && (

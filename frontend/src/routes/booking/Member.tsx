@@ -42,7 +42,7 @@ const Member = () => {
           {members.map((member, idx) => (
             <li
               key={idx}
-              className="bg-frame-sec border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
+              className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
             >
               <div className="grid grid-cols-3 w-full gap-2">
                 {Object.keys(member).map((key) => (

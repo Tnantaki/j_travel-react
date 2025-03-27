@@ -2,23 +2,21 @@ import { useState, useEffect } from "react";
 
 interface Props {
   onDateChange: (date: Date) => void;
+  duration: number;
 }
 
-const Calendar = ({ onDateChange }: Props) => {
+const Calendar = ({ onDateChange, duration }: Props) => {
+  const operatedDays = 3;
+
+  // Calculate current date + operatedDays days as the minimum selectable date
+  const today = new Date();
+  const minDate = new Date(today);
+  minDate.setDate(today.getDate() + operatedDays);
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [minSelectableDate, setMinSelectableDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
-    // Calculate current date + 5 days as the minimum selectable date
-    const today = new Date();
-    const minDate = new Date(today);
-    minDate.setDate(today.getDate() + 5);
-
-    // Set the minimum selectable date
-    setMinSelectableDate(minDate);
-
-    // Set the default selected date to the minimum selectable date + 1 day
     const defaultSelectedDate = new Date(minDate);
     defaultSelectedDate.setDate(minDate.getDate() + 1);
     setSelectedDate(defaultSelectedDate);
@@ -27,11 +25,26 @@ const Calendar = ({ onDateChange }: Props) => {
     onDateChange(defaultSelectedDate);
 
     // If the current month doesn't show the selectable dates well, jump to that month
-    if (minDate.getMonth() !== today.getMonth() || minDate.getDate() > 25) {
+    if (minDate.getMonth() !== defaultSelectedDate.getMonth()) {
       // If minimum date is near the end of the month
-      setCurrentMonth(new Date(minDate));
+      setCurrentMonth(new Date(defaultSelectedDate));
     }
   }, []);
+
+  const isInDateRange = (selectedDate: Date, renderDate: Date) => {
+    const startDate = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate()
+    );
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + duration);
+
+    return (
+      renderDate.getTime() >= startDate.getTime() &&
+      renderDate.getTime() < endDate.getTime()
+    );
+  };
 
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
@@ -73,10 +86,8 @@ const Calendar = ({ onDateChange }: Props) => {
   };
 
   const isDateDisabled = (date: Date) => {
-    if (!minSelectableDate) return true;
-
     // Disable all dates before or equal to minSelectableDate
-    return date.getTime() <= minSelectableDate.getTime();
+    return date.getTime() <= minDate.getTime();
   };
 
   const formatDate = (date: Date) => {
@@ -90,6 +101,7 @@ const Calendar = ({ onDateChange }: Props) => {
 
   const renderDays = () => {
     const days = getDaysInMonth(currentMonth);
+    isInDateRange(selectedDate, selectedDate);
 
     return days.map((day, index) => {
       if (!day) {
@@ -97,9 +109,10 @@ const Calendar = ({ onDateChange }: Props) => {
       }
 
       const isDisabled = isDateDisabled(day);
-      const isSelected =
-        selectedDate && day.toDateString() === selectedDate.toDateString();
+
+      const isSelected = day.toDateString() === selectedDate.toDateString();
       const isToday = new Date().toDateString() === day.toDateString();
+      const isInScope = isInDateRange(selectedDate, day)
 
       return (
         <button
@@ -107,7 +120,8 @@ const Calendar = ({ onDateChange }: Props) => {
           onClick={() => handleDateClick(day)}
           disabled={isDisabled}
           className={`size-12 rounded-full flex items-center justify-center text-md font-medium
-            ${isSelected ? "bg-primary text-char-sec text-bold" : ""}
+            ${isSelected ? "border-char-pri border-2" : ""}
+            ${isInScope ? "bg-primary text-char-sec text-bold" : ""}
             ${
               isDisabled
                 ? "bg-frame-qua text-dark-grey-tint cursor-not-allowed"
@@ -128,14 +142,14 @@ const Calendar = ({ onDateChange }: Props) => {
   };
 
   const isCurrentMonthHavingSelectableDates = () => {
-    if (!minSelectableDate) return true;
+    if (!minDate) return true;
 
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
     const lastDayOfMonth = new Date(year, month + 1, 0);
 
     // Check if the last day of current month is after minSelectableDate
-    return lastDayOfMonth.getTime() > minSelectableDate.getTime();
+    return lastDayOfMonth.getTime() > minDate.getTime();
   };
 
   return (
@@ -186,8 +200,7 @@ const Calendar = ({ onDateChange }: Props) => {
       </div>
 
       <div className="mt-2 text-md text-char-pri-tint">
-        Note: Dates before{" "}
-        {minSelectableDate ? formatDate(minSelectableDate) : "loading..."} are
+        Note: Dates before {minDate ? formatDate(minDate) : "loading..."} are
         not available
       </div>
     </div>

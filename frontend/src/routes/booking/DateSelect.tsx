@@ -20,7 +20,7 @@ const DateSelect = () => {
       <h4 className="mb-2">Select Date</h4>
       <div className="grid grid-cols-2 w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-4">
         <form onSubmit={(e) => e.preventDefault()}>
-          <Calendar onDateChange={onDateChange} />
+          <Calendar onDateChange={onDateChange} duration={duration} />
         </form>
         <div className="flex flex-col justify-between">
           <div className="grid grid-cols-2 w-fit gap-2">
