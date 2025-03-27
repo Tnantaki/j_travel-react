@@ -1,3 +1,4 @@
+const auth = require('../middlewares/auth');
 const {Profile, validate} = require('../models/profile');
 const express = require('express');
 const router = express.Router();
@@ -7,17 +8,21 @@ router.get('/', async (req, res) => {
     res.send(user);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
+
+
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const profile = new Profile({
         username: req.body.username,
-        password: req.body.password,
         address: req.body.address,
-        contact: req.body.contact,
         phone: req.body.phone,
-        email: req.body.email
+        email: req.body.email,
+        birthday: req.body.birthday,
+        age: req.body.age,
+        Id: req.body.Id,
+        passport: req.body.passport
     });
 
     await profile.save();
