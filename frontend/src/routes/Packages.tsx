@@ -3,7 +3,7 @@ import tours from "./data/tours";
 
 const Packages = () => {
   return (
-    <section className="bg-linear-light justify-center hero sec-padding">
+    <section className="bg-linear-light justify-center hero sec-padding py-20">
       <div className="page-container mt-5 flex flex-col items-center gap-12 sm:mt-10">
         <div className="flex flex-col items-center gap-2 lg:gap-10 text-center">
           <h2>Discover Our Top Japan Tour Packages</h2>
@@ -13,7 +13,7 @@ const Packages = () => {
             landscapes and traditions of this incredible country.
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-12">
+        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
           {tours.map((tour, i) => (
             <Card key={i} tour={tour} />
           ))}
