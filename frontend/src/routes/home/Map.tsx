@@ -21,10 +21,12 @@ const Map = () => {
   return (
     <section className="flex bg-frame-sec-tint sec-padding">
       <div className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
-        <img
-          className="sm:size-[400px] lg:size-[520px] border-1 border-slate-400 rounded-xl"
-          src={jpanMapUrl}
-        />
+        <div className="xs:max-w-[350px] sm:max-w-[400px] lg:max-w-[520px] aspect-square border-1 border-slate-400 rounded-xl">
+          <img
+            className="object-fill object-center h-full w-full"
+            src={jpanMapUrl}
+          />
+        </div>
         <div className="flex flex-col gap-10">
           <h2>Discover Japan's Most Enchanting Tour Packages</h2>
           <p className="text-lg">
@@ -32,7 +34,7 @@ const Map = () => {
             packages. From breathtaking landscapes to vibrant cities, we have
             something for every traveler.
           </p>
-          <div className="grid grid-cols-2 gap-12">
+          <div className="grid sm:grid-cols-2 gap-12">
             {exps.map((exp, i) => (
               <ListItem key={i} {...exp} />
             ))}

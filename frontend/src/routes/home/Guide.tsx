@@ -23,7 +23,7 @@ const Guide = () => {
   return (
     <section className="flex bg-frame-ter sec-padding text-char-sec">
       <div className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center page-container sec-margin">
-        <div className="sm:size-[400px] lg:size-[520px] border-1 border-slate-400 rounded-xl overflow-hidden lg:order-last">
+        <div className="xs:max-w-[350px] sm:max-w-[400px] lg:max-w-[520px] aspect-square border-1 border-slate-400 rounded-xl overflow-hidden lg:order-last">
           <Carousel images={images} />
         </div>
         <div className="flex flex-col">
@@ -37,7 +37,7 @@ const Guide = () => {
               rich culture to life. Experience unique adventures tailored to
               your interests, ensuring unforgettable memories.
             </p>
-            <div className="grid grid-cols-2 gap-12">
+            <div className="grid sm:grid-cols-2 gap-12">
               {guides.map((g, i) => (
                 <ListItem key={i} {...g} />
               ))}

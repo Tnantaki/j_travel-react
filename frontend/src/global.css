@@ -39,6 +39,8 @@
   --color-info-error: #f75656;
   --color-info-success: #2e7d31;
   --color-info-warning: #fbc02d;
+
+  --breakpoint-xs: 30rem;
 }
 
 @layer base {
@@ -77,10 +79,10 @@
   }
 
   .sec-padding {
-    @apply px-2;
+    @apply px-4;
   }
   .sec-margin {
-    @apply my-5;
+    @apply my-10;
   }
   .page-container {
     @apply max-w-[86rem] mx-auto container;
