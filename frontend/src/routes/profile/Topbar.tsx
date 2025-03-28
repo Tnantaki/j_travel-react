@@ -11,18 +11,18 @@ interface Props {
   closeMenu?: () => void;
 }
 
-const Sidebar = ({ menu, closeMenu }: Props) => {
+const Topbar = ({ menu, closeMenu }: Props) => {
   return (
-    <div className="flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint xl:max-w-[200px] p-2 xl:px-4 xl:py-6 font-semibold text-lg gap-4">
-      <div className="flex flex-col gap-2">
+    <div className="flex lg:hidden sec-padding fixed flex-row w-full h-10 justify-between rounded-b-lg border-1 border-slate-400 bg-frame-sec font-semibold text-lg gap-4">
+      <div className="flex flex-row gap-1">
         {menu.map((link, idx) => (
           <NavLink
             key={idx}
             to={link.to}
             className={({ isActive }) =>
-              `p-2 text-center rounded-r-lg hover:bg-frame-pri ${
+              `p-1 text-center rounded-b-lg hover:bg-frame-pri ${
                 isActive &&
-                "text-primary font-bold bg-frame-ter border-l-2"
+                "text-primary font-bold bg-frame-ter border-t-2"
               }`
             }
             onClick={closeMenu}
@@ -38,4 +38,4 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
   );
 };
 
-export default Sidebar;
+export default Topbar;

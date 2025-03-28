@@ -41,15 +41,15 @@ const Profile = () => {
 
   return (
     <form
-      className="flex flex-col gap-4 w-full"
+      className="flex flex-col gap-4 w-full grow-1"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-row profile-layout px-8 py-4 justify-between">
         <div className="flex gap-4">
-          <div className="rounded-full size-24 bg-slate-700">
+          <div className="rounded-full size-24 bg-slate-700 shrink-0">
             {/* <img src="" alt="" /> */}
           </div>
-          <div className="grid grid-cols-2 gap-x-2 w-[700px]">
+          <div className="grid grid-cols-2 gap-x-2 max-w-[700px]">
             {!edit ? (
               <div className="col-span-2">
                 <InputInfo

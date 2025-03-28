@@ -27,16 +27,16 @@ const Card = ({ tour }: Props) => {
   const toggleModal = () => setOpenModal(!openModal);
 
   return (
-    <div className="grid grid-rows-[auto_1fr] max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-300">
-      <div className="w-full overflow-hidden h-[250px]">
+    <div className="grid grid-rows-[auto_1fr] max-w-[320px] sm:max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-300">
+      <div className="w-full overflow-hidden h-[200px] xl:h-[250px]">
         <img
           src={tour.imgCover}
           alt="location image"
           className="object-center object-cover w-full h-full"
         />
       </div>
-      <div className="p-3 grid grid-rows-subgrid row-span-3 gap-2 sm:p-6 sm:gap-4">
-        <h4 className="text-center">{tour.name}</h4>
+      <div className="p-2 grid grid-rows-subgrid row-span-3 gap-2 sm:p-6 sm:gap-4">
+        <h6 className="text-center">{tour.name}</h6>
         <p className="indent-4">{tour.description}</p>
         <div className="flex flex-row justify-between mt-4">
           <div className="flex flex-col">

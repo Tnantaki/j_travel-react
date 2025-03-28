@@ -5,7 +5,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {}
 const GenderInput = forwardRef<HTMLInputElement, Props>(({ ...props }, ref) => {
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-base font-normal text-light-grey ps-3">Gender</p>
+      <p className="text-base font-normal text-char-pri-tint ps-3">Gender</p>
       <div className="flex flex-row gap-5 ps-2">
         <div className="flex gap-3">
           <input type="radio" id="female" value="Female" {...props} ref={ref} />

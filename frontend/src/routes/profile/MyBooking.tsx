@@ -12,13 +12,13 @@ const MyBooking = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full profile-layout p-6 gap-4 h-full">
+    <div className="flex flex-col grow-1 w-full profile-layout p-6 gap-4 h-full">
       <h4>My Booking</h4>
       <ul className="flex flex-col p-2">
         {books.map((book, idx) => (
           <li
             key={idx}
-            className="bg-frame-sec border-1 border-slate-400 flex flex-col px-6 py-4 rounded-md"
+            className="bg-slate-300 border-1 border-slate-400 flex flex-col px-6 py-4 rounded-md"
           >
             <p className="body1 font-medium border-b-1 border-primary/20 py-2">
               {book.package}
