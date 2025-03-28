@@ -77,6 +77,40 @@ const ChoosePackage = () => {
               </li>
             ))}
           </ul>
+          <div className="flex flex-col">
+            <h5>Select Tour Option</h5>
+            <div className="flex p-2 gap-2 body1 font-medium">
+              <div>
+                <input
+                  type="radio"
+                  name="tourType"
+                  id="tourGroup"
+                  value="tourGroup"
+                  className="hidden peer"
+                  defaultChecked
+                />
+                <label
+                  htmlFor="tourGroup"
+                  className="py-2 px-4 bg-frame-pri rounded-md border-frame-pri peer-checked:border-char-pri peer-checked:bg-primary peer-checked:text-char-sec"
+                >
+                  Tour Group
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="tourType"
+                  id="privateGroup"
+                  value="privateGroup"
+                  className="hidden peer"
+                />
+                <label
+                  htmlFor="privateGroup"
+                  className="py-2 px-4 bg-frame-pri rounded-md border-frame-pri peer-checked:border-char-pri peer-checked:bg-primary peer-checked:text-char-sec"
+                >Private Group</label>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>

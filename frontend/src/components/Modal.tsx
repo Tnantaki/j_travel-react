@@ -55,7 +55,7 @@ const Modal = ({
       <div className="flex justify-center">
         {hasCloseBtn && (
           <button
-            className="absolute top-0 right-0 m-2 p-1 rounded-full bg-frame-ter hover:cursor-pointer hover:bg-frame-sec"
+            className="absolute top-0 right-0 m-2 p-1 rounded-full bg-frame-sec hover:cursor-pointer hover:bg-frame-ter"
             onClick={handleCloseModal}
           >
             <IoClose className="size-8 fill-gray-500" />
