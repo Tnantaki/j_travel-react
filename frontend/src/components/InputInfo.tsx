@@ -19,7 +19,7 @@ const InputInfoVariants = cva(
       },
       sizeInput: {
         md: "font-medium text-lg",
-        lg: "font-semibold text-2xl",
+        lg: "font-medium text-xl",
       },
     },
     defaultVariants: {
@@ -37,7 +37,7 @@ const InputInfo = forwardRef<HTMLInputElement, Props>(
           <label
             htmlFor={name}
             className={`ps-3 text-base font-normal ${
-              disabled ? "text-char-pri" : "text-char-pri-tint"
+              disabled ? "text-slate-500" : "text-char-pri-tint"
             }`}
           >
             {label}

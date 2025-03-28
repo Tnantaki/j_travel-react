@@ -44,9 +44,9 @@ const Profile = () => {
       className="flex flex-col gap-4 w-full grow-1"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-row profile-layout px-8 py-4 justify-between">
-        <div className="flex gap-4">
-          <div className="rounded-full size-24 bg-slate-700 shrink-0">
+      <div className="flex flex-row profile-layout justify-between gap-2">
+        <div className="flex gap-2 xl:gap-4">
+          <div className="rounded-full size-18 lg:size-24 bg-slate-700 shrink-0">
             {/* <img src="" alt="" /> */}
           </div>
           <div className="grid grid-cols-2 gap-x-2 max-w-[700px]">
@@ -99,11 +99,11 @@ const Profile = () => {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col profile-layout px-8 py-4 gap-6 h-full">
+      <div className="flex flex-col profile-layout gap-6 h-full">
         <div className="flex flex-col gap-2">
           <h4>Personal Information</h4>
-          <div className="grid grid-cols-2 gap-8">
-            <div className="flex flex-col gap-4">
+          <div className="profile-info-grid">
+            <div className="profile-info-grid-sub">
               <InputInfo
                 type="date"
                 label="Birthday"
@@ -128,7 +128,7 @@ const Profile = () => {
                 <GenderInput {...register("gender")} />
               )}
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="profile-info-grid-sub">
               <InputInfo
                 type="number"
                 label="Age"
@@ -152,8 +152,8 @@ const Profile = () => {
         </div>
         <div className="flex flex-col gap-2">
           <h4>Address</h4>
-          <div className="grid grid-cols-2 gap-8">
-            <div className="flex flex-col gap-4">
+          <div className="profile-info-grid">
+            <div className="profile-info-grid-sub">
               <InputInfo
                 type="text"
                 label="Street, Building, House No."
@@ -174,7 +174,7 @@ const Profile = () => {
                 disabled={!edit}
               />
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="profile-info-grid-sub">
               <InputInfo
                 type="text"
                 label="Sub District"

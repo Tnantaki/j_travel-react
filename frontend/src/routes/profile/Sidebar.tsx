@@ -13,7 +13,7 @@ interface Props {
 
 const Sidebar = ({ menu, closeMenu }: Props) => {
   return (
-    <div className="flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint xl:max-w-[200px] p-2 xl:px-4 xl:py-6 font-semibold text-lg gap-4">
+    <div className="hidden lg:flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint xl:max-w-[200px] p-2 xl:px-4 xl:py-6 font-semibold text-lg gap-4">
       <div className="flex flex-col gap-2">
         {menu.map((link, idx) => (
           <NavLink
