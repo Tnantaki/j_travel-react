@@ -1,4 +1,4 @@
-import packages from "../data/packages";
+import packages from "../data/tours";
 import datePackages from "../data/datePackages";
 import { format } from "date-fns";
 
@@ -16,19 +16,19 @@ const Pay = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h4 className="mb-2">Pay</h4>
-      <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-2 h-full">
+      <div className="flex flex-col w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-2 h-full">
         <h4 className="mb-2">Package</h4>
         <div className="flex gap-4">
-          <img src={tour.imgPath} className="size-32 rounded-md" />
+          <img src={tour.imgCover} className="size-32 rounded-md" />
           <div className="grid grid-cols-2 justify-between">
-            <p className="body2 text-light-grey me-1">Package:</p>
-            <p className="body1 font-medium text-white">{tour.title}</p>
-            <p className="body2 text-light-grey me-1">Departure date:</p>
-            <p className="body1 text-white">
+            <p className="body2 text-char-pri-tint me-1">Package:</p>
+            <p className="body1 font-medium text-char-pri">{tour.name}</p>
+            <p className="body2 text-char-pri-tint me-1">Departure date:</p>
+            <p className="body1 text-char-pri">
               {format(tourDate.start, "dd MMM yyyy")}
             </p>
-            <p className="body2 text-light-grey me-1">Reture date:</p>
-            <p className="body1 text-white">
+            <p className="body2 text-char-pri-tint me-1">Reture date:</p>
+            <p className="body1 text-char-pri">
               {format(tourDate.end, "dd MMM yyyy")}
             </p>
           </div>
@@ -56,12 +56,16 @@ const Pay = () => {
           </tbody>
         </table>
         <div className="flex flex-row items-center">
-          <p className="body2 text-light-grey me-4">Total Member:</p>
-          <p className="body1 font-medium text-white">{mockMembers.length} People</p>
+          <p className="body2 text-char-pri-tint me-4">Total Member:</p>
+          <p className="body1 font-medium text-char-pri">
+            {mockMembers.length} People
+          </p>
         </div>
         <div className="flex flex-row items-center">
-          <p className="body2 text-light-grey me-4">Total Price:</p>
-          <p className="body1 font-medium text-white">{mockMembers.length * tour.price} Bath</p>
+          <p className="body2 text-char-pri-tint me-4">Total Price:</p>
+          <p className="body1 font-medium text-char-pri">
+            {mockMembers.length * tour.price} Bath
+          </p>
         </div>
       </div>
     </div>

@@ -1,41 +1,48 @@
 import { useState } from "react";
-import datePackages from "../data/datePackages";
 import { format } from "date-fns";
+import Calendar from "../../components/Calendar";
+import { FaExclamation } from "react-icons/fa";
 
 const DateSelect = () => {
-  const [selected, setSelected] = useState(
-    datePackages[0].start.toDateString()
-  );
+  let duration = 5;
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+
+  const onDateChange = (date: Date) => {
+    setStartDate(date);
+    const currentDate = new Date(date);
+    currentDate.setDate(date.getDate() + duration - 1);
+    setEndDate(currentDate);
+  };
 
   return (
     <div className="flex flex-col w-full h-full">
       <h4 className="mb-2">Select Date</h4>
-      <div className="flex flex-col w-full rounded-lg border-1 border-lg border-grey p-6 gap-4 h-full">
-        <form>
-          <ul className="flex flex-col p-2 gap-2">
-            {datePackages.map((item, idx) => (
-              <li key={idx}>
-                <input
-                  type="radio"
-                  id={item.start.toDateString()}
-                  name="package"
-                  value={item.start.toDateString()}
-                  className="hidden peer"
-                  checked={selected === item.start.toDateString()}
-                  onChange={(e) => setSelected(e.target.value)}
-                />
-                <label
-                  htmlFor={item.start.toDateString()}
-                  className="bg-dark-grey-shade border-grey border-1 flex flex-row px-6 py-4 rounded-md cursor-pointer peer-checked:text-primary peer-checked:border-primary"
-                >
-                  <p className="body1 font-medium w-full">
-                    {`${format(item.start, 'dd MMM yyyy')} - ${format(item.end, 'dd MMM yyyy')}`}
-                  </p>
-                </label>
-              </li>
-            ))}
-          </ul>
+      <div className="grid grid-cols-2 w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-4">
+        <form onSubmit={(e) => e.preventDefault()}>
+          <Calendar onDateChange={onDateChange} duration={duration} />
         </form>
+        <div className="flex flex-col justify-between">
+          <div className="grid grid-cols-2 w-fit gap-2">
+            <p className="body2 text-char-pri-tint me-1">Durations :</p>
+            <p className="body1 text-char-pri">{duration} Days</p>
+            <p className="body2 text-char-pri-tint me-1">Departure date :</p>
+            <p className="body1 text-char-pri">
+              {startDate && format(startDate, "dd MMM yyyy")}
+            </p>
+            <p className="body2 text-char-pri-tint me-1">Reture date :</p>
+            <p className="body1 text-char-pri">
+              {endDate && format(endDate, "dd MMM yyyy")}
+            </p>
+          </div>
+          <div className="rounded-md border-1 border-gray-600 bg-frame-sec-tint p-4 flex text-error body2 gap-2">
+            <FaExclamation className="size-5" />
+            <p>
+              The schedule and appointment details for your travel trip will be
+              communicated to you at a later time.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

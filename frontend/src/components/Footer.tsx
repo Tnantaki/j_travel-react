@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import logo from '@img/logo.svg'
+import logo from "@img/logo.svg";
 import logoFacebook from "@img/icons/Facebook.svg";
 import logoInstagram from "@img/icons/Instagram.svg";
 import logoX from "@img/icons/X.svg";
@@ -48,17 +48,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="flex bg-dark-secondary sec-padding">
+    <footer className="flex bg-frame-red text-char-sec sec-padding">
       <div className="grid items-center text-sm gap-12 page-container mt-20 mb-0">
         <div className="flex flex-col gap-6 items-center lg:flex-row lg:justify-between">
-          <div className="flex flex-col items-center lg:items-start">
+          <div className="flex flex-col items-center text-center sm:text-start lg:items-start">
             <p className="text-lg font-semibold">Subscribe to updates</p>
             <p className="text-base">
               Stay informed about our latest travel packages and offers.
             </p>
           </div>
           <div className="flex flex-col text-base gap-2 items-center lg:items-end">
-            <form className="flex gap-4">
+            <form className="flex flex-col xs:flex-row gap-4">
               <input
                 className="border-white border-1 h-12 px-4 focus:border-primary focus:outline-1 focus:outline-primary"
                 type="email"
@@ -68,16 +68,12 @@ const Footer = () => {
                 Join
               </button>
             </form>
-            <p>By subscribing, you accept our Privacy Policy and updates.</p>
+            <p className="text-center sm:text-start">By subscribing, you accept our Privacy Policy and updates.</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-2">
+        <div className="grid xs:grid-cols-2 gap-10 md:grid-cols-4 lg:gap-2">
           <div className="flex justify-center">
-            <img
-              className="stroke-white h-8"
-              src={logo}
-              alt="logo image"
-            />
+            <img className="stroke-white h-8" src={logo} alt="logo image" />
           </div>
           {links.map((link, i) => (
             <div key={i} className="flex flex-col gap-3 items-center">
@@ -96,7 +92,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4 md:flex-row justify-between border-t-1 border-white py-6">
-          <div className="flex gap-4">
+          <div className="flex flex-col items-center sm:flex-row gap-4">
             {credits.map((c, i) =>
               i === 0 ? (
                 <p key={i}>{c.title}</p>
@@ -112,13 +108,10 @@ const Footer = () => {
               )
             )}
           </div>
-          <div className="flex gap-4">
+          <div className="flex justify-evenly gap-4 sm:justify-start">
             {socialIcons.map((icon, i) => (
               <NavLink key={i} to={icon.href}>
-                <img
-                  src={icon.image}
-                  alt="social icon"
-                />
+                <img src={icon.image} alt="social icon" />
               </NavLink>
             ))}
           </div>

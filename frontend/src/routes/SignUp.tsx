@@ -5,6 +5,8 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerUser } from "../services/user";
+import { useState } from "react";
+import ModalSuccess from "../components/ModalSuccess";
 
 const formSchema = z
   .object({
@@ -28,6 +30,9 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(formSchema) });
 
+  const [openModalSuccess, setOpenModalSuccess] = useState<boolean>(false);
+  const toggleModalSuccess = () => setOpenModalSuccess(!openModalSuccess);
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     try {
@@ -35,6 +40,7 @@ const SignUp = () => {
         email: data.email,
         password: data.password
       })
+      toggleModalSuccess()
     } catch (error) {
       console.log(error)
     }
@@ -44,8 +50,8 @@ const SignUp = () => {
 
   return (
     <section className="hero sec-padding bg-[url('/src/assets/img/background/fujiyoshida.png')] bg-cover bg-center">
-      <div className="page-container flex items-center justify-center w-full lg:justify-end">
-        <div className="flex flex-col bg-black/30 max-w-[420px] backdrop-blur-xl rounded-xl py-4 px-8 gap-3 drop-shadow-xl sm:py-5 sm:px-12 sm:max-w-none sm:w-[560px] sm:rounded-2xl sm:gap-6 lg:w-[650px] lg:py-8 lg:px-20 lg:gap-12 lg:rounded-3xl">
+      <div className="page-container flex items-center justify-center w-full text-char-sec lg:justify-end">
+        <div className="flex flex-col bg-black/50 max-w-[420px] rounded-xl py-4 px-8 gap-3 drop-shadow-xl sm:py-5 sm:px-12 sm:max-w-none sm:w-[560px] sm:rounded-2xl sm:gap-6 lg:w-[650px] lg:py-8 lg:px-20 lg:gap-12 lg:rounded-3xl">
           <h3 className="text-center">Create Account</h3>
           <form
             className="flex flex-col gap-2 sm:gap-3 lg:gap-6"
@@ -84,6 +90,7 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
+      <ModalSuccess isOpen={openModalSuccess} />
     </section>
   );
 };

@@ -35,8 +35,8 @@ const Login = () => {
 
   return (
     <section className="hero sec-padding bg-[url('/src/assets/img/background/Itsukushima_shrine.png')] bg-cover bg-center">
-      <div className="page-container flex flex-col justify-center items-center lg:items-start">
-        <div className="flex flex-col max-w-[420px]  bg-black/30 backdrop-blur-xl rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
+      <div className="page-container flex flex-col justify-center items-center text-char-sec lg:items-start">
+        <div className="flex flex-col max-w-[420px]  bg-black/50 rounded-xl p-5 gap-6 drop-shadow-xl sm:max-w-none sm:w-[560px] sm:p-12 sm:rounded-2xl lg:w-[650px] lg:p-20 lg:gap-12 lg:rounded-3xl">
           <form
             className="flex flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
@@ -74,7 +74,7 @@ const Login = () => {
           <p className="text-base text-center sm:text-lg md:text-xl">
             Are you new?{" "}
             <span>
-              <Link to="/signup" className="font-semi-bold hover:underline">
+              <Link to="/signup" className="font-semibold text-primary hover:underline">
                 Create an Accout
               </Link>
             </span>

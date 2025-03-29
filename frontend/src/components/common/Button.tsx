@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from "react";
 import { cn } from "../../utils/cn";
 import { buttonVariants } from "../../variants/button";
 
-type ButtonVariant = "primary" | "outline";
+type ButtonVariant = "primary" | "outline" | "success";
 type SizeButton = "sm" | "md" | "lg";
 type RoundedButton = "round" | "full";
 

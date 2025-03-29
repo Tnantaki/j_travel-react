@@ -1,13 +1,21 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { DialogHTMLAttributes, ReactNode, useEffect, useRef } from "react";
+import { IoClose } from "react-icons/io5";
+import { cn } from "../utils/cn";
 
-interface Props {
+interface Props extends DialogHTMLAttributes<HTMLDialogElement> {
   isOpen: boolean;
   hasCloseBtn: boolean;
   onClose?: () => void;
   children: ReactNode;
 }
 
-const Modal = ({ children, isOpen, onClose, hasCloseBtn }: Props) => {
+const Modal = ({
+  children,
+  isOpen,
+  onClose,
+  hasCloseBtn,
+  className,
+}: Props) => {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -37,18 +45,22 @@ const Modal = ({ children, isOpen, onClose, hasCloseBtn }: Props) => {
     <dialog
       ref={modalRef}
       onKeyDown={handleKeydown}
-      className="fixed inset-0 flex items-center justify-center backdrop:bg-black/40"
+      className={cn(
+        "backdrop:bg-black/40 mx-auto my-auto rounded-lg border-1 border-gray-300 shadow-gray-500/30 shadow-2xl",
+        className
+      )}
       data-modal
     >
-      <div className="bg-dark-grey p-2 w-full">
-        {children}
-        <div className="flex justify-center">
-          {hasCloseBtn && (
-            <button className="modal-close-btn" onClick={handleCloseModal}>
-              Close
-            </button>
-          )}
-        </div>
+      {children}
+      <div className="flex justify-center">
+        {hasCloseBtn && (
+          <button
+            className="absolute top-0 right-0 m-2 p-1 rounded-full bg-frame-sec hover:cursor-pointer hover:bg-frame-ter"
+            onClick={handleCloseModal}
+          >
+            <IoClose className="size-8 fill-gray-500" />
+          </button>
+        )}
       </div>
     </dialog>
   );

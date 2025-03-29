@@ -14,7 +14,7 @@ interface Props {
 
 const Nav = ({ menu, className, closeMenu }: Props) => {
   return (
-    <nav className={`${className} font-medium text-lg`}>
+    <nav className={`${className} font-medium text-lg text-char-sec`}>
       {menu.map((link, idx) => (
         <NavLink
           key={idx}
