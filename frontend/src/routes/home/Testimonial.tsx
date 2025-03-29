@@ -6,17 +6,17 @@ const Testimonial = () => {
   const exps = [
     {
       icon: BiSolidPlaneAlt,
-      amount: 120,
+      amount: 125_000,
       unit: "Total Tours Completed",
     },
     {
       icon: FaAddressCard,
-      amount: 8,
+      amount: 60,
       unit: "Experienced Guides",
     },
     {
       icon: AiFillLike,
-      amount: 2,
+      amount: 20,
       unit: "Years of Experience",
     },
   ];

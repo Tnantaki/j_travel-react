@@ -27,6 +27,7 @@
   --color-frame-sec-shade: #8AAEE0;
   --color-frame-ter: #314158;
   --color-frame-qua: #C7C8CC;
+  --color-frame-red: #941012;
 
   --color-primary: #3f97cf;
   --color-grey: #888888;
@@ -146,7 +147,7 @@
   }
   
   .profile-info-grid {
-    @apply grid grid-cols-2 gap-4 xl:gap-8;
+    @apply grid sm:grid-cols-2 gap-4 xl:gap-8;
   }
 
   .profile-info-grid-sub { 
