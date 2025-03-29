@@ -40,7 +40,6 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 		type: String,
 		minlength: 3,
 		maxlength: 7,
-		unique: true,
 		required: true
 	},
 	age: {
