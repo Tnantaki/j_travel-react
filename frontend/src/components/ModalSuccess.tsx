@@ -22,7 +22,7 @@ const ModalSuccess = ({ isOpen }: Props) => {
           variant="success"
           rounded="full"
           className="shadow-info-success/25 shadow-lg"
-          to="/account/profile"
+          to="/login"
         >
           CONTINUE &gt;
         </LinkButton>
