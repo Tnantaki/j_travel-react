@@ -4,47 +4,77 @@ const Joi = require('joi');
 const Profile = mongoose.model('Profile', new mongoose.Schema({
 	username: {
 		type: String,
-		minLength: 3,
-		maxLength: 50,
+		minlength: 3,
+		maxlength: 50,
 		unique: true,
-		require: true
-	},
-	password: {
-		type: Number,
-		// minLength: 8,
-		// maxLength: 50,
-		require: true
+		required: true
 	},
 	address: {
-		type: String,
-		// maxLength: 500,
-		required: false
+		street: { type: String, maxlength: 200, required: true },
+		building: { type: String, maxlength: 200, required: false },
+		houseNo: { type: String, maxlength: 50, required: true },
+		district: { type: String, maxlength: 100, required: true },
+		postalCode: { type: String, maxlength: 20, required: true },
+		subDistrict: { type: String, maxlength: 100, required: true },
+		province: { type: String, maxlength: 100, required: true },
+		country: { type: String, maxlength: 100, required: true, default: "Thailand" }
 	},
 	phone: {
 		type: String,
-		minLength: 5,
-		maxLength: 50,
+		minlength: 5,
+		maxlength: 50,
 		required: true,
 	},
 	email: {
 		type: String,
-		minLength: 3,
-		maxLength: 50,
+		minlength: 3,
+		maxlength: 50,
 		unique: true,
-		require: true
+		required: true
+	},
+	birthday: { 
+		type: Date,
+		required: false
+	},
+	age: {
+		type: Number,
+		min: 0,
+		max: 150,
+		required: false
+	},
+	Id: {
+		type: Number,
+		min: 13,
+		required: false,
+	},
+	passport: {
+		type: Number,
+		min: 0,
+		max: 100,
+		required: false
 	}
 }));
 
-function validateUser(profile) {
+function validateProfile(profile) {
 	const schema = Joi.object({
 		username: Joi.string().min(3).max(50).required(),
-		password: Joi.number().required(),
-		address: Joi.string(),
+		address: Joi.object({
+			street: Joi.string().max(200).required(),
+			building: Joi.string().max(200).allow("").optional(),
+			houseNo: Joi.string().max(50).required(),
+			district: Joi.string().max(100).required(),
+			postalCode: Joi.string().max(20).required(),
+			subDistrict: Joi.string().max(100).required(),
+			province: Joi.string().max(100).required(),
+			country: Joi.string().max(100).required(),
+		}).required(),
 		phone: Joi.string().min(5).max(50).required(),
-		email: Joi.string().min(3).max(50).required(),
+		email: Joi.string().min(3).max(50).email().required(),
+		birthday: Joi.date().iso(),
+		age: Joi.number().min(0).max(150)
 	})
 	return schema.validate(profile);
 }
 
 exports.Profile = Profile;
-exports.validate = validateUser;
+exports.validate = validateProfile;
