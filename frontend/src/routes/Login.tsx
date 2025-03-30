@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import OAuthButton from "../components/OAuthButton";
@@ -6,6 +6,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import iconGoogle from "@img/icons/google-icon.svg";
+import UserService from "../services/user"
+import { AxiosError } from "axios";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -15,20 +17,33 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
+  let navigate = useNavigate();
+  
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = async (userInput) => {
+    console.log(userInput)
 
     try {
+      const {data: jwt} = await UserService.login(userInput)
+      UserService.setJWT(jwt)
+
+      navigate("/account/profile")
     } catch (error) {
-      
+      const err = error as AxiosError
+      if (err.response) {
+        console.log(err.response.data)
+        setError('password', {
+          message: err.response.data as string
+        })
+      }
     }
     console.log(errors);
   };

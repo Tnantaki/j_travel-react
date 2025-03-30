@@ -34,10 +34,4 @@ class profileService {
   }
 }
 
-// const getProfile = () => {
-//   return axios.get<Profile>("https://jsonplaceholder.typicode.com/users/1");
-// };
-
-// export { getProfile };
-
 export default new profileService();

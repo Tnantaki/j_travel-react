@@ -4,7 +4,7 @@ import Input from "../components/common/Input";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerUser } from "../services/user";
+import UserService from "../services/user"
 import { useState } from "react";
 import ModalSuccess from "../components/ModalSuccess";
 
@@ -36,7 +36,7 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     try {
-      await registerUser({
+      await UserService.register({
         email: data.email,
         password: data.password
       })
