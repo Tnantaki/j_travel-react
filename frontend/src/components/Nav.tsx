@@ -1,5 +1,7 @@
-import { Link, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import LinkButton from "./LinkButton";
+import UserService from "../services/user";
+import UserDropdown from "./UserDropdown";
 
 export interface NavMenu {
   label: string;
@@ -13,6 +15,8 @@ interface Props {
 }
 
 const Nav = ({ menu, className, closeMenu }: Props) => {
+  const user = UserService.getCurrentUser();
+
   return (
     <nav className={`${className} font-medium text-lg text-char-sec h-full`}>
       {menu.map((link, idx) => (
@@ -29,12 +33,14 @@ const Nav = ({ menu, className, closeMenu }: Props) => {
           {link.label}
         </NavLink>
       ))}
-      <LinkButton to="/login" size="sm" onClick={closeMenu}>
-        Login
-      </LinkButton>
-      <Link to="/account/profile" onClick={closeMenu} className="size-12 bg-gray-600 rounded-full">
-        {/* <img src="" alt="" /> */}
-      </Link>
+      {!user && (
+        <LinkButton to="/login" size="sm" onClick={closeMenu}>
+          Login
+        </LinkButton>
+      )}
+      {user && (
+        <UserDropdown />
+      )}
     </nav>
   );
 };

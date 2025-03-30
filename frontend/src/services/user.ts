@@ -1,4 +1,5 @@
 // import axios from "axios"
+import { jwtDecode } from "jwt-decode";
 import apiClients from "./api-clients";
 
 const tokenKey = "token";
@@ -20,9 +21,22 @@ class UserService {
   async login(user: UserInput) {
     return apiClients.post("/auth", user);
   }
-  
+
   setJWT(jwt: string) {
     localStorage.setItem(tokenKey, jwt);
+  }
+
+  getCurrentUser() {
+    try {
+      const jwt = localStorage.getItem(tokenKey);
+      if (jwt) {
+        return jwtDecode(jwt);
+      } else {
+        return null;
+      }
+    } catch (ex) {
+      return null;
+    }
   }
 
   logout() {

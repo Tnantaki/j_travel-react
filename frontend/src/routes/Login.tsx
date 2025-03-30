@@ -18,7 +18,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
   let navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,

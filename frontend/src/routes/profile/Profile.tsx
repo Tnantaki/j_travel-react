@@ -12,19 +12,15 @@ import profileService, {
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender>();
-  const { register, handleSubmit, reset } = useForm<ProfileType>();
+  const { register, handleSubmit } = useForm<ProfileType>();
 
   useEffect(() => {
     const requset = profileService.getProfile();
     requset.then((res) => {
       if (res.data) {
         console.log(res.data);
-
-        reset({
-          email: res.data.email,
-        });
       } else {
         setEdit(true);
       }
@@ -32,7 +28,14 @@ const Profile = () => {
   }, []);
 
   const onSubmit: SubmitHandler<ProfileType> = (data) => {
-    setFullName(`${data.firstName} ${data.lastName}`);
+    const currentDate = new Date();
+    const birthDayDate = new Date(data.birthday);
+
+    const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
+    setAge(currentAge.toString())
+
+    const fullName = `${data.firstName} ${data.lastName}`;
+    console.log(fullName)
     setGender(data.gender);
 
     console.log(data);
@@ -112,9 +115,10 @@ const Profile = () => {
             <InputInfo
               type="number"
               label="Age"
-              min={0}
-              {...register("age")}
-              disabled={!edit}
+              value={age}
+              disabled
+              // {...register("age")}
+              // disabled={!edit}
             />
             <InputInfo
               type="tel"
@@ -131,13 +135,13 @@ const Profile = () => {
             <InputInfo
               type="number"
               label="Identification Number"
-              {...register("age")}
+              {...register("idNo")}
               disabled={!edit}
             />
             <InputInfo
               type="number"
               label="Passport Number"
-              {...register("email")}
+              {...register("passportNo")}
               disabled={!edit}
             />
             {!edit ? (
@@ -152,32 +156,44 @@ const Profile = () => {
           <div className="profile-info-grid">
             <InputInfo
               type="text"
-              label="Street, Building, House No."
-              {...register("street")}
+              label="Street"
+              {...register("address.street")}
+              disabled={!edit}
+            />
+            <InputInfo
+              type="text"
+              label="Building"
+              {...register("address.building")}
+              disabled={!edit}
+            />
+            <InputInfo
+              type="text"
+              label="House No."
+              {...register("address.houseNo")}
               disabled={!edit}
             />
             <InputInfo
               type="text"
               label="Sub District"
-              {...register("subDistrict")}
+              {...register("address.subDistrict")}
               disabled={!edit}
             />
             <InputInfo
               type="text"
               label="District"
-              {...register("district")}
+              {...register("address.district")}
               disabled={!edit}
             />
             <InputInfo
               type="text"
               label="Province"
-              {...register("province")}
+              {...register("address.province")}
               disabled={!edit}
             />
             <InputInfo
               type="number"
               label="Postal Code"
-              {...register("postalCode")}
+              {...register("address.postalCode")}
               name="postalCode"
               min={0}
               disabled={!edit}
@@ -185,13 +201,18 @@ const Profile = () => {
             <InputInfo
               type="text"
               label="Country"
-              {...register("country")}
+              {...register("address.country")}
               disabled={!edit}
             />
           </div>
         </div>
         {edit && (
-          <Button type="submit" rounded="full" className="self-center">
+          <Button
+            type="submit"
+            size="sm"
+            rounded="full"
+            className="self-center"
+          >
             <FaRegSave />
             Save
           </Button>

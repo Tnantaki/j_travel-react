@@ -165,10 +165,7 @@
   }
 
   .profile-info-grid {
-    @apply grid sm:grid-cols-2 gap-4 xl:gap-8;
+    @apply grid sm:grid-cols-2 gap-4 xl:gap-y-3 xl:gap-x-8;
   }
 
-  .profile-info-grid-sub {
-    @apply flex flex-col gap-2 xl:gap-4;
-  }
 }

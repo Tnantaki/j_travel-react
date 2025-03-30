@@ -23,7 +23,7 @@ const Topbar = ({ menu }: Props) => {
     <div className="flex lg:hidden sec-padding fixed flex-row w-full h-10 items-center border-b-1 border-slate-400 bg-frame-sec font-semibold text-lg gap-2">
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden text-char-pri hover:text-primary hover:cursor-pointer"
+        className="text-char-pri hover:text-primary hover:cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         <IoReorderTwo className="size-6 sm:size-8" />
@@ -53,7 +53,7 @@ const Topbar = ({ menu }: Props) => {
           ))}
           <Button
             size="sm"
-            rounded="full"
+            rounded="round"
             className="bg-info-error border-info-error mt-2 w-full text-base"
           >
             Delete Account
