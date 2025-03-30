@@ -45,7 +45,7 @@ const Profile = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-row profile-layout justify-between gap-2">
-        <div className="flex flex-col sm:flex-row gap-2 xl:gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 xl:gap-4 w-full">
           <div className="flex justify-between">
             <div className="rounded-full size-18 lg:size-24 bg-slate-700 shrink-0">
               {/* <img src="" alt="" /> */}
@@ -66,41 +66,24 @@ const Profile = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 max-w-[700px]">
-            {!edit ? (
-              <div className="col-span-2">
-                <InputInfo
-                  type="text"
-                  sizeInput="lg"
-                  value={fullName}
-                  disabled
-                />
-              </div>
-            ) : (
-              <>
-                <InputInfo
-                  type="text"
-                  sizeInput="lg"
-                  {...register("firstName")}
-                  placeholder="First name"
-                  disabled={!edit}
-                />
-                <InputInfo
-                  type="text"
-                  {...register("lastName")}
-                  sizeInput="lg"
-                  placeholder="Last name"
-                  disabled={!edit}
-                />
-              </>
-            )}
-            <InputInfo
-              type="text"
-              {...register("region")}
-              placeholder="region"
-              disabled={!edit}
-            />
+            <>
+              <InputInfo
+                type="text"
+                sizeInput="lg"
+                {...register("firstName")}
+                placeholder="First name"
+                disabled={!edit}
+              />
+              <InputInfo
+                type="text"
+                {...register("lastName")}
+                sizeInput="lg"
+                placeholder="Last name"
+                disabled={!edit}
+              />
+            </>
           </div>
-          <div className="hidden sm:block">
+          <div className="hidden sm:flex grow-1 self-start justify-end">
             <Button
               type="button"
               size="sm"
@@ -129,6 +112,7 @@ const Profile = () => {
             <InputInfo
               type="number"
               label="Age"
+              min={0}
               {...register("age")}
               disabled={!edit}
             />
@@ -195,6 +179,7 @@ const Profile = () => {
               label="Postal Code"
               {...register("postalCode")}
               name="postalCode"
+              min={0}
               disabled={!edit}
             />
             <InputInfo

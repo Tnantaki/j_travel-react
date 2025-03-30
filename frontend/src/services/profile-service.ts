@@ -5,7 +5,6 @@ export type Gender = "Male" | "Female";
 export interface ProfileType {
   firstName: string;
   lastName: string;
-  region: string;
   birthday: string;
   age: number;
   phone: string;

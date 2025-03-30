@@ -23,7 +23,7 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
 
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>
-      <div className="flex flex-col items-center pt-5 p-3 sm:p-10 gap-4 text-center bg-linear-light max-w-[1000px]">
+      <div className="flex flex-col items-center pt-5 p-3 sm:p-10 gap-4 text-center bg-linear-light-modal max-w-[1000px]">
         <div className="flex flex-col lg:flex-row rounded-md overflow-hidden bg-frame-sec-tint border-slate-400 border-1">
           <div className="overflow-hidden sm:max-w-[480px] lg:max-w-[320px] shrink-0 self-center lg:self-auto">
             <img

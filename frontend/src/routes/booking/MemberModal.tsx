@@ -27,7 +27,7 @@ const MemberModal = ({ isOpen, onClose, fetchMemberData }: Props) => {
 
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>
-      <div className="flex flex-col items-center px-10 py-6 gap-4 bg-linear-to-br from-frame-pri to-dark-grey">
+      <div className="flex flex-col items-center px-10 py-6 gap-4 bg-linear-light-modal">
         <h3 className="text-char-pri">Add Member</h3>
         <form
           className="w-[800px] p-4 flex flex-col gap-4"

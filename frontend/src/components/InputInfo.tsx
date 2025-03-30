@@ -15,7 +15,7 @@ const InputInfoVariants = cva(
     variants: {
       disabled: {
         false: "rounded-lg border-1 border-frame-ter bg-char-sec",
-        true: "",
+        true: "bg-char-sec border-1 rounded-lg border-char-ter",
       },
       sizeInput: {
         md: "font-medium text-lg",

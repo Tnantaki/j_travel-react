@@ -31,7 +31,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           </NavLink>
         ))}
       </div>
-      <Button size="sm" rounded="full" className="bg-info-error border-info-error">
+      <Button size="sm" rounded="round" className="bg-info-error border-info-error">
         Delete Account
       </Button>
     </div>

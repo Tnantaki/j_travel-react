@@ -23,7 +23,7 @@ const Navbar = () => {
         </NavLink>
         {/* Desktop Menu */}
         <Nav
-          className="hidden md:flex justify-between items-center grow md:ms-10 lg:ms-30"
+          className="hidden md:flex gap-4 justify-between items-center grow md:ms-10 lg:ms-30"
           menu={menuItems}
         />
         {/* Mobile Menu Button */}
