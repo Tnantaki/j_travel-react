@@ -1,5 +1,6 @@
 const {User, validate} = require('../models/user');
 const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
@@ -31,5 +32,13 @@ router.post('/', async (req, res) => {
 
     res.send({email: user.email});
 });
+
+router.delete('/:id', [auth, admin], async (req, res) => {
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) return res.status(404).send('The user with the given ID was not found.');
+    
+    res.send(user);
+})
 
 module.exports = router;
