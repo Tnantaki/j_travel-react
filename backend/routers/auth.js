@@ -1,14 +1,15 @@
 const {User, validate} = require('../models/user');
+const asyncMiddleware = require('../middlewares/async');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', asyncMiddleware(async (req, res) => {
 	const user = await User.find().sort('email');
 	res.send(user);
-});
+}));
 
-router.post('/', async (req, res) => {
+router.post('/', asyncMiddleware(async (req, res) => {
 	const {error} = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
@@ -20,6 +21,6 @@ router.post('/', async (req, res) => {
 
 	const token = user.generateAuthToken();
 	res.send(token);
-});
+}));
 
 module.exports = router;

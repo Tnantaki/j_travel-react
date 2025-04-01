@@ -1,16 +1,15 @@
 const auth = require('../middlewares/auth');
+const asyncMiddleware = require('../middlewares/async');
 const {Profile, validate} = require('../models/profile');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', asyncMiddleware(async (req, res) => {
     const user = await Profile.find().sort('username');
     res.send(user);
-});
+}));
 
-router.post('/', auth, async (req, res) => {
-
-
+router.post('/', auth, asyncMiddleware(async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -28,6 +27,6 @@ router.post('/', auth, async (req, res) => {
 
     await profile.save();
     res.send(profile);
-});
+}));
 
 module.exports = router;
