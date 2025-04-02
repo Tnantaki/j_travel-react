@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from "../../components/Modal";
 import Button from "../../components/common/Button";
 import GenderInput from "../../components/GenderInput";
-import bookingService, { MemberType } from "../../services/booking-service";
+import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 
 interface Props {
@@ -13,9 +13,9 @@ interface Props {
 }
 
 const MemberModal = ({ isOpen, onClose, fetchMemberData }: Props) => {
-  const { register, handleSubmit } = useForm<MemberType>();
+  const { register, handleSubmit } = useForm<MemberInput>();
 
-  const onSubmit: SubmitHandler<MemberType> = async (data) => {
+  const onSubmit: SubmitHandler<MemberInput> = async (data) => {
     console.log(data);
     try {
       await bookingService.addMember(data);
@@ -30,15 +30,17 @@ const MemberModal = ({ isOpen, onClose, fetchMemberData }: Props) => {
       <div className="flex flex-col items-center px-10 py-6 gap-4 bg-linear-light-modal">
         <h3 className="text-char-pri">Add Member</h3>
         <form
-          className="w-[800px] p-4 flex flex-col gap-4"
+          className="w-full lg:w-[800px] p-4 flex flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <InputInfo type="text" label="Name" {...register("name")} />
-          <div className="grid grid-cols-2 gap-6">
-            <InputInfo type="text" label="Region" {...register("region")} />
-            <InputInfo type="number" label="Age" {...register("age")} />
-          </div>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <InputInfo
+              type="text"
+              label="Name"
+              {...register("name")}
+              className="col-span-1 sm:col-span-2"
+            />
+            <InputInfo type="date" label="Birthday" {...register("birthday")} />
             <InputInfo type="text" label="Phone" {...register("phone")} />
             <GenderInput {...register("gender")} />
           </div>

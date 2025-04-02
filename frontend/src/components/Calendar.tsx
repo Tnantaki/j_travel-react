@@ -119,7 +119,7 @@ const Calendar = ({ onDateChange, duration }: Props) => {
           key={day.toString()}
           onClick={() => handleDateClick(day)}
           disabled={isDisabled}
-          className={`size-12 rounded-full flex items-center justify-center text-md font-medium
+          className={`size-8 xs:size-12 rounded-full flex items-center justify-center text-md font-medium
             ${isSelected ? "border-char-pri border-2" : ""}
             ${isInScope ? "bg-primary text-char-sec text-bold" : ""}
             ${
@@ -153,7 +153,7 @@ const Calendar = ({ onDateChange, duration }: Props) => {
   };
 
   return (
-    <div className="w-140 border-1 border-gray-600 rounded-md shadow-lg bg-frame-sec p-4">
+    <div className="w-full xl:w-125 border-1 border-gray-600 rounded-md shadow-lg bg-frame-sec p-1 xs:p-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-char-pri">
           {currentMonth.toLocaleDateString("en-US", {
@@ -182,18 +182,18 @@ const Calendar = ({ onDateChange, duration }: Props) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-3 mb-2">
+      <div className="grid grid-cols-7 gap-1 xl:gap-3 mb-2">
         {["Sun", "Mon", "Tue", "Wen", "Thu", "Fri", "Sat"].map((day) => (
           <div
             key={day}
-            className="w-10 h-6 flex items-center justify-center text-lg text-char-pri-tint"
+            className="w-10 h-6 flex items-center justify-center text-base xs:text-lg text-char-pri-tint"
           >
             {day}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
+      <div className="grid grid-cols-7 gap-1 xl:gap-3">{renderDays()}</div>
 
       <div className="mt-4 font-medium text-lg text-char-pri-tint">
         Selected: {selectedDate ? formatDate(selectedDate) : "None"}

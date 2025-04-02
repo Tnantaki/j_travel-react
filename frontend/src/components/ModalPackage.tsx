@@ -3,7 +3,6 @@ import Modal from "./Modal";
 import { TourType } from "../routes/data/tours";
 import Button from "./common/Button";
 import { AiFillSchedule } from "react-icons/ai";
-import { useNavigate } from "react-router";
 import ModalPhotoList from "./ModalPhotoList";
 
 interface Props {
@@ -11,15 +10,10 @@ interface Props {
   onClose?: () => void;
   tour: TourType;
   hasBookingBtn: boolean;
+  bookPackage?: () => void;
 }
 
-const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn }: Props) => {
-  let navigate = useNavigate();
-
-  const bookPackage = () => {
-    navigate("/booking");
-    return;
-  };
+const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn, bookPackage }: Props) => {
 
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>

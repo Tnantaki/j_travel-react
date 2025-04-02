@@ -32,7 +32,7 @@ const InputInfoVariants = cva(
 const InputInfo = forwardRef<HTMLInputElement, Props>(
   ({ label, name, disabled, sizeInput, className, ...props }: Props, ref) => {
     return (
-      <div className="flex flex-col font-inter">
+      <div className={cn("flex flex-col font-inter", className)}>
         {label && (
           <label
             htmlFor={name}
@@ -49,7 +49,7 @@ const InputInfo = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           name={name}
           {...props}
-          className={cn(InputInfoVariants({ disabled, sizeInput, className }))}
+          className={cn(InputInfoVariants({ disabled, sizeInput }))}
           style={{ colorScheme: "light" }} // for caledar picker icon
         />
       </div>

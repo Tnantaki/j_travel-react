@@ -13,7 +13,7 @@ const Packages = () => {
             landscapes and traditions of this incredible country.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lx:gap-8">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-12">
           {tours.map((tour, i) => (
             <Card key={i} tour={tour} />
           ))}

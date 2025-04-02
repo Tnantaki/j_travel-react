@@ -29,7 +29,7 @@ const Testimonial = () => {
           {exps.map((exp, idx) => (
             <li key={idx} className="flex flex-col gap-2 text-center items-center sm:gap-4">
               <exp.icon className="size-10" />
-              <h2>{exp.amount}</h2>
+              <h2>{exp.amount.toLocaleString()}</h2>
               <h4>{exp.unit}</h4>
             </li>
           ))}

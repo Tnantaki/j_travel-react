@@ -16,8 +16,8 @@ const Booking = () => {
   const prevStep = () => setStepNum(stepNum - 1);
 
   const steps = [
-    { image: HiUserGroup, label: "create group" },
     { image: BiSolidNotepad, label: "choose package" },
+    { image: HiUserGroup, label: "create group" },
     { image: IoCalendar, label: "select date" },
     { image: MdPaid, label: "pay" },
   ];
@@ -26,13 +26,13 @@ const Booking = () => {
     <section className="bg-linear-light justify-center hero sec-padding">
       <div className="page-container flex flex-col items-center my-5 min-h-full">
         <h3 className="text-char-pri self-start mb-4">Booking</h3>
-        <ul className="flex flex-row items-center bg-frame-sec-tint border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-12 pt-9 pb-2">
+        <ul className="flex flex-row items-center bg-frame-sec-tint border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-4 pt-2 sm:px-12 sm:pt-9 pb-2">
           {steps.map((step, idx) => (
             <Fragment key={idx}>
               <li className="flex flex-col items-center gap-2 relative">
                 <p
                   className={cn(
-                    "body3 font-semibold absolute -top-7 text-nowrap",
+                    "body3 font-semibold absolute -top-7 hidden sm:block sm:text-nowrap",
                     idx < stepNum ? "text-primary" : "text-char-pri"
                   )}
                 >
@@ -64,9 +64,9 @@ const Booking = () => {
             </Fragment>
           ))}
         </ul>
-        <div className="flex flex-col bg-frame-sec-tint border-slate-300 border-1 shadow-lg text-char-pri w-full p-8 rounded-2xl gap-6 h-full">
-          {stepNum === 1 && <Member />}
-          {stepNum === 2 && <ChoosePackage />}
+        <div className="flex flex-col rounded-lg bg-frame-sec-tint border-slate-300 border-1 p-1 shadow-lg text-char-pri w-full sm:p-8 ms:rounded-2xl gap-6 h-full">
+          {stepNum === 1 && <ChoosePackage />}
+          {stepNum === 2 && <Member />}
           {stepNum === 3 && <DateSelect />}
           {stepNum === 4 && <Pay />}
           <div className="flex justify-between">

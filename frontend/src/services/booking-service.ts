@@ -1,21 +1,19 @@
 import apiClients from "./api-clients";
 
-export interface MemberType {
+export interface MemberInput {
   name: string;
-  region: string;
-  age: number;
+  birthday: Date;
   gender: "male" | "female";
   phone: string;
 }
 
-
 class bookingService {
-  addMember(member: MemberType) {
+  addMember(member: MemberInput) {
     return apiClients.post("/members", member);
   }
 
   getMembers() {
-    return apiClients.get<MemberType[]>("/members");
+    return apiClients.get<MemberInput[]>("/members");
   }
 
   deleteMember(id: string) {

@@ -4,6 +4,7 @@ import { FaBahtSign } from "react-icons/fa6";
 import Button from "./common/Button";
 import ModalPackage from "./ModalPackage";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 interface Props {
   tour: TourType;
@@ -25,9 +26,15 @@ interface Props {
 const Card = ({ tour }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const toggleModal = () => setOpenModal(!openModal);
+  let navigate = useNavigate();
+
+  const bookPackage = () => {
+    navigate("/booking");
+    return;
+  };
 
   return (
-    <div className="grid grid-rows-[auto_1fr] max-w-[320px] sm:max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-300">
+    <div className="grid grid-rows-[auto_1fr] max-w-[320px] sm:max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-600">
       <div className="w-full overflow-hidden h-[200px] xl:h-[250px]">
         <img
           src={tour.imgCover}
@@ -39,7 +46,7 @@ const Card = ({ tour }: Props) => {
         <h6 className="text-center">{tour.name}</h6>
         <p className="indent-4">{tour.description}</p>
         <div className="flex flex-row justify-between mt-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col self-end">
             <div className="flex flex-row items-center">
               <p className="flex items-center">
                 <FaRegClock />
@@ -57,7 +64,10 @@ const Card = ({ tour }: Props) => {
               </p>
             </div>
           </div>
-          <div className="flex items-end">
+          <div className="flex flex-col gap-1 items-end">
+            <Button size="sm" onClick={bookPackage}>
+              Booking
+            </Button>
             <Button variant="outline" size="sm" onClick={toggleModal}>
               More Detail
             </Button>
@@ -69,6 +79,7 @@ const Card = ({ tour }: Props) => {
         onClose={toggleModal}
         tour={tour}
         hasBookingBtn={true}
+        bookPackage={bookPackage}
       />
     </div>
   );

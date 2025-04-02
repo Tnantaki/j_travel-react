@@ -9,6 +9,7 @@ import profileService, {
   Gender,
   ProfileType,
 } from "../../services/profile-service";
+import { getAge } from "../../utils/age";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
@@ -28,11 +29,12 @@ const Profile = () => {
   }, []);
 
   const onSubmit: SubmitHandler<ProfileType> = (data) => {
-    const currentDate = new Date();
-    const birthDayDate = new Date(data.birthday);
+    // const currentDate = new Date();
+    // const birthDayDate = new Date(data.birthday);
 
-    const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
-    setAge(currentAge.toString())
+    // const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
+    // setAge(currentAge.toString())
+    setAge(getAge(new Date(data.birthday)))
 
     const fullName = `${data.firstName} ${data.lastName}`;
     console.log(fullName)
