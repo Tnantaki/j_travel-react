@@ -17,7 +17,14 @@ const userShema = new mongoose.Schema({
 		maxlength: 255,
 		require: true
 	},
-	isAdmin: Boolean
+	createdAt: {
+		type: Date,
+		default: Date.now
+	},
+	isAdmin: {
+		type: Boolean,
+		default: false
+	}
 });
 
 userShema.methods.generateAuthToken = function() {
