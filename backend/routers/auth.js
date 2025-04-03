@@ -1,5 +1,4 @@
 const {User, validate} = require('../models/user');
-const asyncMiddleware = require('../middlewares/async');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
