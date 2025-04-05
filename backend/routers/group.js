@@ -14,4 +14,8 @@ router.get('/me', auth, async (req, res) => {
     res.send(group);
 });
 
+router.post('/', auth, async (req, res) => {
+    
+})
+
 

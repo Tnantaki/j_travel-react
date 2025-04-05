@@ -1,4 +1,4 @@
-const {User, validate} = require('../models/user');
+const {User, validate, validatePassword} = require('../models/user');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const express = require('express');
@@ -34,18 +34,19 @@ router.post('/', async (req, res) => {
 	res.send({email: user.email});
 });
 
-router.put('/me/change-password', auth, async (req, res) => {
+router.post('/me/change-password', auth, async (req, res) => {
+	const {error} = validatePassword(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
 	const {oldPassword, newPassword} = req.body;
-
-	if (!oldPassword || !newPassword)
-		return res.status(400).send('Both old and new password are required.');
-
 	const user = await User.findById(req.user._id);
+	if (!user) return res.status(404).send('User not found.');
+
 	const validPassword = await bcrypt.compare(oldPassword, user.password);
 	if (!validPassword) return res.status(400).send('Invalid current password.');
 
 	const salt = await bcrypt.genSalt(10);
-	user.password = await bcrypt.hash(user.password, salt);
+	user.password = await bcrypt.hash(user.newPassword, salt);
 	await user.save();
 
 	res.send({message: 'Password updated successfully.'})
