@@ -1,4 +1,4 @@
-const {Package, validate} = require('../models/package');
+const {Package, validate, validateUpdate} = require('../models/package');
 const express = require('express');
 const router = express.Router();
 
@@ -51,6 +51,23 @@ router.put('/:id', [auth, admin], async (req, res) => {
 	res.send(package);
 })
 
+router.put('/', [auth, admin], async (req, res) => {
+	const {ids, updateData} = req.body;
+	if (!Array.isArray(ids) || ids.length === 0)
+		return res.status(404).send('Please provide an array of packages IDs to update.');
+	if (typeof updateData !== 'object' || Objject.keys(updateData).length === 0)
+		return res.status(400).send('Please provide the fields to update.');
+
+	const {error} = validateUpdate(updateData);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	const package = Package.updateMany(
+		{_id: {$in: ids}},
+		{$set: updateData}
+	)
+
+	res.send({modifiedCount: package.modifiedCount});
+})
 
 router.delete('/:id', [auth, admin], async (req, res) => {
 	const package = await Package.findByIdAndDelete(req.params.id);
@@ -60,4 +77,15 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 	res.send(package);
 })
 
+router.delete('/', [auth, admin], async (req, res) => {
+	const {ids} = req.body;
 
+	if (!Array.isArray(ids) || ids.length === 0)
+		return res.status(404).send('Please provide an array of package IDs to delete.');
+
+	const package = await Package.deleteMany({_id: {$in: ids}});
+
+	res.send({deletedCount: package.deletedCount});
+})
+
+module.exports = router;

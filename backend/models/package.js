@@ -42,5 +42,18 @@ function validatePackage(package) {
     return schema.validate(package)
 }
 
+function validateUpdatePackage(package) {
+    const schema = Joi.object({
+        title: Joi.string().min(5).max(150),
+        description: Joi.string().min(5).max(255),
+        price: Joi.number().min(0),
+        duration: Joi.number().min(5),
+        availableDates: Joi.array().items(Joi.date())
+    }).min(1); // ensure at least 1 filed is provided
+    
+    return schema.validate(package)
+}
+
 exports.Package = Package;
 exports.validate = validatePackage;
+exports.validateUpdate = validateUpdatePackage;

@@ -3,6 +3,7 @@ const cors = require('cors')
 const user = require('../routers/user');
 const auth = require('../routers/auth');
 const profile = require('../routers/profile');
+const package = require('../routers/package');
 const error = require('../middlewares/error');
 
 module.exports = function(app) {
@@ -11,5 +12,6 @@ module.exports = function(app) {
     app.use('/api/users', user)
     app.use('/api/auth', auth);
     app.use('/api/profiles', profile)
+    app.use('/api/packages', package)
     app.use(error);
 }

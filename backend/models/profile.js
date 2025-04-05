@@ -34,7 +34,7 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 	},
 	birthday: { 
 		type: Date,
-		required: false
+		required: true 
 	},
 	gender: {
 		type: String,
@@ -42,22 +42,16 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 		maxlength: 7,
 		required: true
 	},
-	age: {
-		type: Number,
-		min: 0,
-		max: 150,
-		required: false
-	},
 	Id: {
 		type: Number,
 		min: 13,
-		required: false,
+		required: true,
 	},
 	passport: {
 		type: Number,
-		min: 0,
+		min: 4,
 		max: 100,
-		required: false
+		required: true
 	}
 }));
 
@@ -78,7 +72,8 @@ function validateProfile(profile) {
 		email: Joi.string().min(3).max(50).email().required(),
 		birthday: Joi.date().iso(),
 		gender: Joi.string().min(3).max(7).required(),
-		age: Joi.number().min(0).max(150)
+		Id: Joi.Number().min(13).require(),
+		passport: Joi.Number().min(4).max(100).require()
 	})
 	return schema.validate(profile);
 }
