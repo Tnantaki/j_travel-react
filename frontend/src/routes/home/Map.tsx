@@ -3,6 +3,7 @@ import Button from "../../components/common/Button";
 import ListItem from "../../components/ListItem";
 import LinkButton from "../../components/LinkButton";
 import jpanMapUrl from "@img/Jpan_map.png";
+import FadeInSection from "../../components/common/FadeInSection";
 
 const Map = () => {
   const exps = [
@@ -20,7 +21,7 @@ const Map = () => {
 
   return (
     <section className="flex bg-frame-sec-tint sec-padding">
-      <div className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
+      <FadeInSection className="page-container grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center sec-margin">
         <div className="xs:max-w-[350px] sm:max-w-[400px] lg:max-w-[520px] aspect-square border-1 border-slate-400 rounded-xl">
           <img
             className="object-fill object-center h-full w-full"
@@ -51,7 +52,7 @@ const Map = () => {
             </LinkButton>
           </div>
         </div>
-      </div>
+      </FadeInSection>
     </section>
   );
 };

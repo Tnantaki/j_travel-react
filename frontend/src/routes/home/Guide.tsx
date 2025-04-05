@@ -3,6 +3,8 @@ import ListItem from "../../components/ListItem";
 import fujiyoshida from "@img/tours/classic/Fujiyoshida-Yamanashi.jpg";
 import hakone from "@img/tours/adventure/Hakone.jpg";
 import osakaCastle from "@img/tours/cultural/OsakaCastle.jpg";
+import { motion } from "motion/react";
+import FadeInSection from "../../components/common/FadeInSection";
 
 const Guide = () => {
   const guides = [
@@ -21,8 +23,8 @@ const Guide = () => {
   const images = [fujiyoshida, hakone, osakaCastle];
 
   return (
-    <section className="flex bg-frame-ter sec-padding text-char-sec">
-      <div className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center page-container sec-margin">
+    <div className="flex bg-frame-ter sec-padding text-char-sec">
+      <FadeInSection className="grid place-items-center gap-8 lg:grid-cols-2 lg:gap-18 items-center page-container sec-margin">
         <div className="xs:max-w-[350px] sm:max-w-[400px] lg:max-w-[520px] aspect-square border-1 border-slate-400 rounded-xl overflow-hidden lg:order-last">
           <Carousel images={images} />
         </div>
@@ -44,8 +46,8 @@ const Guide = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </FadeInSection>
+    </div>
   );
 };
 

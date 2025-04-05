@@ -3,6 +3,7 @@ import { TbMap2 } from "react-icons/tb";
 import { IoCalendarOutline } from "react-icons/io5";
 import { BsCardChecklist } from "react-icons/bs";
 import { cn } from "../../utils/cn";
+import FadeInSection from "../../components/common/FadeInSection";
 
 const SimpleSteps = () => {
   const steps = [
@@ -38,7 +39,7 @@ const SimpleSteps = () => {
 
   return (
     <section className="flex bg-frame-sec-tint sec-padding">
-      <div className="flex flex-col items-center page-container sec-margin">
+      <FadeInSection className="flex flex-col items-center page-container sec-margin">
         <h2 className="mb-16">Book Your Dream Japan Tour in 4 Simple Steps</h2>
         <ul className="flex flex-col justify-between max-w-[700px]">
           {steps.map((step, idx) => (
@@ -66,7 +67,7 @@ const SimpleSteps = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </FadeInSection>
     </section>
   );
 };

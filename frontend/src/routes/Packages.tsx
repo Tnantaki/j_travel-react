@@ -1,10 +1,11 @@
 import Card from "../components/Card";
+import FadeInSection from "../components/common/FadeInSection";
 import tours from "./data/tours";
 
 const Packages = () => {
   return (
     <section className="bg-linear-light justify-center hero sec-padding py-20">
-      <div className="page-container mt-5 flex flex-col items-center gap-12 sm:mt-10">
+      <FadeInSection className="page-container mt-5 flex flex-col items-center gap-12 sm:mt-10">
         <div className="flex flex-col items-center gap-2 lg:gap-10 text-center">
           <h3>Discover Our Top Japan Tour Packages</h3>
           <p className="text-base lg:text-xl">
@@ -18,7 +19,7 @@ const Packages = () => {
             <Card key={i} tour={tour} />
           ))}
         </div>
-      </div>
+      </FadeInSection>
     </section>
   );
 };

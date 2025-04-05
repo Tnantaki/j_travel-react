@@ -49,7 +49,7 @@ const InputInfo = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           name={name}
           {...props}
-          className={cn(InputInfoVariants({ disabled, sizeInput }))}
+          className={cn(InputInfoVariants({ disabled, sizeInput }), "disabled:bg-gray-200")}
           style={{ colorScheme: "light" }} // for caledar picker icon
         />
       </div>

@@ -1,10 +1,11 @@
+import FadeInSection from "../../components/common/FadeInSection";
 import LinkButton from "../../components/LinkButton";
 
 const Hero = () => {
   return (
     <div className="bg-[url('/src/assets/img/background/fuji.png')] bg-cover bg-center relative">
       <div className="absolute bg-linear-to-r from-black/30 to-black/0 w-full h-full"></div>
-      <section className="hero sec-padding ">
+      <FadeInSection className="hero sec-padding ">
         <div className="grid lg:grid-cols-2 items-center page-container text-char-sec">
           <div className="flex flex-col mb-20">
             <h1 className="font-langar text-[5rem] sm:text-[7rem] md:text-[9.375rem] style-langar drop-shadow-[0_3px_3px_rgb(0,0,0,1)]">
@@ -23,7 +24,7 @@ const Hero = () => {
             </LinkButton>
           </div>
         </div>
-      </section>
+      </FadeInSection>
     </div>
   );
 };

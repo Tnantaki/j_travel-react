@@ -6,7 +6,7 @@ const ProfileLayout = () => {
   const profileMenu = [
     { label: "Profile", to: "/account/profile" },
     { label: "My Booking", to: "/account/book" },
-    { label: "Travel History", to: "/account/history" },
+    { label: "Booking History", to: "/account/history" },
   ];
 
   return (

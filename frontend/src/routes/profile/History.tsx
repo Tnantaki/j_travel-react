@@ -21,7 +21,7 @@ const History = () => {
 
   return (
     <div className="flex flex-col w-full profile-layout p-6 gap-4 h-full">
-      <h4>Travel History</h4>
+      <h4>Booking History</h4>
       <table>
         <thead className="font-medium body1 border-b-1 border-primary/40">
           <tr>

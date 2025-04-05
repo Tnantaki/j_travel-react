@@ -9,6 +9,7 @@ import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
 import Pay from "./Pay";
 import { cn } from "../../utils/cn";
+import FadeInSection from "../../components/common/FadeInSection";
 
 const Booking = () => {
   const [stepNum, setStepNum] = useState(1);
@@ -24,7 +25,7 @@ const Booking = () => {
 
   return (
     <section className="bg-linear-light justify-center hero sec-padding">
-      <div className="page-container flex flex-col items-center my-5 min-h-full">
+      <FadeInSection className="page-container flex flex-col items-center my-5 min-h-full">
         <h3 className="text-char-pri self-start mb-4">Booking</h3>
         <ul className="flex flex-row items-center bg-frame-sec-tint border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-4 pt-2 sm:px-12 sm:pt-9 pb-2">
           {steps.map((step, idx) => (
@@ -86,7 +87,7 @@ const Booking = () => {
             </div>
           </div>
         </div>
-      </div>
+      </FadeInSection>
     </section>
   );
 };
