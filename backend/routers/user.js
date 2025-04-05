@@ -34,6 +34,23 @@ router.post('/', async (req, res) => {
 	res.send({email: user.email});
 });
 
+router.put('/me/change-password', auth, async (req, res) => {
+	const {oldPassword, newPassword} = req.body;
+
+	if (!oldPassword || !newPassword)
+		return res.status(400).send('Both old and new password are required.');
+
+	const user = await User.findById(req.user._id);
+	const validPassword = await bcrypt.compare(oldPassword, user.password);
+	if (!validPassword) return res.status(400).send('Invalid current password.');
+
+	const salt = await bcrypt.genSalt(10);
+	user.password = await bcrypt.hash(user.password, salt);
+	await user.save();
+
+	res.send({message: 'Password updated successfully.'})
+
+})
 
 // user
 router.delete('/me', auth, async (req, res) => {
