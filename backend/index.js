@@ -4,8 +4,8 @@ const app = express();
 
 require('./start/logging')();
 require('./start/routes')(app);
-require('./start/db')();
 require('./start/config')();
+require('./start/db')();
 require('./start/validation')();
 
 

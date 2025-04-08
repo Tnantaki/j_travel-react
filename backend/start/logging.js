@@ -4,8 +4,14 @@ require('express-async-errors');
 
 module.exports = function() {
 	winston.exceptions.handle(
-		new winston.transports.File({filename: 'uncaughtException.log'})
-	);
+		new winston.transports.File({filename: 'uncaughtException.log'}),
+		new winston.transports.Console({
+			format: winston.format.combine(
+				winston.format.colorize(),
+				winston.format.simple(),
+				// winston.prettyPrint()
+			)})
+	)
 
 	process.on('unhandledRejection', (ex) => {
 		winston.error('Unhandled Rejection', ex);
@@ -18,7 +24,7 @@ module.exports = function() {
 	}));
 
 	//log to console if not production env
-	if (process.env.NODE_ENV !== 'production') {
+	if (process.env.NODE_ENV === 'development') {
 		winston.add(new winston.transports.Console({
 			format: winston.format.combine(
 				winston.format.colorize(),
@@ -26,5 +32,5 @@ module.exports = function() {
 				// winston.prettyPrint()
 			)
 		}));
-	}
+	};
 }
