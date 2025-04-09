@@ -2,6 +2,7 @@ const { Group, validate } = require('../models/group');
 const { Plan } = require('../models/plan');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
+const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const router = express.Router();
 
@@ -155,6 +156,49 @@ router.delete('/:id', auth, async (req, res) => {
 		session.endSession();
 	}
 })
+
+router.delete('/', [auth, admin, validateDelete], async (req, res) => {
+	const {ids} = validateDelete(req.body);
+
+	const session = await mongoose.startSession();
+	session.startTransaction();
+
+	try { 
+		for (const id of ids) {
+			const groups = await Group.find({_id: {$in: ids}}).session(session);
+			if (groups.length === 0) 
+				return res.status(400).send('No groups found with the provided IDs.');
+
+			const planIds = groups.map(group => group.plan).filter(Boolean);
+			if (planIds.length > 0) {
+				const plans = await Plan.find({id: {$in: ids}}).session(session);
+				const planMap = {};
+				plans.forEach(plan => {
+					planMap[plan._id.toString()] = plan;
+				});
+
+				for (const group of groups) {
+					const plan = planMap[group.plan.toString()];
+					if (plan && plan.type === 'tour') {
+						plan.seatsAvailable += group.members.length;
+						await plan.save();
+					}
+				}
+			}
+		}
+
+		await Group.deleteMany({_id: {$in: ids}}).session(session);
+
+		await session.commitTransaction();
+		res.status(200).send({message: `Successfully deleted ${groups.length} groups`});
+
+	} catch (err) {
+		await session.abortTransaction();
+		res.status(500).send('An error occurred' + err.message) 
+	} finally {
+		session.endSession();
+	}
+});
 
 module.exports = router;
 

@@ -1,6 +1,7 @@
 const { Plan, validate, validateUpdate } = require('../models/plan');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
+const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const router = express.Router();
 
@@ -81,7 +82,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 	res.send(plan);
 })
 
-router.delete('/', [auth, admin], async (req, res) => {
+router.delete('/', [auth, admin, validateDelete], async (req, res) => {
 	const { ids } = req.body;
 
 	if (!Array.isArray(ids) || ids.length === 0)
