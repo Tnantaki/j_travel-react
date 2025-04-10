@@ -98,7 +98,39 @@ router.post('/:id/leave', auth, async (req, res) => {
 	} finally {
 		session.endSession();
 	}
+});
 
+router.post('/transfer-leadership', auth, async (req, res) => {
+	const {groupId, newLeaderId} = req.body;
+
+	if (!groupId || !newLeaderId || typeof id !== 'string' 
+		|| typeof groupId !== 'string' || typeof newLeaderId !== 'string')
+		return res.status(400).send('Invalid request.');
+
+	const group = await Group.findById(id);
+	if (!group) return res.status(400).send('Group not found.');
+
+	const userId = req.user._id;
+	if (!group.leader.equals(userId))
+		return res.status(400).send('Only leader can transfer leadership.');
+
+	if (group.members.length < 2) 
+		return res.status(400).send('Must have at least 2 members to transfer a leadership.');
+
+	const isNewleaderMemeber = group.members.some(memberId => memberId.equals(newLeaderId));
+	if (!isNewleaderMemeber)
+		return res.status(400).send('The new leader must be a current of the group');
+
+	const oldLeaderId = group.leader;
+	group.leader = newLeaderId;
+
+	group.members = group.members.filter(memberId => !memberId.equal(newLeaderId));
+
+	group.members.push(oldLeaderId);
+
+	await group.save();
+
+	res.status(200).send('Transfer of leadership completed');
 });
 
 router.put('/:id', auth, async (req, res) => {
