@@ -56,6 +56,51 @@ router.post('/', auth, async (req, res) => {
 	}
 });
 
+router.post('/:id/leave', auth, async (req, res) => {
+	const session = await mongoose.startSession();
+	session.startTransaction();
+
+	try {
+		const group = await Group.findById(req.params.id).session(session);
+		if (!group) return res.status(404).send(error.details[0].message);
+
+		const userId = req.user._id;
+		
+		const memberIndex = group.members.findIndex(memberId => 
+			memberId.equals(userId)
+		);
+		if (memberIndex === -1) 
+			return res.status(400).send('You are not a member of this group.');
+
+		if (group.leader.equals(userId))
+			return res.status(400).send('Leader cannot leave unless transfer leadership or delete the group.');
+
+		group.members.splice(memberIndex);
+
+		if (group.plan) {
+			const plan = await Plan.findById(group.plan).session(session);
+			if (!plan) return res.status(404).send(error.details[0].message);
+
+			if (plan.type === 'tour') {
+				plan.seatsAvailable += 1;
+				await plan.save(session)
+			}
+		}
+
+		await group.save(session);
+
+		await session.commitTransaction();
+		res.status(200).send({mesage: 'Successfully left the group:', group});
+
+	} catch (err) {
+		await session.abortTransaction();
+		res.status(500).send('An error occurred: ' + err.message);
+	} finally {
+		session.endSession();
+	}
+
+});
+
 router.put('/:id', auth, async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);

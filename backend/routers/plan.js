@@ -74,6 +74,8 @@ router.put('/', [auth, admin], async (req, res) => {
 	res.send({ modifiedCount: plan.modifiedCount });
 })
 
+
+
 router.delete('/:id', [auth, admin], async (req, res) => {
 	const plan = await Plan.findByIdAndDelete(req.params.id);
 
