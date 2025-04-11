@@ -1,4 +1,5 @@
 const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const {Profile, validate, validateUpdate} = require('../models/profile');
 const express = require('express');
 const router = express.Router();
