@@ -44,8 +44,7 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 	},
 	gender: {
 		type: String,
-		minlength: 3,
-		maxlength: 7,
+		enum: ['male', 'female', 'other'],
 		required: true
 	},
 	idNumber: {

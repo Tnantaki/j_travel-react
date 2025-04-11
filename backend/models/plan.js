@@ -28,7 +28,6 @@ const Plan = mongoose.model('Plan', new mongoose.Schema({
 		min: 5,
 		required: true
 	},
-	availableDates: [{type: Date}],
 	seatsAvailable: {
 		type: Number,
 		min: 0,

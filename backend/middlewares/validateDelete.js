@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-module.exports = function (body) {
+module.exports = function (req, res, next) {
 	const schema = Joi.object({
 		ids: Joi.array().items(Joi.objectId()).min(1).required()
 	});

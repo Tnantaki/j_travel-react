@@ -235,8 +235,6 @@ router.delete('/:id', auth, async (req, res) => {
 })
 
 router.delete('/', [auth, admin, validateDelete], async (req, res) => {
-	const {ids} = validateDelete(req.body);
-
 	const session = await mongoose.startSession();
 	session.startTransaction();
 
@@ -248,16 +246,18 @@ router.delete('/', [auth, admin, validateDelete], async (req, res) => {
 
 			const planIds = groups.map(group => group.plan).filter(Boolean);
 			if (planIds.length > 0) {
-				const plans = await Plan.find({id: {$in: ids}}).session(session);
+				const plans = await Plan.find({_id: {$in: planIds}}).session(session);
 				const planMap = {};
 				plans.forEach(plan => {
 					planMap[plan._id.toString()] = plan;
 				});
 
 				for (const group of groups) {
+					if (!group.plan) continue;
+
 					const plan = planMap[group.plan.toString()];
 					if (plan && plan.type === 'tour') {
-						plan.seatsAvailable += group.members.length;
+						plan.seatsAvailable += groups.members.length;
 						await plan.save();
 					}
 				}
