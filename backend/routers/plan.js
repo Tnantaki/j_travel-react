@@ -35,7 +35,7 @@ router.post('/', [auth, admin], async (req, res) => {
 });
 
 router.put('/:id', [auth, admin], async (req, res) => {
-	const { error } = validate(req.body);
+	const { error } = validateUpdate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
 	const plan = await Plan.findByIdAndUpdate(
@@ -63,7 +63,7 @@ router.put('/', [auth, admin], async (req, res) => {
 	if (typeof updateData !== 'object' || Objject.keys(updateData).length === 0)
 		return res.status(400).send('Please provide the fields to update.');
 
-	const { error } = validate(updateData);
+	const { error } = validateUpdate(updateData);
 	if (error) return res.status(400).send(error.details[0].message);
 
 	const plan = Plan.updateMany(
