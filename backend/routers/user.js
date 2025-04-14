@@ -73,7 +73,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 	res.send(user);
 });
 
-router.delete('/', [auth, admin, validateDelete], async (req, res) => {
+router.delete('/delete-users/', [auth, admin, validateDelete], async (req, res) => {
 	const {ids} = req.body;
 
 	if (!Array.isArray(ids) || ids.length === 0)

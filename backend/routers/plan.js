@@ -56,7 +56,7 @@ router.put('/:id', [auth, admin], async (req, res) => {
 	res.send(plan);
 })
 
-router.put('/', [auth, admin], async (req, res) => {
+router.put('/update-profiles', [auth, admin], async (req, res) => {
 	const { ids, updateData } = req.body;
 	if (!Array.isArray(ids) || ids.length === 0)
 		return res.status(404).send('Please provide an array of plan IDs to update.');

@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 
 const Booking = mongoose.model('Booking', new mongoose.Schema ({
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
-		required: true
-	},
 	plan: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Plan',
@@ -17,7 +12,11 @@ const Booking = mongoose.model('Booking', new mongoose.Schema ({
 		ref: 'Group',
 		required: true
 	},
-	schedule: {
+	firstDay: {
+		type: Date,
+		required: true
+	},
+	lastDay: {
 		type: Date,
 		required: true
 	},
@@ -25,28 +24,40 @@ const Booking = mongoose.model('Booking', new mongoose.Schema ({
 		type: String,
 		enum: ['pending', 'confirmed', 'cancelled', 'completed'],
 		default: 'pending',
-		required: true
 	},
 	paymentStatus: {
 		type: String,
 		enum: ['unpaid', 'paid', 'refunned'],
 		default: 'unpaid',
-		required: true,
 	}
 }, {timestamps: true}));
 
 function validate(booking) {
 	return Joi.object({
-		user: Joi.objectId().required(),
 		plan: Joi.objectId().required(),
 		group: Joi.objectId().required(),
-		schedule: Joi.date(),
-		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'completed').required(),
-		paymentStatus: Joi.string.valid('unpaid', 'paid', 'refunned').required()
+		firstDay: Joi.date().required(),
+		lastDay: Joi.date().required(),
+		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'completed'),
+		paymentStatus: Joi.string.valid('unpaid', 'paid')
 	}).validate(booking);
+}
+
+function validateUpdate(booking) {
+	const schema = Joi.object({
+		plan: Joi.forbidden(),
+		group: Joi.forbidden(),
+		firstDay: Joi.date(),
+		lastDay: Joi.date(),
+		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'completed'),
+		paymentStatus: Joi.string.valid('unpaid', 'paid', 'refunned')
+	}).min(1);
+
+	return schema.validate(booking);
 }
 
 module.exports = {
 	Booking, 
-	validate
+	validate,
+	validateUpdate
 }
