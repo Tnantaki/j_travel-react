@@ -40,7 +40,8 @@ router.post('/', auth, async (req, res) => {
 	const booking = new Booking ({
 		plan: req.body.plan,
 		group: req.body.group,
-		schedule: req.body.schedule,
+		firstDay:  req.body.firstDay,
+		lastDay:  req.body.lastDay,
 		status: res.body.status,
 		paymentStatus: req.body.paymentStatus
 	});
@@ -93,24 +94,27 @@ router.patch('/cancel-booking/:id', auth, async (req, res) => {
 })
 
 router.patch('/pay-booking/:id', auth, async (req, res) => {
-	const {error} = validateUpdate(req.body);
-	if (error) return res.status(400).send(error.details[0].message);
-
 	const booking = await Booking.findById(req.params.id).populate('group', 'leader');
 	if (!booking) return res.status(404).send('Booking not found.');
 
 	const group = booking.group;
-	const isLeader = group.leader.equals(req.user._id);
+	const isLeader = group.leader.toString() === req.user._id.toString();
 	if (!isLeader)
 		return res.status(403).send('Access denied. You must be the leader of this group');
 
 	const newBooking = await Booking.findByIdAndUpdate(
-		req.params._id,
+		req.params.id,
 		{
 			status: 'confirmed',
 			paymentStatus: 'paid'
 		}
 	)
+	if (!newBooking)
+		return res.status(500).send('Failed to update booking.');
 
-	res.send({message: 'Successfully made a payment. The booking is now confirmed.'});
+	res.send({
+		message: 'Successfully made a payment. The booking is now confirmed.',
+		booking: newBooking
+	});
 })
+
