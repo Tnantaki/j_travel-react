@@ -90,7 +90,10 @@ router.patch('/cancel-booking/:id', auth, async (req, res) => {
 		{new: true, runValidators: true}
 	)
 
-	res.send({message: 'Succeessfully cancelled the booking.'});
+	res.send({
+		message: 'Succeessfully cancelled the booking.',
+		booking: newBooking
+	});
 })
 
 router.patch('/pay-booking/:id', auth, async (req, res) => {
@@ -105,8 +108,10 @@ router.patch('/pay-booking/:id', auth, async (req, res) => {
 	const newBooking = await Booking.findByIdAndUpdate(
 		req.params.id,
 		{
-			status: 'confirmed',
-			paymentStatus: 'paid'
+			$set: {
+				status: 'confirmed',
+				paymentStatus: 'paid'
+			}
 		}
 	)
 	if (!newBooking)
