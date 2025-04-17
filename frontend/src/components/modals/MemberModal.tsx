@@ -1,8 +1,8 @@
-import InputInfo from "../../components/InputInfo";
+import InputInfo from "../InputInfo";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Modal from "../../components/Modal";
-import Button from "../../components/common/Button";
-import GenderInput from "../../components/GenderInput";
+import Modal from "./Modal";
+import Button from "../common/Button";
+import GenderInput from "../GenderInput";
 import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 

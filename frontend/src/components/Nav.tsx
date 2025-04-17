@@ -1,6 +1,6 @@
 import { NavLink } from "react-router";
 import LinkButton from "./LinkButton";
-import UserService from "../services/user";
+import UserService from "../services/user-service";
 import UserDropdown from "./UserDropdown";
 
 export interface NavMenu {
@@ -38,9 +38,7 @@ const Nav = ({ menu, className, closeMenu }: Props) => {
           Login
         </LinkButton>
       )}
-      {user && (
-        <UserDropdown />
-      )}
+      {user && <UserDropdown />}
     </nav>
   );
 };

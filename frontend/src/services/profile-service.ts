@@ -13,6 +13,11 @@ interface Address {
   country: string;
 }
 
+export interface PasswordChange {
+  oldPassword: string
+  newPassword: string
+}
+
 export interface ProfileInput {
   username: string;
   address: Address;
@@ -39,6 +44,10 @@ export interface ProfileType {
 class profileService {
   createProfile(profile: ProfileType) {
     return apiClients.post("/profile", profile);
+  }
+
+  changePassword(password: PasswordChange) {
+    return apiClients.post("/profile", password);
   }
 
   getProfile() {

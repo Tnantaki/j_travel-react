@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import UserService from "../services/user";
+import UserService from "../services/user-service";
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);

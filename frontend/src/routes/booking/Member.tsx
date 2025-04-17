@@ -1,6 +1,6 @@
 import Button from "../../components/common/Button";
 import { useEffect, useState } from "react";
-import MemberModal from "./MemberModal";
+import MemberModal from "../../components/modals/MemberModal";
 import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 import { getAge } from "../../utils/age";

@@ -4,9 +4,9 @@ import Input from "../components/common/Input";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import UserService from "../services/user"
+import UserService from "../services/user-service";
 import { useState } from "react";
-import ModalSuccess from "../components/ModalSuccess";
+import ModalSuccess from "../components/modals/ModalSuccess";
 
 const formSchema = z
   .object({
@@ -38,11 +38,11 @@ const SignUp = () => {
     try {
       await UserService.register({
         email: data.email,
-        password: data.password
-      })
-      toggleModalSuccess()
+        password: data.password,
+      });
+      toggleModalSuccess();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
     // for mock test
     // await new Promise((resolve) => setTimeout(resolve, 2000));

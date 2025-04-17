@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import iconGoogle from "@img/icons/google-icon.svg";
-import UserService from "../services/user"
+import UserService from "../services/user-service";
 import { AxiosError } from "axios";
 
 const formSchema = z.object({
@@ -29,20 +29,20 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (userInput) => {
-    console.log(userInput)
+    console.log(userInput);
 
     try {
-      const {data: jwt} = await UserService.login(userInput)
-      UserService.setJWT(jwt)
+      const { data: jwt } = await UserService.login(userInput);
+      UserService.setJWT(jwt);
 
-      navigate("/account/profile")
+      navigate("/account/profile");
     } catch (error) {
-      const err = error as AxiosError
+      const err = error as AxiosError;
       if (err.response) {
-        console.log(err.response.data)
-        setError('password', {
-          message: err.response.data as string
-        })
+        console.log(err.response.data);
+        setError("password", {
+          message: err.response.data as string,
+        });
       }
     }
     console.log(errors);
@@ -89,7 +89,10 @@ const Login = () => {
           <p className="text-base text-center sm:text-lg md:text-xl">
             Are you new?{" "}
             <span>
-              <Link to="/signup" className="font-semibold text-primary hover:underline">
+              <Link
+                to="/signup"
+                className="font-semibold text-primary hover:underline"
+              >
                 Create an Accout
               </Link>
             </span>

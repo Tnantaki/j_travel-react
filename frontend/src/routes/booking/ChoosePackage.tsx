@@ -3,7 +3,7 @@ import tours from "../data/tours";
 import Button from "../../components/common/Button";
 import { FaRegClock } from "react-icons/fa";
 import { FaBahtSign } from "react-icons/fa6";
-import ModalPackage from "../../components/ModalPackage";
+import ModalPackage from "../../components/modals/ModalPackage";
 import LinkButton from "../../components/LinkButton";
 
 const ChoosePackage = () => {

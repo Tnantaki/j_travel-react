@@ -1,7 +1,7 @@
 import { FaBahtSign, FaRegClock } from "react-icons/fa6";
 import Modal from "./Modal";
-import { TourType } from "../routes/data/tours";
-import Button from "./common/Button";
+import { TourType } from "../../routes/data/tours";
+import Button from "../common/Button";
 import { AiFillSchedule } from "react-icons/ai";
 import ModalPhotoList from "./ModalPhotoList";
 
@@ -13,8 +13,13 @@ interface Props {
   bookPackage?: () => void;
 }
 
-const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn, bookPackage }: Props) => {
-
+const ModalPackage = ({
+  isOpen,
+  onClose,
+  tour,
+  hasBookingBtn,
+  bookPackage,
+}: Props) => {
   return (
     <Modal isOpen={isOpen} hasCloseBtn={true} onClose={onClose}>
       <div className="flex flex-col items-center pt-5 p-3 sm:p-10 gap-4 text-center bg-linear-light-modal max-w-[1000px]">
@@ -53,7 +58,8 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn, bookPackage }: Pro
                 </div>
                 <div className="flex flex-row items-center border-red-400 border-1 rounded-sm px-2 py-1 bg-red-200 text-char-pri-tint">
                   <p className="body2 font-medium flex items-center">
-                    For private guide +{tour.privateGuide.toLocaleString()} ฿ per group.
+                    For private guide +{tour.privateGuide.toLocaleString()} ฿
+                    per group.
                   </p>
                 </div>
               </div>
@@ -76,7 +82,10 @@ const ModalPackage = ({ isOpen, onClose, tour, hasBookingBtn, bookPackage }: Pro
             </div>
             <ul className="flex flex-col items-start gap-6">
               {tour.itinerary.map((item, idx) => (
-                <li key={idx} className="flex flex-col text-char-pri-tint gap-2">
+                <li
+                  key={idx}
+                  className="flex flex-col text-char-pri-tint gap-2"
+                >
                   <p className="text-lg">
                     <span className="font-langar text-xl text-primary">
                       Day {item.day} -{" "}

@@ -2,7 +2,7 @@ import type { TourType } from "../routes/data/tours";
 import { FaRegClock } from "react-icons/fa6";
 import { FaBahtSign } from "react-icons/fa6";
 import Button from "./common/Button";
-import ModalPackage from "./ModalPackage";
+import ModalPackage from "./modals/ModalPackage";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 

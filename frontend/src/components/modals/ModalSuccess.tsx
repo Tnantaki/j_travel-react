@@ -1,6 +1,6 @@
 import { FaCircleCheck } from "react-icons/fa6";
 import Modal from "./Modal";
-import LinkButton from "./LinkButton";
+import LinkButton from "../LinkButton";
 
 interface Props {
   isOpen: boolean;
