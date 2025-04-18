@@ -13,25 +13,27 @@ import Profile from "./routes/profile/Profile.tsx";
 import ProfileLayout from "./routes/profile/ProfileLayout.tsx";
 import History from "./routes/profile/History.tsx";
 import MyBooking from "./routes/profile/MyBooking.tsx";
+import AdminPanel from "./admin/AdminPanel.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-      <BrowserRouter basename="j_travel-react">
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="packages" element={<Packages />} />
-            <Route path="booking" element={<Booking />} />
-            <Route path="about" element={<About />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="account" element={<ProfileLayout />}>
-              <Route path="profile" element={<Profile />} />
-              <Route path="history" element={<History />} />
-              <Route path="book" element={<MyBooking />} />
-            </Route>
+    <BrowserRouter basename="j_travel-react">
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="packages" element={<Packages />} />
+          <Route path="booking" element={<Booking />} />
+          <Route path="about" element={<About />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="account" element={<ProfileLayout />}>
+            <Route path="profile" element={<Profile />} />
+            <Route path="history" element={<History />} />
+            <Route path="book" element={<MyBooking />} />
           </Route>
-        </Routes>
-      </BrowserRouter>
+        </Route>
+        <Route path="admin" element={<AdminPanel />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>
 );
