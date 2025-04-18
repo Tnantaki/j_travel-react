@@ -28,7 +28,7 @@ const bookingOnTrip = cron.schedule('0 0 * * *', async () => {
                 firstDay: {$gte: now},
                 status: 'confirmed'
             },
-            {$set: {status: 'onTrip'}}
+            {$set: {status: 'traveling'}}
         );
 
         if (NODE_ENV !== 'production')
