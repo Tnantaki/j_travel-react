@@ -153,3 +153,5 @@ router.delete('/delete-bookings', [auth, admin], async (req, res) => {
 	res.send({ deletedCount: booking.deletedCount });
 
 })
+
+module.exports = router;
