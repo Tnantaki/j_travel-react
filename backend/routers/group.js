@@ -56,7 +56,7 @@ router.post('/', auth, async (req, res) => {
 	}
 });
 
-router.post('/:id/leave', auth, async (req, res) => {
+router.post('/leave/:id', auth, async (req, res) => {
 	const session = await mongoose.startSession();
 	session.startTransaction();
 
@@ -181,9 +181,11 @@ router.put('/:id', auth, async (req, res) => {
 		const updatedGroup = await Group.findByIdAndUpdate(
 			req.params.id,
 			{
-				leader: leader,
-				plan: planId,
-				members: members
+				$set: {
+					leader: leader,
+					plan: planId,
+					members: members
+				}
 			},
 			{new: true, runValidators: true, session}
 		);
@@ -234,7 +236,11 @@ router.delete('/:id', auth, async (req, res) => {
 	}
 })
 
-router.delete('/', [auth, admin, validateDelete], async (req, res) => {
+router.delete('/delete-groups', [auth, admin, validateDelete], async (req, res) => {
+	const {ids} = req.body;
+	if (!Array.isArray(ids) || ids.length === 0)
+		return res.status(404).send('Please provide an array of group IDs to delete.');
+
 	const session = await mongoose.startSession();
 	session.startTransaction();
 

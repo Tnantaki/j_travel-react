@@ -77,7 +77,7 @@ function validateProfile(profile) {
 		phone: Joi.string().pattern(/^[0-9+\-\s]+$/).min(5).max(50).required().trim(),
 		email: Joi.string().min(3).max(50).email().required().trim(),
 		birthday: Joi.date().iso().required().trim(),
-		gender: Joi.string().valid('male', 'female', 'other').min(3).max(7).required().trim(),
+		gender: Joi.string().valid('male', 'female', 'others').min(3).max(7).required().trim(),
 		idNumber: Joi.number().min(13).require().trim(),
 		passportNumber: Joi.number().min(4).max(100).require().trim()
 	})
@@ -101,7 +101,7 @@ function validateUpdate (profile) {
 		phone: Joi.string().pattern(/^[0-9+\-\s]+$/).min(5).max(50).trim(),
 		email: Joi.string().min(3).max(50).email().trim(),
 		birthday: Joi.date().iso().trim(),
-		gender: Joi.string().valid('male', 'female', 'other').min(3).max(7).trim(),
+		gender: Joi.string().valid('male', 'female', 'others').min(3).max(7).trim(),
 		idNumber: Joi.number().min(13).trim(),
 		passportNumber: Joi.number().min(4).max(100).trim()
 	}).min(1);

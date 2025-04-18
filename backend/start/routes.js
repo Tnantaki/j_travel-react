@@ -6,6 +6,7 @@ const auth = require('../routers/auth');
 const profile = require('../routers/profile');
 const plan = require('../routers/plan');
 const group = require('../routers/group');
+const booking = require('../routers/booking');
 const error = require('../middlewares/error');
 
 module.exports = function(app) {
@@ -17,5 +18,6 @@ module.exports = function(app) {
     app.use('/api/profiles', profile);
     app.use('/api/plans', plan);
     app.use('/api/groups', group);
+    app.use('/api/bookings', booking);
     app.use(error);
 }
