@@ -5,7 +5,7 @@ const Plan = mongoose.model('Plan', new mongoose.Schema({
 	type : {
 		type: String,
 		enum: ['private', 'tour'],
-		require: true
+		required: true
 	},
 	title: {
 		type: String,
@@ -47,12 +47,11 @@ function validatePlan(plan) {
 		description: Joi.string().min(5).max(255),
 		price: Joi.number().min(0).required(),
 		duration: Joi.number().min(5).required(),
-		seatAvailable: Joi.when({
+		seatsAvailable: Joi.when('type', {
 			is: 'tour',
 			then: Joi.number().min(0).max(30).required(),
 			otherwise: Joi.forbidden
 		}),
-		availableDates: Joi.array().items(Joi.date())
 	});
 	
 	return schema.validate(plan)
@@ -65,12 +64,11 @@ function validateUpdatePlan(plan) {
 		description: Joi.string().min(5).max(255),
 		price: Joi.number().min(0),
 		duration: Joi.number().min(5),
-		seatAvailable: Joi.when({
+		seatsAvailable: Joi.when('type', {
 			is: 'tour',
 			then: Joi.number().min(0).max(30),
 			otherwise: Joi.forbidden
 		}),
-		availableDates: Joi.array().items(Joi.date())
 	}).min(1); // ensure at least 1 filed is provided
 	
 	return schema.validate(plan)
