@@ -12,7 +12,7 @@ const bookingCompleted = cron.schedule('0 0 * * *', async () => {
             {$set: {status: 'completed'}}
         );
 
-        if (NODE_ENV !== 'production')
+        if (process.env.NODE_ENV !== 'production')
             console.log('Cron Job: Completed booking updated', res.nModified, 'documents modified.');
 
     } catch (err) {
@@ -31,7 +31,7 @@ const bookingOnTrip = cron.schedule('0 0 * * *', async () => {
             {$set: {status: 'traveling'}}
         );
 
-        if (NODE_ENV !== 'production')
+        if (process.env.NODE_ENV !== 'production')
             console.log('Cron Job: Completed booking updated', res.nModified, 'documents modified.');
 
     } catch (err) {
@@ -39,12 +39,12 @@ const bookingOnTrip = cron.schedule('0 0 * * *', async () => {
     }
 });
 
-function startJob() {
+function startJobs() {
     bookingCompleted.start();
     bookingOnTrip.start();
 
-    if (NODE_ENV !== 'production')
+    if (process.env.NODE_ENV !== 'production')
         console.log('Booking status Cron Job started.');
 }
 
-exports = startJob;
+module.exports = startJobs;
