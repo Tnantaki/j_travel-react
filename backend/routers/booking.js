@@ -94,7 +94,7 @@ router.patch('/cancel-booking/:id', auth, async (req, res) => {
 		message: 'Succeessfully cancelled the booking.',
 		booking: newBooking
 	});
-})
+});
 
 router.patch('/pay-booking/:id', auth, async (req, res) => {
 	const booking = await Booking.findById(req.params.id).populate('group', 'leader');
@@ -121,5 +121,35 @@ router.patch('/pay-booking/:id', auth, async (req, res) => {
 		message: 'Successfully made a payment. The booking is now confirmed.',
 		booking: newBooking
 	});
-})
+});
 
+router.delete('/:id', [auth, admin], async (req, res) => {
+	const booking = await Booking.findById(req.params.id);
+	if (!booking) return res.status(404).send('Booking not found.');
+
+	if (booking.status !== 'cancelled' || booking.status !== 'completed') 
+		return res.status(403).send('You cannot delete this booking.');
+
+	await Booking.deleteOne(booking);
+	
+	res.send(booking);
+});
+
+router.delete('/delete-bookings', [auth, admin], async (req, res) => {
+	const {ids} = req.body;
+	if (!Array.isArray(ids) || ids.length === 0)
+		return res.status(400).send('Please provide an array of booking IDs to delete.');
+
+	const booking = await Booking.find({_id: {$in: ids}});
+	if (!booking) return res.status(404).send('Booking not found.');
+
+	for (id in ids) {
+		if (booking.status !== 'cancelled' || booking.status !== 'completed') 
+			return res.status(403).send('You cannot delete this booking.');
+	}
+
+	await Booking.deleteMany({ _id: { $in: ids } });
+
+	res.send({ deletedCount: booking.deletedCount });
+
+})

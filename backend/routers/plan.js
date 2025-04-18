@@ -88,7 +88,7 @@ router.delete('/delete-plans', [auth, admin, validateDelete], async (req, res) =
 	const { ids } = req.body;
 
 	if (!Array.isArray(ids) || ids.length === 0)
-		return res.status(404).send('Please provide an array of plan IDs to delete.');
+		return res.status(400).send('Please provide an array of plan IDs to delete.');
 
 	const plan = await Plan.deleteMany({ _id: { $in: ids } });
 
