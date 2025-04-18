@@ -22,7 +22,7 @@ const Booking = mongoose.model('Booking', new mongoose.Schema ({
 	},
 	status: {
 		type: String,
-		enum: ['pending', 'confirmed', 'cancelled', 'onTrip', 'completed'],
+		enum: ['pending', 'confirmed', 'cancelled', 'traveling', 'completed'],
 		default: 'pending',
 	},
 	paymentStatus: {
@@ -38,7 +38,7 @@ function validate(booking) {
 		group: Joi.objectId().required(),
 		firstDay: Joi.date().required(),
 		lastDay: Joi.date().required(),
-		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'onTrip', 'completed'),
+		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed'),
 		paymentStatus: Joi.string.valid('unpaid', 'paid')
 	}).validate(booking);
 }
@@ -49,7 +49,7 @@ function validateUpdate(booking) {
 		group: Joi.forbidden(),
 		firstDay: Joi.date(),
 		lastDay: Joi.date(),
-		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'onTrip', 'completed'),
+		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed'),
 		paymentStatus: Joi.string.valid('unpaid', 'paid', 'refunned')
 	}).min(1);
 

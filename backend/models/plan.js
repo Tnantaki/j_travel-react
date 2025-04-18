@@ -67,7 +67,7 @@ function validateUpdatePlan(plan) {
 		duration: Joi.number().min(5),
 		seatAvailable: Joi.when({
 			is: 'tour',
-			then: Joi.number().min(0).max(30).required(),
+			then: Joi.number().min(0).max(30),
 			otherwise: Joi.forbidden
 		}),
 		availableDates: Joi.array().items(Joi.date())

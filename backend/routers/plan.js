@@ -49,14 +49,14 @@ router.put('/:id', [auth, admin], async (req, res) => {
 			seatsAvailable: req.body.seatsAvailable,
 			availableDates: req.body.availableDates
 		},
-		{ new: true }
+		{ new: true, runValidators: true }
 	);
 	if (!plan) return res.status(404).send('Plan not found.');
 
 	res.send(plan);
 })
 
-router.put('/update-profiles', [auth, admin], async (req, res) => {
+router.put('/update-plans', [auth, admin], async (req, res) => {
 	const { ids, updateData } = req.body;
 	if (!Array.isArray(ids) || ids.length === 0)
 		return res.status(404).send('Please provide an array of plan IDs to update.');
@@ -84,7 +84,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 	res.send(plan);
 })
 
-router.delete('/', [auth, admin, validateDelete], async (req, res) => {
+router.delete('/delete-plans', [auth, admin, validateDelete], async (req, res) => {
 	const { ids } = req.body;
 
 	if (!Array.isArray(ids) || ids.length === 0)
