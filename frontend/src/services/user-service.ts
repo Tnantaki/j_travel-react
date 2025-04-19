@@ -18,6 +18,10 @@ interface MyJwtPayload extends JwtPayload {
 // }
 
 class UserService {
+  getAll() {
+    return apiClients.get("/users");
+  }
+
   register(user: UserInput) {
     return apiClients.post("/users", user);
   }
