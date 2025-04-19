@@ -45,6 +45,10 @@ class UserService {
     }
   }
 
+  getToken() {
+    return localStorage.getItem(tokenKey);
+  }
+
   logout() {
     localStorage.removeItem(tokenKey);
   }

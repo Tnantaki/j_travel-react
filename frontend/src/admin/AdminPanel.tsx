@@ -20,7 +20,7 @@ const AdminPanel = () => {
 
   return (
     <Admin layout={Layout} dataProvider={dataProvider} dashboard={HomePage} authProvider={authProvider} >
-      <Resource name="posts" list={ListGuesser} />
+      <Resource name="users" list={ListGuesser} />
     </Admin>
   );
 };
