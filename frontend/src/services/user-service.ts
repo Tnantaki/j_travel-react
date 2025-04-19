@@ -1,5 +1,5 @@
 // import axios from "axios"
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import apiClients from "./api-clients";
 
 const tokenKey = "token";
@@ -7,6 +7,10 @@ const tokenKey = "token";
 export interface UserInput {
   email: string;
   password: string;
+}
+
+interface MyJwtPayload extends JwtPayload {
+  isAdmin?: boolean
 }
 
 // const registerUser = (user: UserInput) => {
@@ -19,22 +23,24 @@ class UserService {
   }
 
   async login(user: UserInput) {
-    return apiClients.post("/auth", user);
-  }
-
-  setJWT(jwt: string) {
-    localStorage.setItem(tokenKey, jwt);
+    let res;
+    try {
+      res = await apiClients.post("/auth", user);
+    } catch (error) {
+      throw new Error("Network Error");
+    }
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error(res.statusText);
+    }
+    localStorage.setItem(tokenKey, res.data);
+    console.log(res.data)
   }
 
   getCurrentUser() {
-    try {
-      const jwt = localStorage.getItem(tokenKey);
-      if (jwt) {
-        return jwtDecode(jwt);
-      } else {
-        return null;
-      }
-    } catch (ex) {
+    const jwt = localStorage.getItem(tokenKey);
+    if (jwt) {
+      return jwtDecode<MyJwtPayload>(jwt);
+    } else {
       return null;
     }
   }

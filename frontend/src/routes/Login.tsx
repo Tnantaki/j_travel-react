@@ -32,8 +32,7 @@ const Login = () => {
     console.log(userInput);
 
     try {
-      const { data: jwt } = await UserService.login(userInput);
-      UserService.setJWT(jwt);
+      UserService.login(userInput);
 
       navigate("/account/profile");
     } catch (error) {

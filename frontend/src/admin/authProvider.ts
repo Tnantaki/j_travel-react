@@ -1,34 +1,29 @@
-import { AuthProvider, Logout } from "react-admin";
+import { AuthProvider } from "react-admin";
 import userService from "../services/user-service";
 
 export const authProvider: AuthProvider = {
-  async login({ email, password }) {
-    let res;
-    try {
-      res = await userService.login({ email, password });
-    } catch (error) {
-      throw new Error("Network Error");
-    }
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error(res.statusText);
-    }
-    const jwt = res.data;
-    console.log(jwt);
+  async login({ username: email, password }) {
+    await userService.login({ email, password });
   },
   async checkError(error) {
+    console.log('check error')
     const status = error.status;
     if (status === 401 || status === 403) {
-      localStorage.removeItem("username");
+      userService.logout();
       throw new Error("Session expired");
     }
     // other error codes (404, 500, etc): no need to log out
   },
   async checkAuth() {
-    if (!localStorage.getItem("username")) {
+    const user = userService.getCurrentUser();
+    if (!user) {
       throw new Error("Not authenticated");
+    }
+    if (!user.isAdmin) {
+      throw new Error("You not an admin");
     }
   },
   async logout() {
-    localStorage.removeItem("username");
+    userService.logout();
   },
 };
