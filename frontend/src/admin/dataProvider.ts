@@ -1,6 +1,7 @@
 import jsonServerProvider from "ra-data-json-server";
 import { DataProvider, fetchUtils } from "react-admin";
 import userService from "../services/user-service";
+import axios from "axios";
 
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   if (!options.headers) {
@@ -14,10 +15,15 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const baseProvider = jsonServerProvider(
-  "http://localhost:3000/api",
-  httpClient
-);
+const apiUrl = "http://localhost:3000/api";
+
+// 🔐 Get token from localStorage (or from a token service)
+const getAuthHeader = () => {
+  const token = localStorage.getItem('token');
+  return token ? { 'x-auth-token': token } : {};
+};
+
+const baseProvider = jsonServerProvider(apiUrl, httpClient);
 
 // Helper: Replace _id with id
 const mapId = (data: any) => {
@@ -34,7 +40,13 @@ export const dataProvider: DataProvider = {
 
   getList: async (resource, params) => {
     try {
-      const res = await userService.getAll();
+      console.log("resource", resource);
+      console.log("params", params);
+      const res = await axios.get(`${apiUrl}/${resource}`, {
+        headers: {
+          ...getAuthHeader()
+        }
+      })
 
       return {
         data: mapId(res.data),

@@ -1,14 +1,21 @@
-import { Admin, Layout, ListGuesser, Resource, ShowGuesser } from "react-admin";
+import { Admin, EditGuesser, Layout, ListGuesser, Resource } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { useLocation, useNavigate } from "react-router";
 import { authProvider } from "./authProvider";
 import UserList from "./users/UserList";
 import ShowUser from "./users/ShowUser";
 import UserCreate from "./users/UserCreate";
+import PlanList from "./plans/PlanList";
+import PlanCreate from "./plans/PlanCreate";
+import PlanShow from "./plans/PlanShow";
+import PlanEdit from "./plans/PlanEdit";
+import { FaUser } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+import { FaPlane } from "react-icons/fa";
 
 const HomePage = () => {
-  return <h1>Home Page</h1>
-}
+  return <h1>Home Page</h1>;
+};
 
 const AdminPanel = () => {
   const location = useLocation();
@@ -22,8 +29,28 @@ const AdminPanel = () => {
   };
 
   return (
-    <Admin layout={Layout} dataProvider={dataProvider} dashboard={HomePage} authProvider={authProvider} >
-      <Resource name="users" list={UserList} show={ShowUser} create={UserCreate} />
+    <Admin
+      layout={Layout}
+      dataProvider={dataProvider}
+      dashboard={HomePage}
+      authProvider={authProvider}
+    >
+      <Resource
+        icon={FaUser}
+        name="users"
+        list={UserList}
+        show={ShowUser}
+        create={UserCreate}
+      />
+      <Resource icon={ImProfile} name="profiles" list={ListGuesser} />
+      <Resource
+        icon={FaPlane}
+        name="plans"
+        list={PlanList}
+        show={PlanShow}
+        create={PlanCreate}
+        edit={PlanEdit}
+      />
     </Admin>
   );
 };
