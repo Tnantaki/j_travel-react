@@ -49,18 +49,18 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 	},
 	idNumber: {
 		type: String,
-		min: 13,
+		minlength: 13,
 		required: true,
 	},
 	passportNumber: {
 		type: String,
-		min: 4,
-		max: 100,
+		minlength: 4,
+		maxlength: 100,
 		required: true
 	}
 }));
 
-function validateProfile(profile) {
+function validate(profile) {
 	const schema = Joi.object({
 		user: Joi.objectId().required(),
 		username: Joi.string().min(3).max(50).required().trim(),
@@ -76,10 +76,10 @@ function validateProfile(profile) {
 		}).required(),
 		phone: Joi.string().pattern(/^[0-9+\-\s]+$/).min(5).max(50).required().trim(),
 		email: Joi.string().min(3).max(50).email().required().trim(),
-		birthday: Joi.date().iso().required().trim(),
+		birthday: Joi.date().iso().required(),
 		gender: Joi.string().valid('male', 'female', 'others').min(3).max(7).required().trim(),
-		idNumber: Joi.number().min(13).require().trim(),
-		passportNumber: Joi.number().min(4).max(100).require().trim()
+		idNumber: Joi.string().min(13).required(),
+		passportNumber: Joi.string().min(4).max(100).required()
 	})
 	return schema.validate(profile);
 }
@@ -100,10 +100,10 @@ function validateUpdate (profile) {
 		}),
 		phone: Joi.string().pattern(/^[0-9+\-\s]+$/).min(5).max(50).trim(),
 		email: Joi.string().min(3).max(50).email().trim(),
-		birthday: Joi.date().iso().trim(),
+		birthday: Joi.date().iso(),
 		gender: Joi.string().valid('male', 'female', 'others').min(3).max(7).trim(),
-		idNumber: Joi.number().min(13).trim(),
-		passportNumber: Joi.number().min(4).max(100).trim()
+		idNumber: Joi.string().min(13),
+		passportNumber: Joi.string().min(4).max(100)
 	}).min(1);
 
 	return schema.validate(profile);
@@ -111,6 +111,6 @@ function validateUpdate (profile) {
 
 module.exports = {
 	Profile,
-	validateProfile,
+	validate,
 	validateUpdate
 }
