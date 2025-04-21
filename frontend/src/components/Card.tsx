@@ -65,10 +65,10 @@ const Card = ({ tour }: Props) => {
             </div>
           </div>
           <div className="flex flex-col gap-1 items-end">
-            <Button size="sm" onClick={bookPackage}>
+            <Button size="sm" className="w-full" onClick={bookPackage}>
               Booking
             </Button>
-            <Button variant="outline" size="sm" onClick={toggleModal}>
+            <Button variant="outline" size="sm" className="w-full" onClick={() => setOpenModal(true)}>
               More Detail
             </Button>
           </div>

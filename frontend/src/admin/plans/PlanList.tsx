@@ -1,4 +1,4 @@
-import { Datagrid, DateField, List, ReferenceField, TextField } from "react-admin";
+import { Datagrid, List, TextField } from "react-admin";
 
 const PlanList = () => (
   <List>

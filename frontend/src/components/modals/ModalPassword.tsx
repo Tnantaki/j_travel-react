@@ -29,6 +29,7 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
+      console.log(res.data)
     } catch (error) {
       const err = error as AxiosError;
       if (err.response) {

@@ -87,6 +87,9 @@
   .sec-margin {
     @apply my-10;
   }
+  .page-navbar {
+    @apply max-w-[100rem] mx-auto container;
+  }
   .page-container {
     @apply max-w-[86rem] mx-auto container;
   }
