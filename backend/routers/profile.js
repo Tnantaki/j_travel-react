@@ -38,8 +38,8 @@ router.post('/', auth, async (req, res) => {
 		email: req.body.email,
 		birthday: req.body.birthday,
 		gender: req.body.gender,
-		Id: req.body.Id,
-		passport: req.body.passport
+		idNumber: req.body.idNumber,
+		passportNumber: req.body.passportNumber
 	});
 
 	await profile.save();
