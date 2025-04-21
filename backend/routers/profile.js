@@ -38,8 +38,8 @@ router.post('/', auth, async (req, res) => {
 		email: req.body.email,
 		birthday: req.body.birthday,
 		gender: req.body.gender,
-		Id: req.body.Id,
-		passport: req.body.passport
+		idNumber: req.body.idNumber,
+		passportNumber: req.body.passportNumber
 	});
 
 	await profile.save();
@@ -51,7 +51,7 @@ router.put('/me', auth, async (req, res) => {
 	if (error) return res.status(400).send(error.details[0].message);
 
 	const profile = await Profile.findOneAndUpdate(
-		(req.user._id),
+		{user: req.user._id},
 		{$set: req.body},
 		{new: true, runValidators: true}
 	);
