@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Home from "./routes/home/Home.tsx";
 import Login from "./routes/Login.tsx";
 import About from "./routes/About.tsx";
-import Packages from "./routes/Packages.tsx";
+import Packages from "./routes/package/Packages.tsx";
 import SignUp from "./routes/SignUp.tsx";
 import Booking from "./routes/booking/Booking.tsx";
 import Profile from "./routes/profile/Profile.tsx";
