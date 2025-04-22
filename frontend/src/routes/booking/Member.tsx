@@ -1,9 +1,9 @@
 import Button from "../../components/common/Button";
 import { useEffect, useState } from "react";
-import MemberModal from "../../components/modals/MemberModal";
 import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 import { getAge } from "../../utils/age";
+import ModalSearchMember from "../../components/modals/ModalSearchMember";
 
 // Mocking
 const testMe: MemberInput = {
@@ -48,9 +48,9 @@ const Member = () => {
       <h4 className="mb-2">Member</h4>
       <div className="booking-sub-frame">
         <ul className="flex flex-col gap-4 w-full">
-          {members.map((member, idx) => (
+          {members.map((member) => (
             <li
-              key={idx}
+              key={member.name}
               className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
             >
               <div className="grid grid-cols-2 w-full gap-2">
@@ -69,11 +69,15 @@ const Member = () => {
           >
             + Member
           </Button>
-          <MemberModal
+          {/* <MemberModal
             isOpen={IsOpenMember}
             onClose={() => setIsOpenMember(!IsOpenMember)}
             fetchMemberData={fetchMemberData}
-          />
+          /> */}
+          <ModalSearchMember
+            isOpen={IsOpenMember}
+            onClose={() => setIsOpenMember(!IsOpenMember)}
+           />
         </ul>
       </div>
     </div>

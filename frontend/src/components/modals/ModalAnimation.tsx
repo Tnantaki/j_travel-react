@@ -1,4 +1,4 @@
-import { DialogHTMLAttributes, ReactNode, useEffect, useRef } from "react";
+import { DialogHTMLAttributes, ReactNode } from "react";
 import { IoClose } from "react-icons/io5";
 import { cn } from "../../utils/cn";
 import { motion } from "motion/react";

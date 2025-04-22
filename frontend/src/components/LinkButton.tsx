@@ -15,6 +15,7 @@ const LinkButton = ({
 }: Props) => {
   return (
     <Link
+      type="button"
       to={to}
       {...props}
       className={cn(buttonVariants({ variant, size, rounded, className }))}
