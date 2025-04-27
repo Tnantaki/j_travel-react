@@ -4,9 +4,10 @@ const admin = require('../middlewares/admin');
 const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const bcrypt = require('bcrypt');
+const validateObjId = require('../middlewares/validateObjId');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
 	const user = await User.find().sort('email');
 	res.send(user);
 });
@@ -14,7 +15,14 @@ router.get('/', async (req, res) => {
 router.get('/me', auth, async (req, res) => {
 	const user = await User.findById(req.user._id).select('-password');
 
-	res.send(user);
+	res.send({email: user.email});
+});
+
+router.get('/:id', validateObjId, [auth, admin], async (req, res) => {
+	const user = await User.findById(req.params.id);
+	if (!user) return res.status(404).send('User with the provided ID is not found.');
+
+	res.send({email: user.email});
 });
 
 router.post('/', async (req, res) => {

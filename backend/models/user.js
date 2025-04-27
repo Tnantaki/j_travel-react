@@ -6,16 +6,16 @@ const Joi = require('joi');
 const userShema = new mongoose.Schema({
 	email: {
 		type: String,
-		minLength: 3,
-		maxLength: 50,
+		minlength: 3,
+		maxlength: 50,
 		unique: true,
-		require: true
+		required: true
 	},
 	password: {
 		type: String,
 		minlength: 8,
 		maxlength: 255,
-		require: true
+		required: true
 	},
 	createdAt: {
 		type: Date,
