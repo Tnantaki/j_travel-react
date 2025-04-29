@@ -16,6 +16,12 @@ describe('/api/users', () => {
 	})
 
 	describe('GET /', () => {
+		it('should return 401 if user is not logged in', async () => {
+			const res = await request(server).get('/api/users')
+			
+			expect(res.status).toBe(401);
+		});
+
 		it('should return all users', async () => {
 			await User.collection.insertMany([
 				{email: 'aaa@email.com'},
@@ -80,6 +86,95 @@ describe('/api/users', () => {
 			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty('email', user.email);
 
+		});
+	});
+
+	describe('POST /', () => {
+		let user;
+
+		const exec = async () => {
+			return await request(server)
+				.post('/api/users')
+				.send(user);
+		};
+
+		beforeEach(() => {
+			user = {
+				email: 'test@email.com',
+				password: '12345678',
+				isAdmin: false
+			};
+		});
+
+		it('should return 400 if email is less than 3 characters', async () => {
+			user.email = 'a';
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+		});
+
+		it('should return 400 if email is more than 50 characters', async () => {
+			user.email = new Array(52).join('a');
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+		});
+
+		it('should return 400 if password is less than 8 characters', async () => {
+			user.password = 1
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+		});
+
+		it('should return 400 if password is more than 255 characters', async () => {
+			user.password = new Array(258).join('1');
+
+			const res = await exec();
+
+			expect(res.status).toBe(400);
+		});
+
+		it('should return 400 if the email is already registered', async () => {
+			const existdUser = new User({
+				email: 'test@email.com',
+				password: '12345678',
+				isAdmin: true
+			});
+			await existdUser.save();
+
+			user.isAdmin = true;
+
+			const res = await exec();
+
+			const regUser = await User.find({email: 'test@email.com'});
+
+			expect(regUser).not.toBeNull();
+			expect(regUser.length).toBe(1);
+			expect(regUser.some(u => u.email === 'test@email.com')).toBeTruthy();
+			expect(regUser.some(u => u.isAdmin === true)).toBeTruthy();
+			expect(res.status).toBe(400);
+		});
+
+		it('should save the user if it is valid', async () => {
+			const res = await exec();
+			
+			const newUser = await User.findOne({email: 'test@email.com'});
+
+			expect(res.status).toBe(200);
+			expect(newUser).not.toBeNull();
+		});
+
+		it('should return user if it is valid', async () => {
+			const res = await exec();
+			
+			const newUser = await User.findOne({email: 'test@email.com'});
+
+			expect(res.status).toBe(200);
+			expect(res.body).toHaveProperty('email', newUser.email); //only send email to the body (no Id)
 		});
 	});
 });
