@@ -180,29 +180,48 @@ describe('/api/users', () => {
 	});
 
 	describe('POST /me/change-password', () => {
-		it('should return 200 if the new password is valid', async () => {
-			const plaintPassword = '12345678';
-			const salt = await bcrypt.genSalt(10);
-			const hashedPassowrd = await bcrypt.hash(plaintPassword, salt);
+		let plainPassword;
+		let user;
+		let token;
 
-			const user = new User({
+		const exec = async (oldPassword) => {
+			return await request(server)
+				.post('/api/users/me/change-password')
+				.set('x-auth-token', token)
+				.send({
+					oldPassword: oldPassword,
+					newPassword: '00000000' 
+				});
+		};
+
+		beforeEach(async () => {
+			plainPassword = '12345678';
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassword = await bcrypt.hash(plainPassword, salt);
+
+			user = new User({
 				email: 'test@email.com',
-				password: hashedPassowrd,
+				password: hashedPassword,
 				isAdmin: false
 			});
 			await user.save();
 
-			const token = user.generateAuthToken();
+			token = user.generateAuthToken();
 
-			const res = await request(server)
-				.post('/api/users/me/change-password')
-				.set('x-auth-token', token)
-				.send({
-					oldPassword: plaintPassword,
-					newPassword: '00000000' 
-				});
+		});
+
+		it('should return 200 if the new password is valid', async () => {
+			const res = await exec(plainPassword);
 			
 			expect(res.status).toBe(200);
+		});
+
+		it('should return 400 if the old password is invalid', async () => {
+			const oldPassword = 'aaaaaaaaaa';
+
+			const res = await exec(oldPassword);
+
+			expect(res.status).toBe(400);
 		});
 	});
 });
