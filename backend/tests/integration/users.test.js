@@ -1,5 +1,6 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const { User } = require('../../models/user');
 const { generateAdmin } = require('../utils');
 let server;
@@ -175,6 +176,33 @@ describe('/api/users', () => {
 
 			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty('email', newUser.email); //only send email to the body (no Id)
+		});
+	});
+
+	describe('POST /me/change-password', () => {
+		it('should return 200 if the new password is valid', async () => {
+			const plaintPassword = '12345678';
+			const salt = await bcrypt.genSalt(10);
+			const hashedPassowrd = await bcrypt.hash(plaintPassword, salt);
+
+			const user = new User({
+				email: 'test@email.com',
+				password: hashedPassowrd,
+				isAdmin: false
+			});
+			await user.save();
+
+			const token = user.generateAuthToken();
+
+			const res = await request(server)
+				.post('/api/users/me/change-password')
+				.set('x-auth-token', token)
+				.send({
+					oldPassword: plaintPassword,
+					newPassword: '00000000' 
+				});
+			
+			expect(res.status).toBe(200);
 		});
 	});
 });

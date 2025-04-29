@@ -56,11 +56,10 @@ router.post('/me/change-password', auth, async (req, res) => {
 	if (!validPassword) return res.status(400).send('Invalid current password.');
 
 	const salt = await bcrypt.genSalt(10);
-	user.password = await bcrypt.hash(user.newPassword, salt);
+	user.password = await bcrypt.hash(newPassword, salt);
 	await user.save();
 
 	res.send({message: 'Password updated successfully.'})
-
 })
 
 // user
