@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import LinkButton from "./LinkButton";
+import LinkButton from "./common/LinkButton";
 import UserService from "../services/user-service";
 import UserDropdown from "./UserDropdown";
 

@@ -3,13 +3,13 @@ import { BiSolidNotepad } from "react-icons/bi";
 import { IoCalendar } from "react-icons/io5";
 import { MdPaid } from "react-icons/md";
 import { Fragment, useState } from "react";
-import Button from "../../components/common/Button";
 import Member from "./Member";
 import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
 import Pay from "./Pay";
 import { cn } from "../../utils/cn";
 import FadeInSection from "../../components/common/FadeInSection";
+import MotionButton from "../../components/common/MotionButton";
 
 const Booking = () => {
   const [stepNum, setStepNum] = useState(1);
@@ -73,16 +73,16 @@ const Booking = () => {
           <div className="flex justify-between">
             <div>
               {stepNum > 1 && (
-                <Button rounded="full" onClick={prevStep}>
+                <MotionButton rounded="full" onClick={prevStep}>
                   Previous
-                </Button>
+                </MotionButton>
               )}
             </div>
             <div>
               {stepNum < 4 && (
-                <Button rounded="full" onClick={nextStep}>
+                <MotionButton rounded="full" onClick={nextStep}>
                   Next
-                </Button>
+                </MotionButton>
               )}
             </div>
           </div>

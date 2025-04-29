@@ -1,5 +1,5 @@
 import FadeInSection from "../../components/common/FadeInSection";
-import LinkButton from "../../components/LinkButton";
+import MotionLinkButton from "../../components/common/MotionLinkButton";
 
 const Hero = () => {
   return (
@@ -19,9 +19,9 @@ const Hero = () => {
               experiences tailored just for you. Let J-Travel guide you on your
               journey through Japan's hidden gems and iconic destinations.
             </p>
-            <LinkButton to="/booking" className="self-start">
+            <MotionLinkButton to="/booking" className="self-start">
               Booking
-            </LinkButton>
+            </MotionLinkButton>
           </div>
         </div>
       </FadeInSection>

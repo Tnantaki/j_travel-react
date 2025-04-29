@@ -1,7 +1,7 @@
 import { Link, LinkProps } from "react-router";
-import { cn } from "../utils/cn";
-import { ButtonProps } from "./common/Button";
-import { buttonVariants } from "../variants/button";
+import { cn } from "../../utils/cn";
+import { ButtonProps } from "./Button";
+import { buttonVariants } from "../../variants/button";
 
 interface Props extends LinkProps, ButtonProps {}
 

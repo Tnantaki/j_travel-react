@@ -4,7 +4,7 @@ import Button from "../../components/common/Button";
 import { FaRegClock } from "react-icons/fa";
 import { FaBahtSign } from "react-icons/fa6";
 import ModalPackage from "../../components/modals/ModalPackage";
-import LinkButton from "../../components/LinkButton";
+import LinkButton from "../../components/common/LinkButton";
 import ButtonRadio from "../../components/common/ButtonRadio";
 
 const ChoosePackage = () => {
