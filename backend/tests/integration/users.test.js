@@ -42,7 +42,20 @@ describe('/api/users', () => {
 	});
 
 	describe('GET /:id', () => {
-		const token = generateAdmin();
+		let token;
+		let id;
+
+		const exec = async () => {
+			return await request(server)
+				.get('/api/users/' + id)
+				.set('x-auth-token', token);
+		};
+
+		beforeEach(() => {
+			id = '';
+			token = generateAdmin();
+		});
+
 		it('should return a user if valid id passed', async () => {
 			const user = new User({
 				email: 'user1@email.com',
@@ -51,9 +64,9 @@ describe('/api/users', () => {
 			});
 			await user.save();
 
-			const res = await request(server)
-				.get('/api/users/' + user._id)
-				.set('x-auth-token', token);
+			id = user._id;
+
+			const res = await exec();
 
 			expect(res.status).toBe(200);
 			expect(res.body).toHaveProperty('email', user.email);
@@ -61,9 +74,17 @@ describe('/api/users', () => {
 		});
 
 		it('should return 404 if invalid id is passed', async () => {
-			const res = await request(server)
-				.get('/api/users/1')
-				.set('x-auth-token', token);
+			id = '1';
+
+			const res = await exec();
+			
+			expect(res.status).toBe(404);
+		});
+
+		it('should return 404 if no user with the given id', async () => {
+			id = new mongoose.Types.ObjectId();
+
+			const res = await exec();
 			
 			expect(res.status).toBe(404);
 		});
@@ -216,12 +237,26 @@ describe('/api/users', () => {
 			expect(res.status).toBe(200);
 		});
 
-		it('should return 400 if the old password is invalid', async () => {
-			const oldPassword = 'aaaaaaaaaa';
+		it('should return 404 if user with the given id does not exist', async () => {
+			await User.findOneAndDelete(user._id);
 
-			const res = await exec(oldPassword);
+			const res = await exec(plainPassword);
 
-			expect(res.status).toBe(400);
+			expect(res.status).toBe(404);
 		});
+
+		const cases = [
+			{ desc: 'invalid old password', oldPassword: 'aaaaaaaaa', status: 400},
+			{ desc: 'old password is less than 8 chars', oldPassword: '1', status: 400},
+			{ desc: 'old password is longer than 255 chars', oldPassword: new Array(258).join('1'), status: 400}
+		];
+
+		cases.forEach(({ desc, oldPassword, status}) => {
+			it(`should return ${status} if ${desc} `, async () => {
+				const res = await exec(oldPassword);
+				expect(res.status).toBe(status);
+			});
+		});
+
 	});
 });
