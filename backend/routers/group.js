@@ -1,5 +1,6 @@
 const { Group, validate } = require('../models/group');
 const { Plan } = require('../models/plan');
+const mongoose = require('mongoose');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const validateDelete = require('../middlewares/validateDelete');
@@ -245,27 +246,25 @@ router.delete('/delete-groups', [auth, admin, validateDelete], async (req, res) 
 	session.startTransaction();
 
 	try { 
-		for (const id of ids) {
-			const groups = await Group.find({_id: {$in: ids}}).session(session);
-			if (groups.length === 0) 
-				return res.status(400).send('No groups found with the provided IDs.');
+		const groups = await Group.find({_id: {$in: ids}}).session(session);
+		if (groups.length === 0) 
+			return res.status(400).send('No groups found with the provided IDs.');
 
-			const planIds = groups.map(group => group.plan).filter(Boolean);
-			if (planIds.length > 0) {
-				const plans = await Plan.find({_id: {$in: planIds}}).session(session);
-				const planMap = {};
-				plans.forEach(plan => {
-					planMap[plan._id.toString()] = plan;
-				});
+		const planIds = groups.map(group => group.plan).filter(Boolean);
+		if (planIds.length > 0) {
+			const plans = await Plan.find({_id: {$in: planIds}}).session(session);
+			const planMap = {};
+			plans.forEach(plan => {
+				planMap[plan._id.toString()] = plan;
+			});
 
-				for (const group of groups) {
-					if (!group.plan) continue;
+			for (const group of groups) {
+				if (!group.plan) continue;
 
-					const plan = planMap[group.plan.toString()];
-					if (plan && plan.type === 'tour') {
-						plan.seatsAvailable += groups.members.length;
-						await plan.save();
-					}
+				const plan = planMap[group.plan.toString()];
+				if (plan && plan.type === 'tour') {
+					plan.seatsAvailable += groups.members.length;
+					await plan.save();
 				}
 			}
 		}
