@@ -3,11 +3,9 @@ const { Profile } = require('../models/profile');
 const mongoose = require('mongoose');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
-const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const { validateId, validateIds}  = require('../middlewares/validateObjId');
-const winston = require('winston/lib/winston/config');
 const router = express.Router();
 
 router.get('/', [auth, admin], async (req, res) => {
@@ -68,11 +66,16 @@ router.post('/me/change-password', auth, async (req, res) => {
 // user
 router.delete('/me', auth, async (req, res) => {
 	const session = await mongoose.startSession();
-	session.startTransaction();
 
 	try {
+		session.startTransaction();
+
 		const user = await User.findByIdAndDelete(req.user._id).session(session);
-		if (!user) return res.status(404).send('User not found.');
+		if (!user) {
+			await session.abortTransaction();
+			return res.status(404).send('User not found.');
+		}
+
 
 		const profile = await Profile.findOne({user: user._id}).session(session);
 		if (profile)
@@ -93,15 +96,17 @@ router.delete('/me', auth, async (req, res) => {
 // admin
 router.delete('/:id', [auth, admin, validateId], async (req, res) => {
 	const session = await mongoose.startSession();
-	session.startTransaction();
 
 	try {
+		session.startTransaction();
+
 		const user = await User.findByIdAndDelete(req.params.id).session(session);
 		if (!user) return res.status(404).send('The user with the given ID was not found.');
 
 		const profile = await Profile.findOne({user: req.params.id}).session(session);
-		if (profile)
+		if (profile){
 			await Profile.deleteOne(profile).session(session);
+		}
 		
 		await session.commitTransaction();
 
@@ -116,18 +121,20 @@ router.delete('/:id', [auth, admin, validateId], async (req, res) => {
 
 router.delete('/delete-users', [auth, admin, validateIds], async (req, res) => {
 	const {ids} = req.body;
-
 	const session = await mongoose.startSession();
-	session.startTransaction();
 
 	try { 
+		session.startTransaction();
+
 		const users = await User.find({_id: {$in: ids}}).session(session);
-		if (users.length === 0)
+		if (users.length === 0) {
+			await session.abortTransaction();
 			return res.status(404).send('No users with provided ids found');
+		}
 
 		const userIds = users.map(user => user._id).filter(Boolean);
 
-		const delProfile = await Profile.deleteMany({user: {$in: users}}).session(session);
+		const delProfile = await Profile.deleteMany({user: {$in: userIds}}).session(session);
 
 		const delUsers = await User.deleteMany({_id: {$in: userIds}}).session(session);
 
