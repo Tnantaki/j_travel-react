@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { User } = require('../../models/user');
 const { Profile } = require('../../models/profile');
-const { generateAdmin } = require('../utils');
+const { generateAdmin, generateProfile } = require('../utils');
 let server;
 
 describe('/api/users', () => {
@@ -280,27 +280,7 @@ describe('/api/users', () => {
 			})
 			await user.save();
 
-			profile = new Profile({
-				user: user._id,
-					username: "test",
-					address: {
-						street: "Sukhumvit Road",
-						building: "Siam Paragon",
-						houseNo: "123",
-						district: "Watthana",
-						postalCode: "10110",
-						subDistrict: "Khlong Tan Nuea",
-						province: "Bangkok",
-						country: "Thailand"
-					},
-					phone: "0812345678",
-					email: "prach@email.com",
-					birthday: "1990-05-15",
-					gender: "male",
-					idNumber: "1111111111111",
-					passportNumber: "1234"
-			});
-			await profile.save();
+			profile = generateProfile(user._id);
 
 			token = user.generateAuthToken();
 		})
@@ -317,6 +297,53 @@ describe('/api/users', () => {
 		})
 
 		it('should return 404 if the user does not exist', async () => { 
+			await User.findByIdAndDelete(user._id);
+
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+		})
+	})
+
+	describe('DELETE /:id', () => {
+		let user;
+		let profile;
+		let token;
+		let id;
+		const admin = generateAdmin();
+		
+		
+		const exec = async () => {
+			return await request(server)
+				.delete('/api/users/' + id)
+				.set('x-auth-token', admin);
+		}
+
+		beforeEach(async () => {
+			user = new User({
+				email: 'test@email.com',
+				password: '123456678', 
+			})
+			await user.save();
+
+			id = user._id;
+			token = user.generateAuthToken();
+			profile = generateProfile(user._id);
+		})
+
+		it('should return 200 if the user is deleted and id is valid', async () => {
+			const res = await exec();
+
+			const delUser = await User.findById(user._id);
+
+			const delProfile = await Profile.findOne({user: user._id});
+
+			expect(res.status).toBe(200);
+			expect(delUser).toBeNull();
+			expect(delProfile).toBeNull();
+		})
+
+		it('should return 404 if the user does not exist', async () => {
 			await User.findByIdAndDelete(user._id);
 
 			const res = await exec();

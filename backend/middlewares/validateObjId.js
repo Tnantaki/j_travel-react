@@ -13,7 +13,7 @@ function validateIds(req, res, next) {
 	if (!Array.isArray(ids) || ids.length === 0)
 		return res.status(404).send('Please provide an array of IDs to delete.');
 
-	for (const id in ids) {
+	for (const id of ids) {
 		if (!mongoose.Types.ObjectId.isValid(id))
 			return res.status(404).send('Invalid ID.')
 	};
