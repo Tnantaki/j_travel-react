@@ -351,4 +351,50 @@ describe('/api/users', () => {
 			expect(res.status).toBe(404);
 		})
 	})
+
+	describe('DELETE /delete/many', () => {
+		const token = generateAdmin();
+		let userIds
+		let profileIds
+		
+		const exec = async () => {
+			return await request(server)
+				.delete('/api/users/delete/many')
+				.set('x-auth-token', token)
+				.send({ids: userIds});
+		}
+
+		beforeEach(async () => {
+			const newUsers = await User.collection.insertMany([
+				{email: 'test1@email.com', password: '123123123'},
+				{email: 'test2@email.com', password: '123123123'},
+			])
+			userIds = Object.values(newUsers.insertedIds);
+
+			const newProfiles = await Profile.collection.insertMany([
+				{user: userIds[0], username: 'test1', email: 'test1@email.com'},
+				{user: userIds[1], username: 'test2', email: 'test2@email.com'},
+			])
+			profileIds = Object.values(newProfiles.insertedIds);
+		})
+
+		it('should return 200 if the user is deleted', async () => {
+			const res = await exec();
+
+			const delUser = await User.find({_id: {$in: userIds}});
+			const delProfile = await Profile.find({_id: {$in: profileIds}});
+
+			expect(res.status).toBe(200);
+			expect(delUser.length).toBe(0);
+			expect(delProfile.length).toBe(0);
+		});
+
+		it('should return 404 if the user Ids are invalid', async () => {
+			userIds = ['1', '2'];
+			const res = await exec();
+
+			expect(res.status).toBe(404);
+		});
+
+	})
 });

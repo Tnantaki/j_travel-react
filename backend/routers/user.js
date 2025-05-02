@@ -119,7 +119,7 @@ router.delete('/:id', [auth, admin, validateId], async (req, res) => {
 	}
 });
 
-router.delete('/delete-users', [auth, admin, validateIds], async (req, res) => {
+router.delete('/delete/many', [auth, admin, validateIds], async (req, res) => {
 	const {ids} = req.body;
 	const session = await mongoose.startSession();
 
@@ -138,7 +138,7 @@ router.delete('/delete-users', [auth, admin, validateIds], async (req, res) => {
 
 		const delUsers = await User.deleteMany({_id: {$in: userIds}}).session(session);
 
-		session.commitTransaction();
+		await session.commitTransaction();
 
 		res.send({
 			deletedCount: delUsers.deletedCount,
