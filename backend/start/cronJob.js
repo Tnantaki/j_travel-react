@@ -43,8 +43,8 @@ function startJobs() {
     bookingCompleted.start();
     bookingOnTrip.start();
 
-    if (process.env.NODE_ENV !== 'production')
-        console.log('Booking status Cron Job started.');
+    // if (process.env.NODE_ENV !== 'production')
+    //     console.log('Booking status Cron Job started.');
 }
 
 module.exports = startJobs;

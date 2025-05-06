@@ -1,12 +1,14 @@
 const {User, validate, validatePassword} = require('../models/user');
+const { Profile } = require('../models/profile');
+const mongoose = require('mongoose');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
-const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const bcrypt = require('bcrypt');
+const { validateId, validateIds}  = require('../middlewares/validateObjId');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
 	const user = await User.find().sort('email');
 	res.send(user);
 });
@@ -14,7 +16,14 @@ router.get('/', async (req, res) => {
 router.get('/me', auth, async (req, res) => {
 	const user = await User.findById(req.user._id).select('-password');
 
-	res.send(user);
+	res.send({email: user.email});
+});
+
+router.get('/:id', [auth, admin, validateId], async (req, res) => {
+	const user = await User.findById(req.params.id);
+	if (!user) return res.status(404).send('User with the provided ID is not found.');
+
+	res.send({email: user.email});
 });
 
 router.post('/', async (req, res) => {
@@ -48,40 +57,100 @@ router.post('/me/change-password', auth, async (req, res) => {
 	if (!validPassword) return res.status(400).send('Invalid current password.');
 
 	const salt = await bcrypt.genSalt(10);
-	user.password = await bcrypt.hash(user.newPassword, salt);
+	user.password = await bcrypt.hash(newPassword, salt);
 	await user.save();
 
 	res.send({message: 'Password updated successfully.'})
-
 })
 
 // user
 router.delete('/me', auth, async (req, res) => {
-	const user = await User.findByIdAndDelete(req.user._id);
+	const session = await mongoose.startSession();
 
-	if (!user) return res.status(404).send('User not found.');
+	try {
+		session.startTransaction();
 
-	res.send({message: 'Your account has been deleted.'});
+		const user = await User.findByIdAndDelete(req.user._id).session(session);
+		if (!user) {
+			await session.abortTransaction();
+			return res.status(404).send('User not found.');
+		}
+
+
+		const profile = await Profile.findOne({user: user._id}).session(session);
+		if (profile)
+			await Profile.deleteOne(profile).session(session);
+
+		await session.commitTransaction();
+
+		res.send({message: 'Your account has been deleted.'});
+
+	} catch (err) {
+		await session.abortTransaction();
+		res.status(500).send('An error occurred' + err.message) 
+	} finally {
+		session.endSession();
+	}
 })
 
 // admin
-router.delete('/:id', [auth, admin], async (req, res) => {
-	const user = await User.findByIdAndDelete(req.params.id);
+router.delete('/:id', [auth, admin, validateId], async (req, res) => {
+	const session = await mongoose.startSession();
 
-	if (!user) return res.status(404).send('The user with the given ID was not found.');
-	
-	res.send(user);
+	try {
+		session.startTransaction();
+
+		const user = await User.findByIdAndDelete(req.params.id).session(session);
+		if (!user) return res.status(404).send('The user with the given ID was not found.');
+
+		const profile = await Profile.findOne({user: req.params.id}).session(session);
+		if (profile){
+			await Profile.deleteOne(profile).session(session);
+		}
+		
+		await session.commitTransaction();
+
+		res.send(user);
+	} catch (err) {
+		await session.abortTransaction();
+		res.status(500).send('An error occurred' + err.message);
+	} finally {
+		session.endSession();
+	}
 });
 
-router.delete('/delete-users', [auth, admin, validateDelete], async (req, res) => {
+router.delete('/delete/many', [auth, admin, validateIds], async (req, res) => {
 	const {ids} = req.body;
+	const session = await mongoose.startSession();
 
-	if (!Array.isArray(ids) || ids.length === 0)
-		return res.status(404).send('Please provide an array of user IDs to delete.');
+	try { 
+		session.startTransaction();
 
-	const user = await User.deleteMany({_id: {$in: ids}});
+		const users = await User.find({_id: {$in: ids}}).session(session);
+		if (users.length === 0) {
+			await session.abortTransaction();
+			return res.status(404).send('No users with provided ids found');
+		}
 
-	res.send({deletedCount: user.deletedCount});
+		const userIds = users.map(user => user._id).filter(Boolean);
+
+		const delProfile = await Profile.deleteMany({user: {$in: userIds}}).session(session);
+
+		const delUsers = await User.deleteMany({_id: {$in: userIds}}).session(session);
+
+		await session.commitTransaction();
+
+		res.send({
+			deletedCount: delUsers.deletedCount,
+			message: `Deleted ${delProfile.deletedCount} profiles for ${users.length}`
+		});
+
+	} catch (err) {
+		await session.abortTransaction();
+		res.status(500).send('An error occurred' + err.message);
+	} finally {
+		session.endSession();
+	}
 });
 
 module.exports = router;
