@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import LinkButton from "./common/LinkButton";
-import UserService from "../services/user-service";
 import UserDropdown from "./UserDropdown";
+import { useAuth } from "./common/AuthProvider";
 
 export interface NavMenu {
   label: string;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Nav = ({ menu, className, closeMenu }: Props) => {
-  const user = UserService.getCurrentUser();
+  const { user } = useAuth();
 
   return (
     <nav className={`${className} font-medium text-lg text-char-sec h-full`}>

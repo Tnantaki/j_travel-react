@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import UserService from "../services/user-service";
+import { useAuth } from "./common/AuthProvider";
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAuth();
 
   const items = [
     { label: "Profile", to: "/account/profile" },
-    { label: "Signout", to: "/login", logout: () => UserService.logout() },
+    { label: "Signout", to: "/login" },
   ];
 
   return (
@@ -37,9 +38,7 @@ const UserDropdown = () => {
                 to={item.to}
                 className="block p-3 text-sm text-char-pri hover:bg-frame-sec-shade"
                 onClick={() => {
-                  if (item.logout) {
-                    item.logout();
-                  }
+                  logout();
                   setIsOpen(false);
                 }}
               >

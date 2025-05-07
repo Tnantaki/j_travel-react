@@ -5,7 +5,7 @@ import { ButtonProps } from "./Button";
 import { buttonVariants } from "../../variants/button";
 import type { MotionProps } from "motion/react";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 interface Props extends MotionProps, ButtonProps {
   to: LinkProps["to"];

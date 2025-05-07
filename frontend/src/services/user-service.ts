@@ -1,6 +1,7 @@
 // import axios from "axios"
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import apiClients from "./api-clients";
+import { AxiosError } from "axios";
 
 const tokenKey = "token";
 
@@ -9,7 +10,7 @@ export interface UserInput {
   password: string;
 }
 
-interface MyJwtPayload extends JwtPayload {
+export interface MyJwtPayload extends JwtPayload {
   isAdmin?: boolean
 }
 
@@ -31,10 +32,16 @@ class UserService {
     try {
       res = await apiClients.post("/auth", user);
     } catch (error) {
-      throw new Error("Network Error");
+      throw error;
     }
     if (res.status < 200 || res.status >= 300) {
-      throw new Error(res.statusText);
+      if (res.statusText) {
+        throw new Error(res.statusText);
+      } else if (res.status >= 400 && res.status < 500) {
+        throw new Error("Invalid username or password.");
+      } else {
+        throw new Error("Something wentwrong.");
+      }
     }
     localStorage.setItem(tokenKey, res.data);
     console.log(res.data)
