@@ -37,18 +37,16 @@ export interface ProfileType {
 }
 
 class profileService {
-  private path = "/profiles";
-
   createProfile(profile: ProfileType) {
-    return apiClients.post(this.path, profile);
+    return apiClients.post("/profiles", profile);
   }
 
   getProfile() {
-    return apiClients.get<ProfileType>(this.path);
+    return apiClients.get<ProfileType>("/profiles/me");
   }
 
   deleteProfile() {
-    return apiClients.delete(this.path);
+    return apiClients.delete("/profiles/me");
   }
 }
 

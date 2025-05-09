@@ -9,13 +9,6 @@ router.get('/', [auth, admin], async (req, res) => {
 	res.send(profile);
 });
 
-router.get('/:id', [auth, admin], async (req, res) => {
-	const profile = await Profile.findById(req.params.id);
-	if (!profile) return res.status(404).send('The profile with the given ID was not found.');
-
-	res.send(profile);
-});
-
 router.get('/me', auth, async (req, res) => {
 	const profile = await Profile.findOne({user: req.user._id});
 	if (!profile) return res.status(404).send('Profile not found.');
@@ -66,6 +59,13 @@ router.delete('/me', auth, async (req, res) => {
 	if (!profile) return res.status(404).send('Profile not found.');
 
 	res.send({message: 'Profile deleted successfully', profile});
+});
+
+router.get('/:id', [auth, admin], async (req, res) => {
+	const profile = await Profile.findById(req.params.id);
+	if (!profile) return res.status(404).send('The profile with the given ID was not found.');
+
+	res.send(profile);
 });
 
 module.exports = router;
