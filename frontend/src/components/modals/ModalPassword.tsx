@@ -2,8 +2,8 @@ import InputInfo from "../InputInfo";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Button from "../common/Button";
-import { AxiosError } from "axios";
-import profileService from "../../services/profile-service";
+import { AxiosError, isAxiosError } from "axios";
+import userService from "../../services/user-service";
 
 interface PasswordInput {
   oldPassword: string;
@@ -25,17 +25,21 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
       if (data.newPassword !== data.confirmPassword) {
         throw new Error("Confirm password not match.");
       }
-      const res = await profileService.changePassword({
+      const res = await userService.changePassword({
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
       console.log(res.data)
-    } catch (error) {
-      const err = error as AxiosError;
-      if (err.response) {
-        console.log(err.response.data);
+    } catch (error: any | AxiosError) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          setError("confirmPassword", {
+            message: error.response.data,
+          });
+        }
+      } else {
         setError("confirmPassword", {
-          message: err.response.data as string,
+          message: error.message,
         });
       }
     }
@@ -50,17 +54,17 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputInfo
-            type="text"
+            type="password"
             label="Old Password"
             {...register("oldPassword")}
           />
           <InputInfo
-            type="text"
+            type="password"
             label="New Password"
             {...register("newPassword")}
           />
           <InputInfo
-            type="text"
+            type="password"
             label="Confirm Password"
             {...register("confirmPassword")}
           />

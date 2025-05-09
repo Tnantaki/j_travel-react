@@ -1,7 +1,6 @@
 // import axios from "axios"
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import apiClients from "./api-clients";
-import { AxiosError } from "axios";
 
 const tokenKey = "token";
 
@@ -11,7 +10,13 @@ export interface UserInput {
 }
 
 export interface MyJwtPayload extends JwtPayload {
+  _id: string
   isAdmin?: boolean
+}
+
+export interface PasswordChange {
+  oldPassword: string
+  newPassword: string
 }
 
 // const registerUser = (user: UserInput) => {
@@ -44,6 +49,7 @@ class UserService {
       }
     }
     localStorage.setItem(tokenKey, res.data);
+    apiClients.defaults.headers.common['x-auth-token'] = this.getToken()
     console.log(res.data)
   }
 
@@ -63,6 +69,11 @@ class UserService {
   logout() {
     localStorage.removeItem(tokenKey);
   }
+
+  changePassword(password: PasswordChange) {
+    return apiClients.post("/users/me/change-password", password);
+  }
+
 }
 
 export default new UserService();

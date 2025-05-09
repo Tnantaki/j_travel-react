@@ -7,9 +7,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import iconGoogle from "@img/icons/google-icon.svg";
 import UserService from "../services/user-service";
-import axios, { AxiosError, isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { useAuth } from "../components/common/AuthProvider";
-import userService from "../services/user-service";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),

@@ -10,12 +10,18 @@ import profileService, {
   ProfileType,
 } from "../../services/profile-service";
 import { getAge } from "../../utils/age";
+import userService from "../../services/user-service";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender>();
   const { register, handleSubmit } = useForm<ProfileType>();
+
+  const user = userService.getCurrentUser();
+  // if (user) {
+  //   console.log(user._id)
+  // }
 
   useEffect(() => {
     const requset = profileService.getProfile();
@@ -34,10 +40,10 @@ const Profile = () => {
 
     // const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
     // setAge(currentAge.toString())
-    setAge(getAge(new Date(data.birthday)))
+    setAge(getAge(new Date(data.birthday)));
 
     const fullName = `${data.firstName} ${data.lastName}`;
-    console.log(fullName)
+    console.log(fullName);
     setGender(data.gender);
 
     console.log(data);
