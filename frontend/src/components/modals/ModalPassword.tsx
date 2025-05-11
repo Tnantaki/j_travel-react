@@ -15,18 +15,19 @@ interface PasswordInput {
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
+  onSuccess: () => void;
 }
 
-const ModalPassword = ({ isOpen, onClose }: Props) => {
+const ModalPassword = ({ isOpen, onClose, onSuccess }: Props) => {
   const {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<PasswordInput>();
 
   const onSubmit: SubmitHandler<PasswordInput> = async (data) => {
-    console.log(data);
     try {
       if (data.newPassword !== data.confirmPassword) {
         throw new Error("Confirm password not match.");
@@ -35,7 +36,8 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
-      console.log(res.data);
+      reset(); // clear on field in form
+      onSuccess(); // pop up suscess modal
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
         if (error.response) {

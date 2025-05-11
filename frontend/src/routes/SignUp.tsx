@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import UserService from "../services/user-service";
 import { useState } from "react";
-import ModalSuccess from "../components/modals/ModalSuccess";
+import ModalSuccessSignup from "../components/modals/ModalSuccessSignup";
 
 const formSchema = z
   .object({
@@ -90,7 +90,7 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
-      <ModalSuccess isOpen={openModalSuccess} />
+      <ModalSuccessSignup isOpen={openModalSuccess} />
     </section>
   );
 };

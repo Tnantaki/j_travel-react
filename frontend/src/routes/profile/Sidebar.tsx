@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import Button from "../../components/common/Button";
 import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
+import ModalSuccessPassword from "../../components/modals/ModalSuccessPassword";
 
 export interface ProfileMenu {
   label: string;
@@ -15,6 +16,12 @@ interface Props {
 
 const Sidebar = ({ menu, closeMenu }: Props) => {
   const [IsOpenPassword, setIsOpenPassword] = useState<boolean>(false);
+  const [IsOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+
+  const onSuccess = () => {
+    setIsOpenPassword(false);
+    setIsOpenSuccess(true);
+  };
 
   return (
     <div className="hidden lg:flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint xl:max-w-[200px] p-2 xl:px-4 xl:py-6 font-semibold text-lg gap-4">
@@ -53,6 +60,11 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
       <ModalPassword
         isOpen={IsOpenPassword}
         onClose={() => setIsOpenPassword(false)}
+        onSuccess={onSuccess}
+      />
+      <ModalSuccessPassword
+        isOpen={IsOpenSuccess}
+        onClose={() => setIsOpenSuccess(false)}
       />
     </div>
   );

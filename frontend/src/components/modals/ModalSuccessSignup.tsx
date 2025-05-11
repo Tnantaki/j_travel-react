@@ -6,7 +6,7 @@ interface Props {
   isOpen: boolean;
 }
 
-const ModalSuccess = ({ isOpen }: Props) => {
+const ModalSuccessSignup = ({ isOpen }: Props) => {
   return (
     <Modal isOpen={isOpen} hasCloseBtn={false}>
       <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-light-modal">
@@ -31,4 +31,4 @@ const ModalSuccess = ({ isOpen }: Props) => {
   );
 };
 
-export default ModalSuccess;
+export default ModalSuccessSignup;
