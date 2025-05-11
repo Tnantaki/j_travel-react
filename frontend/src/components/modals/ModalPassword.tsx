@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import Button from "../common/Button";
 import { AxiosError, isAxiosError } from "axios";
 import userService from "../../services/user-service";
+import { FaExclamationCircle } from "react-icons/fa";
 
 interface PasswordInput {
   oldPassword: string;
@@ -17,7 +18,12 @@ interface Props {
 }
 
 const ModalPassword = ({ isOpen, onClose }: Props) => {
-  const { register, handleSubmit, setError } = useForm<PasswordInput>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<PasswordInput>();
 
   const onSubmit: SubmitHandler<PasswordInput> = async (data) => {
     console.log(data);
@@ -29,7 +35,7 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
-      console.log(res.data)
+      console.log(res.data);
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
         if (error.response) {
@@ -68,6 +74,12 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
             label="Confirm Password"
             {...register("confirmPassword")}
           />
+          {errors.confirmPassword && (
+            <p className="text-info-error flex items-center gap-1 text-sm mt-0.5 drop-shadow-lg sm:text-base sm:mt-1 self-start">
+              <FaExclamationCircle />
+              {errors.confirmPassword.message}
+            </p>
+          )}
           <Button
             type="submit"
             size="sm"
