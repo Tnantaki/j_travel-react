@@ -3,6 +3,7 @@ import Button from "../../components/common/Button";
 import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
 import ModalSuccessPassword from "../../components/modals/ModalSuccessPassword";
+import ModalDelete from "../../components/modals/ModalDelete";
 
 export interface ProfileMenu {
   label: string;
@@ -17,10 +18,17 @@ interface Props {
 const Sidebar = ({ menu, closeMenu }: Props) => {
   const [IsOpenPassword, setIsOpenPassword] = useState<boolean>(false);
   const [IsOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [popupDeleteProfile, setPopupDeleteProfile] = useState(false);
 
   const onSuccess = () => {
     setIsOpenPassword(false);
     setIsOpenSuccess(true);
+  };
+
+  const onDelete = () => {
+    alert("I didn't do it yet?");
+
+    setPopupDeleteProfile(false);
   };
 
   return (
@@ -53,6 +61,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           size="sm"
           rounded="round"
           className="bg-info-error border-info-error"
+          onClick={() => setPopupDeleteProfile(true)}
         >
           Delete Account
         </Button>
@@ -65,6 +74,11 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
       <ModalSuccessPassword
         isOpen={IsOpenSuccess}
         onClose={() => setIsOpenSuccess(false)}
+      />
+      <ModalDelete
+        isOpen={popupDeleteProfile}
+        onClose={() => setPopupDeleteProfile(false)}
+        onDelete={onDelete}
       />
     </div>
   );

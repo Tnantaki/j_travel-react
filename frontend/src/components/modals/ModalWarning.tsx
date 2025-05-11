@@ -11,13 +11,13 @@ const ModalWarning = ({ isOpen, onClose }: Props) => {
   return (
     <Modal isOpen={isOpen} hasCloseBtn={false}>
       <div className="flex flex-col items-center p-10 gap-4 text-center bg-linear-light-modal">
+        <div className="text-info-warning p-3">
+          <PiWarningFill className="size-18 drop-shadow-xl" />
+        </div>
         <h3 className="text-info-warning">WARNING</h3>
         <p className="body2 text-char-pri w-[260px]">
           You don't have profile information yet, Please fill out the form.
         </p>
-        <div className="text-info-warning pt-4 pb-8">
-          <PiWarningFill className="size-18 drop-shadow-xl" />
-        </div>
         <Button
           type="button"
           size="sm"

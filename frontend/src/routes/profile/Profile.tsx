@@ -30,6 +30,7 @@ const Profile = () => {
 
   const user = userService.getCurrentUser();
 
+
   useEffect(() => {
     const reqProfile = async () => {
       try {
@@ -77,7 +78,7 @@ const Profile = () => {
 
   const onSubmit: SubmitHandler<ProfileType> = async (data) => {
     const fullName = `${data.firstName} ${data.lastName}`;
-    console.log(data)
+    console.log(data);
 
     try {
       if (!user) {
