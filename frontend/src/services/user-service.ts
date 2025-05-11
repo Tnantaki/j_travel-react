@@ -2,7 +2,7 @@
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import apiClients from "./api-clients";
 
-const tokenKey = "token";
+export const tokenKey = "token";
 
 export interface UserInput {
   email: string;
@@ -49,8 +49,7 @@ class UserService {
       }
     }
     localStorage.setItem(tokenKey, res.data);
-    apiClients.defaults.headers.common['x-auth-token'] = this.getToken()
-    console.log(res.data)
+    // apiClients.defaults.headers.common['x-auth-token'] = this.getToken()
   }
 
   getCurrentUser() {

@@ -1,6 +1,6 @@
 import apiClients from "./api-clients";
 
-export type Gender = "Male" | "Female";
+export type Gender = "male" | "female";
 
 interface Address {
   street: string;
@@ -13,36 +13,38 @@ interface Address {
   country: string;
 }
 
-export interface ProfileInput {
+export interface ProfileAPI {
+  _id: string;
   username: string;
-  address: Address;
   phone: string;
   email: string;
   birthday: string;
-  age: number;
-  gender: string;
+  gender: Gender;
+  idNumber: string;
+  passportNumber: string;
+  address: Address;
 }
 
 export interface ProfileType {
   firstName: string;
   lastName: string;
-  birthday: Date;
-  age: number;
+  birthday: string;
+  age: string;
   phone: string;
   email: string;
   gender: Gender;
-  idNo: number;
-  passportNo: number;
+  idNo: string;
+  passportNo: string;
   address: Address;
 }
 
 class profileService {
-  createProfile(profile: ProfileType) {
+  createProfile(profile: ProfileAPI) {
     return apiClients.post("/profiles", profile);
   }
 
   getProfile() {
-    return apiClients.get<ProfileType>("/profiles/me");
+    return apiClients.get<ProfileAPI>("/profiles/me");
   }
 
   deleteProfile() {

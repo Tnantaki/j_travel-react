@@ -16,36 +16,41 @@ const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender>();
-  const { register, handleSubmit } = useForm<ProfileType>();
+  const { register, handleSubmit, reset } = useForm<ProfileType>();
 
   const user = userService.getCurrentUser();
-  // if (user) {
-  //   console.log(user._id)
-  // }
 
   useEffect(() => {
-    const requset = profileService.getProfile();
-    requset.then((res) => {
-      if (res.data) {
-        console.log(res.data);
-      } else {
-        setEdit(true);
-      }
-    });
+    profileService
+      .getProfile()
+      .then((res) => {
+        const data = res.data;
+        console.log(new Date(data.birthday));
+        if (data) {
+          const name = data.username.split(" ");
+          reset({
+            firstName: name[0],
+            lastName: name[1],
+            birthday: new Date(data.birthday).toISOString().split("T")[0],
+            phone: data.phone,
+            email: data.email,
+            idNo: data.idNumber,
+            passportNo: data.passportNumber,
+            address: data.address,
+          });
+          setAge(getAge(new Date(data.birthday)));
+          setGender(data.gender);
+        } else {
+          setEdit(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const onSubmit: SubmitHandler<ProfileType> = (data) => {
-    // const currentDate = new Date();
-    // const birthDayDate = new Date(data.birthday);
-
-    // const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
-    // setAge(currentAge.toString())
-    setAge(getAge(new Date(data.birthday)));
-
     const fullName = `${data.firstName} ${data.lastName}`;
-    console.log(fullName);
-    setGender(data.gender);
-
     console.log(data);
     setEdit(false);
   };

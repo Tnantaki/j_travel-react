@@ -8,7 +8,7 @@ const GenderInput = forwardRef<HTMLInputElement, Props>(({ ...props }, ref) => {
       <p className="text-base font-normal text-char-pri-tint ps-3">Gender</p>
       <div className="flex flex-row gap-5 ps-2">
         <div className="flex gap-3">
-          <input type="radio" id="female" value="Female" {...props} ref={ref} />
+          <input type="radio" id="female" value="female" {...props} ref={ref} />
           <label
             htmlFor="female"
             className="text-char-pri text-lg font-normal me-2"
@@ -17,7 +17,7 @@ const GenderInput = forwardRef<HTMLInputElement, Props>(({ ...props }, ref) => {
           </label>
         </div>
         <div className="flex gap-3">
-          <input type="radio" id="male" value="Male" {...props} ref={ref} />
+          <input type="radio" id="male" value="male" {...props} ref={ref} />
           <label htmlFor="male" className="text-char-pri text-lg font-normal">
             Male
           </label>
