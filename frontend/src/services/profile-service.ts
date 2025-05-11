@@ -14,7 +14,7 @@ interface Address {
 }
 
 export interface ProfileAPI {
-  _id: string;
+  user: string;
   username: string;
   phone: string;
   email: string;

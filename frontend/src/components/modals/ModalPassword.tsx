@@ -32,7 +32,7 @@ const ModalPassword = ({ isOpen, onClose, onSuccess }: Props) => {
       if (data.newPassword !== data.confirmPassword) {
         throw new Error("Confirm password not match.");
       }
-      const res = await userService.changePassword({
+      await userService.changePassword({
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
