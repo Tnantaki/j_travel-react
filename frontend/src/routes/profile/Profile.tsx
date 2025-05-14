@@ -55,7 +55,6 @@ const Profile = () => {
         setAge(getAge(new Date(data.birthday)));
         setGender(data.gender);
         setHasProfile(true);
-        console.log("make requset profile");
       } catch (error: any | AxiosError) {
         if (isAxiosError(error)) {
           if (error.response) {
@@ -78,12 +77,9 @@ const Profile = () => {
   }, [hasProfile]);
 
   const onSubmit: SubmitHandler<ProfileType> = async (data) => {
-    console.log(data);
-
     try {
       if (hasProfile) {
         await profileService.updateProfile(data);
-        console.log("updated profile");
       } else {
         const user = userService.getCurrentUser();
         if (!user) {
@@ -91,7 +87,6 @@ const Profile = () => {
         }
 
         await profileService.createProfile(user._id, data);
-        console.log("create new profile suscess");
       }
       setHasProfile(false); // make effect to re-render profile again
       setEdit(false);

@@ -4,6 +4,7 @@ import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
 import ModalSuccessPassword from "../../components/modals/ModalSuccessPassword";
 import ModalDelete from "../../components/modals/ModalDelete";
+import profileService from "../../services/profile-service";
 
 export interface ProfileMenu {
   label: string;
@@ -25,8 +26,12 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
     setIsOpenSuccess(true);
   };
 
-  const onDelete = () => {
-    alert("I didn't do it yet?");
+  const onDelete = async () => {
+    try {
+      await profileService.deleteProfile()
+    } catch (error) {
+      console.log('error', error)
+    }
 
     setPopupDeleteProfile(false);
   };
