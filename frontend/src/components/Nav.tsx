@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import LinkButton from "./common/LinkButton";
 import UserDropdown from "./UserDropdown";
-import { useAuth } from "./common/AuthProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 export interface NavMenu {
   label: string;

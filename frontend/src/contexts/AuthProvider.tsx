@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import userService, { MyJwtPayload } from "../../services/user-service";
+import userService, { MyJwtPayload } from "../services/user-service";
 
 interface AuthContextType {
   user: MyJwtPayload | null;
@@ -14,7 +14,6 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-
   const [user, setUser] = useState(userService.getCurrentUser());
 
   const login = () => {

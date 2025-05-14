@@ -10,18 +10,33 @@ import Pay from "./Pay";
 import { cn } from "../../utils/cn";
 import FadeInSection from "../../components/common/FadeInSection";
 import MotionButton from "../../components/common/MotionButton";
+import { useGroup } from "../../contexts/GroupProvider";
+import { usePlan } from "../../Layout";
 
 const Booking = () => {
   const [stepNum, setStepNum] = useState(1);
-  const nextStep = () => setStepNum(stepNum + 1);
-  const prevStep = () => setStepNum(stepNum - 1);
-
   const steps = [
     { image: BiSolidNotepad, label: "choose package" },
     { image: HiUserGroup, label: "create group" },
     { image: IoCalendar, label: "select date" },
     { image: MdPaid, label: "pay" },
   ];
+  const { group, dispatchGroup } = useGroup();
+
+  function handleAddPlan(planId: string) {
+    dispatchGroup({ type: "add_plan", planId });
+  }
+
+  const { plan } = usePlan();
+  console.log(plan);
+
+  const nextStep = () => {
+    if (stepNum === 1) {
+      // create plan
+    }
+    setStepNum(stepNum + 1);
+  };
+  const prevStep = () => setStepNum(stepNum - 1);
 
   return (
     <section className="bg-linear-light justify-center hero sec-padding">
@@ -66,7 +81,7 @@ const Booking = () => {
           ))}
         </ul>
         <div className="flex flex-col rounded-lg bg-frame-sec-tint border-slate-300 border-1 p-1 shadow-lg text-char-pri w-full sm:p-8 ms:rounded-2xl gap-6 h-full">
-          {stepNum === 1 && <ChoosePackage />}
+          {stepNum === 1 && <ChoosePackage plan={plan} />}
           {stepNum === 2 && <Member />}
           {stepNum === 3 && <DateSelect />}
           {stepNum === 4 && <Pay />}

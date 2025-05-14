@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { useAuth } from "./common/AuthProvider";
+import { useAuth } from "../contexts/AuthProvider";
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);

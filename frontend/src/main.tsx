@@ -14,8 +14,9 @@ import ProfileLayout from "./routes/profile/ProfileLayout.tsx";
 import History from "./routes/profile/History.tsx";
 import MyBooking from "./routes/profile/MyBooking.tsx";
 import AdminPanel from "./admin/AdminPanel.tsx";
-import AuthProvider from "./components/common/AuthProvider.tsx";
+import AuthProvider from "./contexts/AuthProvider.tsx";
 import ProtectRoute from "./components/common/ProtectRoute.tsx";
+import GroupProvider from "./contexts/GroupProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,12 +25,19 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="packages" element={<Packages />} />
             <Route path="about" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<SignUp />} />
+            <Route path="packages" element={<Packages />} />
             <Route element={<ProtectRoute />}>
-              <Route path="booking" element={<Booking />} />
+              <Route
+                path="booking"
+                element={
+                  <GroupProvider>
+                    <Booking />
+                  </GroupProvider>
+                }
+              />
               <Route path="account" element={<ProfileLayout />}>
                 <Route path="profile" element={<Profile />} />
                 <Route path="history" element={<History />} />
