@@ -18,6 +18,8 @@ const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender | "">("");
+  const [hasProfile, setHasProfile] = useState(false);
+  const [popupCreateProfile, setPopupCreateProfile] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,8 +27,6 @@ const Profile = () => {
     formState: { errors },
     setError,
   } = useForm<ProfileType>();
-  const [hasProfile, setHasProfile] = useState(false);
-  const [popupCreateProfile, setPopupCreateProfile] = useState(false);
 
   useEffect(() => {
     const { request, cancel } = profileService.getProfile();

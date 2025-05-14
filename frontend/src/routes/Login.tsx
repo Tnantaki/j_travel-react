@@ -19,11 +19,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
   const { user, login } = useAuth();
-
-  let navigate = useNavigate();
-
-  if (user) return <Navigate to="/" />;
-
   const {
     register,
     handleSubmit,
@@ -32,6 +27,10 @@ const Login = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
+
+  let navigate = useNavigate();
+
+  if (user) return <Navigate to="/" />;
 
   const onSubmit: SubmitHandler<FormValues> = async (userInput) => {
     console.log(userInput);

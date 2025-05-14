@@ -8,7 +8,7 @@ const UserDropdown = () => {
 
   const items = [
     { label: "Profile", to: "/account/profile" },
-    { label: "Signout", to: "/login" },
+    { label: "Signout", to: "/login", logout: true },
   ];
 
   return (
@@ -38,7 +38,9 @@ const UserDropdown = () => {
                 to={item.to}
                 className="block p-3 text-sm text-char-pri hover:bg-frame-sec-shade"
                 onClick={() => {
-                  logout();
+                  if (item.logout) {
+                    logout();
+                  }
                   setIsOpen(false);
                 }}
               >
