@@ -12,7 +12,6 @@ interface Props {
 }
 
 const ChoosePackage = ({ plan }: Props) => {
-  // const [selected, setSelected] = useState(tours[0].id);
   const [isOpenPackage, setIsOpenPackage] = useState<boolean>(false);
 
   return (

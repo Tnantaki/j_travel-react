@@ -33,7 +33,7 @@ const MotionButton = ({
       }}
       className={cn(
         "hover:shadow-lg shadow-blue-700/50",
-        buttonVariants({ variant, size, rounded, className })
+        buttonVariants({ variant, size, rounded, disabled, className })
       )}
     >
       {props.children}

@@ -4,6 +4,8 @@ import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
+import { useGroup } from "../../contexts/GroupProvider";
+import { useAuth } from "../../contexts/AuthProvider";
 
 // Mocking
 const testMe: MemberInput = {
@@ -15,20 +17,29 @@ const testMe: MemberInput = {
 
 const Member = () => {
   const [members, setMember] = useState<MemberInput[]>([]);
+  const { group, dispatchGroup } = useGroup();
+  const { user } = useAuth();
 
-  const fetchMemberData = async () => {
-    try {
-      const request = await bookingService.getMembers();
+  // const fetchMemberData = async () => {
+  //   try {
+  //     const request = await bookingService.getMembers();
 
-      setMember(request.data);
-    } catch (error: any | AxiosError) {
-      console.log(error);
-      setMember([testMe]);
-    }
-  };
+  //     setMember(request.data);
+  //   } catch (error: any | AxiosError) {
+  //     console.log(error);
+  //     setMember([testMe]);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchMemberData();
+    // 1. request group if no post api for create group which have only leader and plan
+    // 2. request group again and render UI
+    // 3. create event handler for 
+
+    if (user && !group.leader) {
+      dispatchGroup({type: "add_leader", userId: user._id})
+    }
+    // fetchMemberData();
   }, []);
 
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);

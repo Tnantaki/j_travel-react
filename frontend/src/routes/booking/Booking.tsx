@@ -28,15 +28,22 @@ const Booking = () => {
   }
 
   const { plan } = usePlan();
-  console.log(plan);
 
   const nextStep = () => {
-    if (stepNum === 1) {
-      // create plan
+    if (stepNum === 1 && plan) {
+      handleAddPlan(plan.id)
     }
     setStepNum(stepNum + 1);
   };
   const prevStep = () => setStepNum(stepNum - 1);
+
+  const validateStep = () => {
+    if (stepNum === 1 && plan) {
+      return true
+    }
+    return false
+  }
+  console.log(group)
 
   return (
     <section className="bg-linear-light justify-center hero sec-padding">
@@ -95,7 +102,7 @@ const Booking = () => {
             </div>
             <div>
               {stepNum < 4 && (
-                <MotionButton rounded="full" onClick={nextStep}>
+                <MotionButton rounded="full" onClick={nextStep} disabled={!validateStep()}>
                   Next
                 </MotionButton>
               )}
