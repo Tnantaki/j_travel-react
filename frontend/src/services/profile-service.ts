@@ -39,16 +39,43 @@ export interface ProfileType {
 }
 
 class profileService {
-  createProfile(profile: ProfileAPI) {
-    return apiClients.post("/profiles", profile);
+  createProfile(userId: string, profile: ProfileType) {
+    return apiClients.post("/profiles", {
+      user: userId,
+      ...this.convertProfileType(profile),
+    });
+  }
+
+  updateProfile(profile: ProfileType) {
+    return apiClients.put("/profiles/me", this.convertProfileType(profile));
   }
 
   getProfile() {
-    return apiClients.get<ProfileAPI>("/profiles/me");
+    const controller = new AbortController();
+
+    const request = apiClients.get<ProfileAPI>("/profiles/me", {
+      signal: controller.signal,
+    });
+    return { request, cancel: () => controller.abort() };
   }
 
   deleteProfile() {
     return apiClients.delete("/profiles/me");
+  }
+
+  convertProfileType(profile: ProfileType) {
+    const fullName = `${profile.firstName} ${profile.lastName}`;
+
+    return {
+      username: fullName,
+      phone: profile.phone,
+      email: profile.email,
+      birthday: profile.birthday,
+      gender: profile.gender,
+      idNumber: profile.idNo,
+      passportNumber: profile.passportNo,
+      address: profile.address,
+    };
   }
 }
 

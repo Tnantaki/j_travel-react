@@ -17,7 +17,7 @@ import ModalWarning from "../../components/modals/ModalWarning";
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState<Gender>();
+  const [gender, setGender] = useState<Gender | "">("");
   const {
     register,
     handleSubmit,
@@ -28,35 +28,35 @@ const Profile = () => {
   const [hasProfile, setHasProfile] = useState(false);
   const [popupCreateProfile, setPopupCreateProfile] = useState(false);
 
-  const user = userService.getCurrentUser();
-
-
   useEffect(() => {
+    const { request, cancel } = profileService.getProfile();
+
     const reqProfile = async () => {
       try {
-        const res = await profileService.getProfile();
+        const res = await request;
         const data = res.data;
-        if (data) {
-          const name = data.username.split(" ");
-          reset({
-            firstName: name[0] || "",
-            lastName: name[1] || "",
-            birthday: new Date(data.birthday).toISOString().split("T")[0],
-            gender: data.gender, // set to form
-            phone: data.phone,
-            email: data.email,
-            idNo: data.idNumber,
-            passportNo: data.passportNumber,
-            address: data.address,
-          });
-          setAge(getAge(new Date(data.birthday)));
-          setGender(data.gender);
-          setHasProfile(true);
-        } else {
-          console.log(res);
+
+        if (!data) {
+          return console.log(res);
         }
+
+        const name = data.username.split(" ");
+        reset({
+          firstName: name[0] || "",
+          lastName: name[1] || "",
+          birthday: new Date(data.birthday).toISOString().split("T")[0],
+          gender: data.gender, // set to form
+          phone: data.phone,
+          email: data.email,
+          idNo: data.idNumber,
+          passportNo: data.passportNumber,
+          address: data.address,
+        });
+        setAge(getAge(new Date(data.birthday)));
+        setGender(data.gender);
+        setHasProfile(true);
+        console.log("make requset profile");
       } catch (error: any | AxiosError) {
-        console.log("error");
         if (isAxiosError(error)) {
           if (error.response) {
             if (error.response.status === 404) {
@@ -72,30 +72,28 @@ const Profile = () => {
     };
     reqProfile();
     return () => {
+      cancel(); // cancel request in case user navigate away before get response
       setPopupCreateProfile(false);
     };
   }, [hasProfile]);
 
   const onSubmit: SubmitHandler<ProfileType> = async (data) => {
-    const fullName = `${data.firstName} ${data.lastName}`;
     console.log(data);
 
     try {
-      if (!user) {
-        throw new Error("No user id.");
+      if (hasProfile) {
+        await profileService.updateProfile(data);
+        console.log("updated profile");
+      } else {
+        const user = userService.getCurrentUser();
+        if (!user) {
+          throw new Error("No user id.");
+        }
+
+        await profileService.createProfile(user._id, data);
+        console.log("create new profile suscess");
       }
-      await profileService.createProfile({
-        user: user._id,
-        username: fullName,
-        phone: data.phone,
-        email: data.email,
-        birthday: data.birthday,
-        gender: data.gender,
-        idNumber: data.idNo,
-        passportNumber: data.passportNo,
-        address: data.address,
-      });
-      setHasProfile(true);
+      setHasProfile(false); // make effect to re-render profile again
       setEdit(false);
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
@@ -110,7 +108,6 @@ const Profile = () => {
         });
       }
     }
-    console.log(data);
   };
 
   return (
