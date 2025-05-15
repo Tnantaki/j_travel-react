@@ -68,28 +68,10 @@ const Booking = () => {
         <div className="flex flex-col rounded-lg bg-frame-sec-tint border-slate-300 border-1 p-1 shadow-lg text-char-pri w-full sm:p-8 ms:rounded-2xl gap-6 h-full">
           {stepNum === 1 && <ChoosePackage nextStep={nextStep} />}
           {stepNum === 2 && <Member nextStep={nextStep} prevStep={prevStep} />}
-          {stepNum === 3 && <DateSelect />}
+          {stepNum === 3 && (
+            <DateSelect nextStep={nextStep} prevStep={prevStep} />
+          )}
           {stepNum === 4 && <Pay />}
-          {/* <div className="flex justify-between">
-            <div>
-              {stepNum > 1 && (
-                <MotionButton rounded="full" onClick={prevStep}>
-                  Previous
-                </MotionButton>
-              )}
-            </div>
-            <div>
-              {stepNum < 4 && (
-                <MotionButton
-                  rounded="full"
-                  onClick={nextStep}
-                  disabled={!validateStep()}
-                >
-                  Next
-                </MotionButton>
-              )}
-            </div>
-          </div> */}
         </div>
       </FadeInSection>
     </section>

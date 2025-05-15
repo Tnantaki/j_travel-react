@@ -4,7 +4,7 @@ import bookingService, { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
-import { useGroup } from "../../contexts/GroupProvider";
+import { useGroup } from "../../contexts/BookingProvider";
 import { useAuth } from "../../contexts/AuthProvider";
 import groupService from "../../services/group-service";
 import MotionButton from "../../components/common/MotionButton";
@@ -61,11 +61,10 @@ const Member = ({ nextStep, prevStep }: Props) => {
   // fetchMemberData();
   // }, []);
 
-
   const handleChooseMember = () => {
-    // 
+    //
     nextStep();
-  }
+  };
 
   const renderMemberList = (value: string, label: string) => {
     return (
@@ -119,10 +118,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
         <MotionButton rounded="full" onClick={prevStep}>
           Previous
         </MotionButton>
-        <MotionButton
-          rounded="full"
-          onClick={handleChooseMember}
-        >
+        <MotionButton rounded="full" onClick={handleChooseMember}>
           Next
         </MotionButton>
       </div>

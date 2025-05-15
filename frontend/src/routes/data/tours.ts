@@ -32,7 +32,7 @@ export interface TourType {
   photos: Photo[]
   price: number
   privateGuide: number
-  duration: string
+  duration: number
   itinerary: Itinerary[]
 
 }
@@ -51,7 +51,7 @@ const tours: TourType[]  = [
     ],
     price: 26300,
     privateGuide: 28000,
-    duration: "5 Days",
+    duration: 5,
     itinerary: [
       {
         day: 1,
@@ -115,7 +115,7 @@ const tours: TourType[]  = [
     ],
     price: 28000,
     privateGuide: 30000,
-    duration: "5 Days",
+    duration: 6,
     itinerary: [
       {
         day: 1,
@@ -181,7 +181,7 @@ const tours: TourType[]  = [
     ],
     price: 29300,
     privateGuide: 31500,
-    duration: "5 Days",
+    duration: 7,
     itinerary: [
       {
         day: 1,

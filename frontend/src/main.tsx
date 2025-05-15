@@ -16,7 +16,7 @@ import MyBooking from "./routes/profile/MyBooking.tsx";
 import AdminPanel from "./admin/AdminPanel.tsx";
 import AuthProvider from "./contexts/AuthProvider.tsx";
 import ProtectRoute from "./components/common/ProtectRoute.tsx";
-import GroupProvider from "./contexts/GroupProvider.tsx";
+import BookingProvider from "./contexts/BookingProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -33,9 +33,9 @@ createRoot(document.getElementById("root")!).render(
               <Route
                 path="booking"
                 element={
-                  <GroupProvider>
+                  <BookingProvider>
                     <Booking />
-                  </GroupProvider>
+                  </BookingProvider>
                 }
               />
               <Route path="account" element={<ProfileLayout />}>

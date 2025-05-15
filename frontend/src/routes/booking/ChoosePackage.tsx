@@ -8,7 +8,7 @@ import LinkButton from "../../components/common/LinkButton";
 import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
 import { useAuth } from "../../contexts/AuthProvider";
-import { useGroup } from "../../contexts/GroupProvider";
+import { useBooking } from "../../contexts/BookingProvider";
 
 interface Props {
   nextStep: () => void;
@@ -17,18 +17,18 @@ interface Props {
 const ChoosePackage = ({ nextStep }: Props) => {
   const [isOpenPackage, setIsOpenPackage] = useState<boolean>(false);
   const { plan } = usePlan();
-  const { dispatchGroup } = useGroup();
+  const { bookDispatch } = useBooking();
   const { user } = useAuth();
 
   const handleChoosePlan = () => {
     if (user && plan) {
-      dispatchGroup({ type: "add_leader", userId: user._id });
-      dispatchGroup({ type: "add_plan", planId: plan.id });
+      bookDispatch({ type: "add_leader", userId: user._id });
+      bookDispatch({ type: "add_plan", planId: plan.id });
     }
     nextStep();
-  }
+  };
 
-  const validatePlan = () => (user && plan) ? true : false 
+  const validatePlan = () => (user && plan ? true : false);
 
   return (
     <>
