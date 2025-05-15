@@ -6,6 +6,8 @@ import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import { useGroup } from "../../contexts/GroupProvider";
 import { useAuth } from "../../contexts/AuthProvider";
+import groupService from "../../services/group-service";
+import MotionButton from "../../components/common/MotionButton";
 
 // Mocking
 const testMe: MemberInput = {
@@ -15,32 +17,47 @@ const testMe: MemberInput = {
   phone: "0812345678",
 };
 
-const Member = () => {
+interface Props {
+  nextStep: () => void;
+  prevStep: () => void;
+}
+
+const Member = ({ nextStep, prevStep }: Props) => {
   const [members, setMember] = useState<MemberInput[]>([]);
-  const { group, dispatchGroup } = useGroup();
-  const { user } = useAuth();
+  // const { group, dispatchGroup } = useGroup();
 
-  // const fetchMemberData = async () => {
+  // const createGroup = async () => {
   //   try {
-  //     const request = await bookingService.getMembers();
-
-  //     setMember(request.data);
-  //   } catch (error: any | AxiosError) {
+  //     const res = await groupService.createGroup({
+  //       leader: group.leader,
+  //       plan: group.plan,
+  //       members: [],
+  //     });
+  //   } catch (error: any) {
   //     console.log(error);
-  //     setMember([testMe]);
   //   }
   // };
 
-  useEffect(() => {
-    // 1. request group if no post api for create group which have only leader and plan
-    // 2. request group again and render UI
-    // 3. create event handler for 
+  // const { getGroup, cancel } = groupService.getGroup()
 
-    if (user && !group.leader) {
-      dispatchGroup({type: "add_leader", userId: user._id})
-    }
-    // fetchMemberData();
-  }, []);
+  // const requestGroup = async () => {
+  //   try {
+  //     const res = await getGroup
+  //     // get Group API shoud got the detail of leader and members
+  //   } catch (error: any) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+
+  // 1. request group if not found, hit post api for create group which have only leader and plan
+  // createGroup()
+  // 2. request group again and render UI
+  // 3. create event handler for adding new members
+
+  // fetchMemberData();
+  // }, []);
 
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
@@ -55,43 +72,57 @@ const Member = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <h4 className="mb-2">Member</h4>
-      <div className="booking-sub-frame">
-        <ul className="flex flex-col gap-4 w-full">
-          {members.map((member) => (
-            <li
-              key={member.name}
-              className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
+    <>
+      <div className="flex flex-col w-full h-full">
+        <h4 className="mb-2">Member</h4>
+        <div className="booking-sub-frame">
+          <ul className="flex flex-col gap-4 w-full">
+            {members.map((member) => (
+              <li
+                key={member.name}
+                className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
+              >
+                <div className="grid grid-cols-2 w-full gap-2">
+                  {renderMemberList(member.name, "name")}
+                  {renderMemberList(getAge(member.birthday), "age")}
+                  {renderMemberList(member.phone, "phone")}
+                  {renderMemberList(member.gender, "gender")}
+                </div>
+              </li>
+            ))}
+            <Button
+              rounded="full"
+              size="sm"
+              className="self-center"
+              onClick={toggleModal}
             >
-              <div className="grid grid-cols-2 w-full gap-2">
-                {renderMemberList(member.name, "name")}
-                {renderMemberList(getAge(member.birthday), "age")}
-                {renderMemberList(member.phone, "phone")}
-                {renderMemberList(member.gender, "gender")}
-              </div>
-            </li>
-          ))}
-          <Button
-            rounded="full"
-            size="sm"
-            className="self-center"
-            onClick={toggleModal}
-          >
-            + Member
-          </Button>
-          {/* <MemberModal
+              + Member
+            </Button>
+            {/* <MemberModal
             isOpen={IsOpenMember}
             onClose={() => setIsOpenMember(!IsOpenMember)}
             fetchMemberData={fetchMemberData}
           /> */}
-          <ModalSearchMember
-            isOpen={IsOpenMember}
-            onClose={() => setIsOpenMember(!IsOpenMember)}
-           />
-        </ul>
+            <ModalSearchMember
+              isOpen={IsOpenMember}
+              onClose={() => setIsOpenMember(!IsOpenMember)}
+            />
+          </ul>
+        </div>
       </div>
-    </div>
+      <div className="flex justify-between">
+        <MotionButton rounded="full" onClick={prevStep}>
+          Previous
+        </MotionButton>
+        <MotionButton
+          rounded="full"
+          onClick={nextStep}
+          // disabled={!validateStep()}
+        >
+          Next
+        </MotionButton>
+      </div>
+    </>
   );
 };
 

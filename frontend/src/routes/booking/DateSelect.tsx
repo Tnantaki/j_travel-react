@@ -3,6 +3,10 @@ import { format } from "date-fns";
 import Calendar from "../../components/Calendar";
 import { FaExclamation } from "react-icons/fa";
 
+// interface Props {
+
+// }
+
 const DateSelect = () => {
   let duration = 5;
   const [startDate, setStartDate] = useState<Date>();

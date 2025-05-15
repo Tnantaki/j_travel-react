@@ -15,14 +15,14 @@ class GroupService {
   //   return apiClients.put("/profiles/me", this.convertProfileType(profile));
   // }
 
-  // getProfile() {
-  //   const controller = new AbortController();
+  getGroup() {
+    const controller = new AbortController();
 
-  //   const request = apiClients.get<ProfileAPI>("/profiles/me", {
-  //     signal: controller.signal,
-  //   });
-  //   return { request, cancel: () => controller.abort() };
-  // }
+    const getGroup = apiClients.get<GroupType>("/groups/me", {
+      signal: controller.signal,
+    });
+    return { getGroup, cancel: () => controller.abort() };
+  }
 
   // deleteProfile() {
   //   return apiClients.delete("/profiles/me");
