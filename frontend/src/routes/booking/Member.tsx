@@ -24,6 +24,8 @@ interface Props {
 
 const Member = ({ nextStep, prevStep }: Props) => {
   const [members, setMember] = useState<MemberInput[]>([]);
+  const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
+  const toggleModal = () => setIsOpenMember(!IsOpenMember);
   // const { group, dispatchGroup } = useGroup();
 
   // const createGroup = async () => {
@@ -59,8 +61,11 @@ const Member = ({ nextStep, prevStep }: Props) => {
   // fetchMemberData();
   // }, []);
 
-  const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
-  const toggleModal = () => setIsOpenMember(!IsOpenMember);
+
+  const handleChooseMember = () => {
+    // 
+    nextStep();
+  }
 
   const renderMemberList = (value: string, label: string) => {
     return (
@@ -116,8 +121,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
         </MotionButton>
         <MotionButton
           rounded="full"
-          onClick={nextStep}
-          // disabled={!validateStep()}
+          onClick={handleChooseMember}
         >
           Next
         </MotionButton>

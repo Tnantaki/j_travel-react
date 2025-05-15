@@ -20,7 +20,7 @@ const ChoosePackage = ({ nextStep }: Props) => {
   const { dispatchGroup } = useGroup();
   const { user } = useAuth();
 
-  function handleChoosePlan() {
+  const handleChoosePlan = () => {
     if (user && plan) {
       dispatchGroup({ type: "add_leader", userId: user._id });
       dispatchGroup({ type: "add_plan", planId: plan.id });
