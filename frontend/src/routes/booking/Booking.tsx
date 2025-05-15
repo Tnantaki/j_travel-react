@@ -71,7 +71,7 @@ const Booking = () => {
           {stepNum === 3 && (
             <DateSelect nextStep={nextStep} prevStep={prevStep} />
           )}
-          {stepNum === 4 && <Pay />}
+          {stepNum === 4 && <Pay nextStep={nextStep} prevStep={prevStep} />}
         </div>
       </FadeInSection>
     </section>

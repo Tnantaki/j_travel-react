@@ -24,8 +24,8 @@ const ChoosePackage = ({ nextStep }: Props) => {
     if (user && plan) {
       bookDispatch({ type: "add_leader", userId: user._id });
       bookDispatch({ type: "add_plan", planId: plan.id });
+      nextStep();
     }
-    nextStep();
   };
 
   const validatePlan = () => (user && plan ? true : false);

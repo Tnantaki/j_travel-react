@@ -28,8 +28,8 @@ const DateSelect = ({ nextStep, prevStep }: Props) => {
   const handleSelectDate = () => {
     if (startDate && endDate) {
       bookDispatch({ type: "select_date", startDate, endDate });
+      nextStep();
     }
-    nextStep();
   };
 
   return (

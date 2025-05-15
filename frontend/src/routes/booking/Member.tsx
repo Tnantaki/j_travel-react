@@ -1,12 +1,8 @@
 import Button from "../../components/common/Button";
-import { useEffect, useState } from "react";
-import bookingService, { MemberInput } from "../../services/booking-service";
-import { AxiosError } from "axios";
+import { useState } from "react";
+import { MemberInput } from "../../services/booking-service";
 import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
-import { useGroup } from "../../contexts/BookingProvider";
-import { useAuth } from "../../contexts/AuthProvider";
-import groupService from "../../services/group-service";
 import MotionButton from "../../components/common/MotionButton";
 
 // Mocking
