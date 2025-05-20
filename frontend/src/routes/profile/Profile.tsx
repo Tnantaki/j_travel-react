@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "../../components/common/Button";
 import GenderInput from "../../components/GenderInput";
 import InputInfo from "../../components/InputInfo";
-import { FaRegSave } from "react-icons/fa";
+import { FaExclamationCircle, FaRegSave } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
 import profileService, {
@@ -10,38 +10,99 @@ import profileService, {
   ProfileType,
 } from "../../services/profile-service";
 import { getAge } from "../../utils/age";
+import userService from "../../services/user-service";
+import { AxiosError, isAxiosError } from "axios";
+import ModalWarning from "../../components/modals/ModalWarning";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState<Gender>();
-  const { register, handleSubmit } = useForm<ProfileType>();
+  const [gender, setGender] = useState<Gender | "">("");
+  const [hasProfile, setHasProfile] = useState(false);
+  const [popupCreateProfile, setPopupCreateProfile] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+    setError,
+  } = useForm<ProfileType>();
 
   useEffect(() => {
-    const requset = profileService.getProfile();
-    requset.then((res) => {
-      if (res.data) {
-        console.log(res.data);
-      } else {
-        setEdit(true);
+    const { request, cancel } = profileService.getProfile();
+
+    const reqProfile = async () => {
+      try {
+        const res = await request;
+        const data = res.data;
+
+        if (!data) {
+          return console.log(res);
+        }
+
+        const name = data.username.split(" ");
+        reset({
+          firstName: name[0] || "",
+          lastName: name[1] || "",
+          birthday: new Date(data.birthday).toISOString().split("T")[0],
+          gender: data.gender, // set to form
+          phone: data.phone,
+          email: data.email,
+          idNo: data.idNumber,
+          passportNo: data.passportNumber,
+          address: data.address,
+        });
+        setAge(getAge(new Date(data.birthday)));
+        setGender(data.gender);
+        setHasProfile(true);
+      } catch (error: any | AxiosError) {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              setPopupCreateProfile(true);
+            } else {
+              console.log(error.response.data);
+            }
+          }
+        } else {
+          console.log(error.response.data);
+        }
       }
-    });
-  }, []);
+    };
+    reqProfile();
+    return () => {
+      cancel(); // cancel request in case user navigate away before get response
+      setPopupCreateProfile(false);
+    };
+  }, [hasProfile]);
 
-  const onSubmit: SubmitHandler<ProfileType> = (data) => {
-    // const currentDate = new Date();
-    // const birthDayDate = new Date(data.birthday);
+  const onSubmit: SubmitHandler<ProfileType> = async (data) => {
+    try {
+      if (hasProfile) {
+        await profileService.updateProfile(data);
+      } else {
+        const user = userService.getCurrentUser();
+        if (!user) {
+          throw new Error("No user id.");
+        }
 
-    // const currentAge = currentDate.getFullYear() - birthDayDate.getFullYear();
-    // setAge(currentAge.toString())
-    setAge(getAge(new Date(data.birthday)))
-
-    const fullName = `${data.firstName} ${data.lastName}`;
-    console.log(fullName)
-    setGender(data.gender);
-
-    console.log(data);
-    setEdit(false);
+        await profileService.createProfile(user._id, data);
+      }
+      setHasProfile(false); // make effect to re-render profile again
+      setEdit(false);
+    } catch (error: any | AxiosError) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          setError("firstName", {
+            message: error.response.data,
+          });
+        }
+      } else {
+        setError("firstName", {
+          message: error.message,
+        });
+      }
+    }
   };
 
   return (
@@ -106,6 +167,12 @@ const Profile = () => {
       </div>
       <div className="flex flex-col profile-layout gap-6 h-full">
         <div className="flex flex-col gap-2">
+          {errors.firstName && (
+            <p className="text-info-error flex items-center gap-1 text-sm mt-0.5 drop-shadow-lg sm:text-base sm:mt-1 self-start">
+              <FaExclamationCircle />
+              {errors.firstName.message}
+            </p>
+          )}
           <h4>Personal Information</h4>
           <div className="profile-info-grid">
             <InputInfo
@@ -196,7 +263,6 @@ const Profile = () => {
               type="number"
               label="Postal Code"
               {...register("address.postalCode")}
-              name="postalCode"
               min={0}
               disabled={!edit}
             />
@@ -219,6 +285,13 @@ const Profile = () => {
             Save
           </Button>
         )}
+        <ModalWarning
+          isOpen={popupCreateProfile}
+          onClose={() => {
+            setPopupCreateProfile(false);
+            setEdit(true);
+          }}
+        />
       </div>
     </form>
   );

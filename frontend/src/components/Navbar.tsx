@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-frame-red h-10 sm:h-16 flex w-full sec-padding z-50 shadow-lg fixed">
-      <div className="flex justify-between items-center page-container">
+      <div className="flex justify-between items-center page-navbar">
         {/* Logo */}
         <NavLink to="/">
           <img src={logo} className="h-7 sm:h-10" />

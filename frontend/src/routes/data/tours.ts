@@ -13,7 +13,31 @@ import dotonburi from "@img/tours/cultural/Dotonbori.jpg";
 import hiroshima from "@img/tours/cultural/Hiroshima-Peace-Memorial.jpg";
 import kiyomizu from "@img/tours/cultural/Kiyomizu-DeraTemple.jpg";
 
-const tours = [
+interface Photo {
+  name: string
+  img: string
+}
+
+interface Itinerary {
+  day: number
+  title: string
+  events: string[]
+}
+
+export interface TourType {
+  id: string
+  description: string
+  name: string
+  imgCover: any
+  photos: Photo[]
+  price: number
+  privateGuide: number
+  duration: number
+  itinerary: Itinerary[]
+
+}
+
+const tours: TourType[]  = [
   {
     id: "classic",
     description:
@@ -27,7 +51,7 @@ const tours = [
     ],
     price: 26300,
     privateGuide: 28000,
-    duration: "5 Days",
+    duration: 5,
     itinerary: [
       {
         day: 1,
@@ -91,7 +115,7 @@ const tours = [
     ],
     price: 28000,
     privateGuide: 30000,
-    duration: "5 Days",
+    duration: 6,
     itinerary: [
       {
         day: 1,
@@ -157,7 +181,7 @@ const tours = [
     ],
     price: 29300,
     privateGuide: 31500,
-    duration: "5 Days",
+    duration: 7,
     itinerary: [
       {
         day: 1,
@@ -213,4 +237,3 @@ const tours = [
 ];
 
 export default tours;
-export type TourType = (typeof tours)[number];

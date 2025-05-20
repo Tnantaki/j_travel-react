@@ -2,6 +2,9 @@ import { NavLink } from "react-router";
 import Button from "../../components/common/Button";
 import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
+import ModalSuccessPassword from "../../components/modals/ModalSuccessPassword";
+import ModalDelete from "../../components/modals/ModalDelete";
+import profileService from "../../services/profile-service";
 
 export interface ProfileMenu {
   label: string;
@@ -15,6 +18,23 @@ interface Props {
 
 const Sidebar = ({ menu, closeMenu }: Props) => {
   const [IsOpenPassword, setIsOpenPassword] = useState<boolean>(false);
+  const [IsOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
+  const [popupDeleteProfile, setPopupDeleteProfile] = useState(false);
+
+  const onSuccess = () => {
+    setIsOpenPassword(false);
+    setIsOpenSuccess(true);
+  };
+
+  const onDelete = async () => {
+    try {
+      await profileService.deleteProfile()
+    } catch (error) {
+      console.log('error', error)
+    }
+
+    setPopupDeleteProfile(false);
+  };
 
   return (
     <div className="hidden lg:flex flex-col justify-between rounded-lg border-1 border-slate-400 bg-frame-sec-tint xl:max-w-[200px] p-2 xl:px-4 xl:py-6 font-semibold text-lg gap-4">
@@ -46,6 +66,7 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
           size="sm"
           rounded="round"
           className="bg-info-error border-info-error"
+          onClick={() => setPopupDeleteProfile(true)}
         >
           Delete Account
         </Button>
@@ -53,6 +74,16 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
       <ModalPassword
         isOpen={IsOpenPassword}
         onClose={() => setIsOpenPassword(false)}
+        onSuccess={onSuccess}
+      />
+      <ModalSuccessPassword
+        isOpen={IsOpenSuccess}
+        onClose={() => setIsOpenSuccess(false)}
+      />
+      <ModalDelete
+        isOpen={popupDeleteProfile}
+        onClose={() => setPopupDeleteProfile(false)}
+        onDelete={onDelete}
       />
     </div>
   );

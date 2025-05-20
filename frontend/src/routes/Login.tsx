@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import OAuthButton from "../components/OAuthButton";
@@ -7,18 +7,18 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import iconGoogle from "@img/icons/google-icon.svg";
 import UserService from "../services/user-service";
-import { AxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
+import { useAuth } from "../contexts/AuthProvider";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
-  password: z.string().min(4, { message: "Must be 4 or more characters long" }),
+  password: z.string().min(8, { message: "Must be 8 or more characters long" }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 const Login = () => {
-  let navigate = useNavigate();
-
+  const { user, login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -28,19 +28,27 @@ const Login = () => {
     resolver: zodResolver(formSchema),
   });
 
+  let navigate = useNavigate();
+
+  if (user) return <Navigate to="/" />;
+
   const onSubmit: SubmitHandler<FormValues> = async (userInput) => {
     console.log(userInput);
 
     try {
-      UserService.login(userInput);
-
+      await UserService.login(userInput);
+      login();
       navigate("/account/profile");
-    } catch (error) {
-      const err = error as AxiosError;
-      if (err.response) {
-        console.log(err.response.data);
+    } catch (error: any | AxiosError) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          setError("password", {
+            message: error.response.data,
+          });
+        }
+      } else {
         setError("password", {
-          message: err.response.data as string,
+          message: error.message,
         });
       }
     }

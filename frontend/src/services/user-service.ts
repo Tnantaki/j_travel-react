@@ -2,15 +2,21 @@
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import apiClients from "./api-clients";
 
-const tokenKey = "token";
+export const tokenKey = "token";
 
 export interface UserInput {
   email: string;
   password: string;
 }
 
-interface MyJwtPayload extends JwtPayload {
+export interface MyJwtPayload extends JwtPayload {
+  _id: string
   isAdmin?: boolean
+}
+
+export interface PasswordChange {
+  oldPassword: string
+  newPassword: string
 }
 
 // const registerUser = (user: UserInput) => {
@@ -31,13 +37,19 @@ class UserService {
     try {
       res = await apiClients.post("/auth", user);
     } catch (error) {
-      throw new Error("Network Error");
+      throw error;
     }
     if (res.status < 200 || res.status >= 300) {
-      throw new Error(res.statusText);
+      if (res.statusText) {
+        throw new Error(res.statusText);
+      } else if (res.status >= 400 && res.status < 500) {
+        throw new Error("Invalid username or password.");
+      } else {
+        throw new Error("Something wentwrong.");
+      }
     }
     localStorage.setItem(tokenKey, res.data);
-    console.log(res.data)
+    // apiClients.defaults.headers.common['x-auth-token'] = this.getToken()
   }
 
   getCurrentUser() {
@@ -56,6 +68,11 @@ class UserService {
   logout() {
     localStorage.removeItem(tokenKey);
   }
+
+  changePassword(password: PasswordChange) {
+    return apiClients.post("/users/me/change-password", password);
+  }
+
 }
 
 export default new UserService();

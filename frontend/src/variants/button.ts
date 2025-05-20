@@ -9,7 +9,7 @@ export const buttonVariants = cva(
         outline:
           "text-primary hover:bg-primary hover:text-white",
         success:
-          "bg-info-success border-info-success text-white hover:brightness-125",
+          "bg-info-success border-info-success text-white hover:brightness-115",
       },
       size: {
         sm: "rounded-md py-1 px-5 font-medium text-lg",

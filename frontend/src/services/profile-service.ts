@@ -1,6 +1,6 @@
 import apiClients from "./api-clients";
 
-export type Gender = "Male" | "Female";
+export type Gender = "male" | "female";
 
 interface Address {
   street: string;
@@ -13,49 +13,69 @@ interface Address {
   country: string;
 }
 
-export interface PasswordChange {
-  oldPassword: string
-  newPassword: string
-}
-
-export interface ProfileInput {
+export interface ProfileAPI {
+  user: string;
   username: string;
-  address: Address;
   phone: string;
   email: string;
   birthday: string;
-  age: number;
-  gender: string;
+  gender: Gender;
+  idNumber: string;
+  passportNumber: string;
+  address: Address;
 }
 
 export interface ProfileType {
   firstName: string;
   lastName: string;
-  birthday: Date;
-  age: number;
+  birthday: string;
+  age: string;
   phone: string;
   email: string;
   gender: Gender;
-  idNo: number;
-  passportNo: number;
+  idNo: string;
+  passportNo: string;
   address: Address;
 }
 
 class profileService {
-  createProfile(profile: ProfileType) {
-    return apiClients.post("/profile", profile);
+  createProfile(userId: string, profile: ProfileType) {
+    return apiClients.post("/profiles", {
+      user: userId,
+      ...this.convertProfileType(profile),
+    });
   }
 
-  changePassword(password: PasswordChange) {
-    return apiClients.post("/profile", password);
+  updateProfile(profile: ProfileType) {
+    return apiClients.put("/profiles/me", this.convertProfileType(profile));
   }
 
   getProfile() {
-    return apiClients.get<ProfileType>("/profile");
+    const controller = new AbortController();
+
+    const request = apiClients.get<ProfileAPI>("/profiles/me", {
+      signal: controller.signal,
+    });
+    return { request, cancel: () => controller.abort() };
   }
 
   deleteProfile() {
-    return apiClients.delete("/profile");
+    return apiClients.delete("/profiles/me");
+  }
+
+  convertProfileType(profile: ProfileType) {
+    const fullName = `${profile.firstName} ${profile.lastName}`;
+
+    return {
+      username: fullName,
+      phone: profile.phone,
+      email: profile.email,
+      birthday: profile.birthday,
+      gender: profile.gender,
+      idNumber: profile.idNo,
+      passportNumber: profile.passportNo,
+      address: profile.address,
+    };
   }
 }
 

@@ -5,6 +5,8 @@ import Button from "./common/Button";
 import ModalPackage from "./modals/ModalPackage";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { usePlan } from "../Layout";
+import userService from "../services/user-service";
 
 interface Props {
   tour: TourType;
@@ -27,8 +29,12 @@ const Card = ({ tour }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const toggleModal = () => setOpenModal(!openModal);
   let navigate = useNavigate();
+  const { setPlan } = usePlan();
 
-  const bookPackage = () => {
+  const bookPackage = (plan: TourType) => {
+    const user = userService.getCurrentUser()
+    if (user) 
+    setPlan(plan);
     navigate("/booking");
     return;
   };
@@ -65,10 +71,19 @@ const Card = ({ tour }: Props) => {
             </div>
           </div>
           <div className="flex flex-col gap-1 items-end">
-            <Button size="sm" onClick={bookPackage}>
+            <Button
+              size="sm"
+              className="w-full"
+              onClick={() => bookPackage(tour)}
+            >
               Booking
             </Button>
-            <Button variant="outline" size="sm" onClick={toggleModal}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => setOpenModal(true)}
+            >
               More Detail
             </Button>
           </div>
@@ -79,7 +94,7 @@ const Card = ({ tour }: Props) => {
         onClose={toggleModal}
         tour={tour}
         hasBookingBtn={true}
-        bookPackage={bookPackage}
+        bookPackage={() => bookPackage(tour)}
       />
     </div>
   );

@@ -3,7 +3,6 @@ import ListItem from "../../components/ListItem";
 import fujiyoshida from "@img/tours/classic/Fujiyoshida-Yamanashi.jpg";
 import hakone from "@img/tours/adventure/Hakone.jpg";
 import osakaCastle from "@img/tours/cultural/OsakaCastle.jpg";
-import { motion } from "motion/react";
 import FadeInSection from "../../components/common/FadeInSection";
 
 const Guide = () => {

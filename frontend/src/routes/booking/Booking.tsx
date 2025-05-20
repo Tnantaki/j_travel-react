@@ -3,7 +3,6 @@ import { BiSolidNotepad } from "react-icons/bi";
 import { IoCalendar } from "react-icons/io5";
 import { MdPaid } from "react-icons/md";
 import { Fragment, useState } from "react";
-import Button from "../../components/common/Button";
 import Member from "./Member";
 import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
@@ -13,8 +12,6 @@ import FadeInSection from "../../components/common/FadeInSection";
 
 const Booking = () => {
   const [stepNum, setStepNum] = useState(1);
-  const nextStep = () => setStepNum(stepNum + 1);
-  const prevStep = () => setStepNum(stepNum - 1);
 
   const steps = [
     { image: BiSolidNotepad, label: "choose package" },
@@ -22,6 +19,9 @@ const Booking = () => {
     { image: IoCalendar, label: "select date" },
     { image: MdPaid, label: "pay" },
   ];
+
+  const nextStep = () => setStepNum(stepNum + 1);
+  const prevStep = () => setStepNum(stepNum - 1);
 
   return (
     <section className="bg-linear-light justify-center hero sec-padding">
@@ -66,26 +66,12 @@ const Booking = () => {
           ))}
         </ul>
         <div className="flex flex-col rounded-lg bg-frame-sec-tint border-slate-300 border-1 p-1 shadow-lg text-char-pri w-full sm:p-8 ms:rounded-2xl gap-6 h-full">
-          {stepNum === 1 && <ChoosePackage />}
-          {stepNum === 2 && <Member />}
-          {stepNum === 3 && <DateSelect />}
-          {stepNum === 4 && <Pay />}
-          <div className="flex justify-between">
-            <div>
-              {stepNum > 1 && (
-                <Button rounded="full" onClick={prevStep}>
-                  Previous
-                </Button>
-              )}
-            </div>
-            <div>
-              {stepNum < 4 && (
-                <Button rounded="full" onClick={nextStep}>
-                  Next
-                </Button>
-              )}
-            </div>
-          </div>
+          {stepNum === 1 && <ChoosePackage nextStep={nextStep} />}
+          {stepNum === 2 && <Member nextStep={nextStep} prevStep={prevStep} />}
+          {stepNum === 3 && (
+            <DateSelect nextStep={nextStep} prevStep={prevStep} />
+          )}
+          {stepNum === 4 && <Pay nextStep={nextStep} prevStep={prevStep} />}
         </div>
       </FadeInSection>
     </section>

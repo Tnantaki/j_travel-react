@@ -2,8 +2,9 @@ import InputInfo from "../InputInfo";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Button from "../common/Button";
-import { AxiosError } from "axios";
-import profileService from "../../services/profile-service";
+import { AxiosError, isAxiosError } from "axios";
+import userService from "../../services/user-service";
+import { FaExclamationCircle } from "react-icons/fa";
 
 interface PasswordInput {
   oldPassword: string;
@@ -14,27 +15,39 @@ interface PasswordInput {
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
+  onSuccess: () => void;
 }
 
-const ModalPassword = ({ isOpen, onClose }: Props) => {
-  const { register, handleSubmit, setError } = useForm<PasswordInput>();
+const ModalPassword = ({ isOpen, onClose, onSuccess }: Props) => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<PasswordInput>();
 
   const onSubmit: SubmitHandler<PasswordInput> = async (data) => {
-    console.log(data);
     try {
       if (data.newPassword !== data.confirmPassword) {
         throw new Error("Confirm password not match.");
       }
-      const res = await profileService.changePassword({
+      await userService.changePassword({
         newPassword: data.newPassword,
         oldPassword: data.oldPassword,
       });
-    } catch (error) {
-      const err = error as AxiosError;
-      if (err.response) {
-        console.log(err.response.data);
+      reset(); // clear on field in form
+      onSuccess(); // pop up suscess modal
+    } catch (error: any | AxiosError) {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          setError("confirmPassword", {
+            message: error.response.data,
+          });
+        }
+      } else {
         setError("confirmPassword", {
-          message: err.response.data as string,
+          message: error.message,
         });
       }
     }
@@ -49,20 +62,26 @@ const ModalPassword = ({ isOpen, onClose }: Props) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputInfo
-            type="text"
+            type="password"
             label="Old Password"
             {...register("oldPassword")}
           />
           <InputInfo
-            type="text"
+            type="password"
             label="New Password"
             {...register("newPassword")}
           />
           <InputInfo
-            type="text"
+            type="password"
             label="Confirm Password"
             {...register("confirmPassword")}
           />
+          {errors.confirmPassword && (
+            <p className="text-info-error flex items-center gap-1 text-sm mt-0.5 drop-shadow-lg sm:text-base sm:mt-1 self-start">
+              <FaExclamationCircle />
+              {errors.confirmPassword.message}
+            </p>
+          )}
           <Button
             type="submit"
             size="sm"
