@@ -15,6 +15,10 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 		unique: true,
 		required: true
 	},
+	profileImage: {
+		type: String,
+		default: null // I can do default image here too
+	},
 	address: {
 		street: { type: String, maxlength: 200, required: true },
 		building: { type: String, maxlength: 200, required: false },

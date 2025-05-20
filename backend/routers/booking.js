@@ -42,8 +42,8 @@ router.post('/', auth, async (req, res) => {
 		group: req.body.group,
 		firstDay:  req.body.firstDay,
 		lastDay:  req.body.lastDay,
-		status: res.body.status,
-		paymentStatus: req.body.paymentStatus
+		status: 'pending',
+		paymentStatus: 'unpaid'
 	});
 
 	await booking.save();

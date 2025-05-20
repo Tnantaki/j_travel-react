@@ -7,13 +7,14 @@ const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
 	const group = await Group.find().sort('-createdAt');
 });
 
 router.get('/me', auth, async (req, res) => {
-	const group = await Group.find({ members: req.user._id }).populate('leader', 'plan', 'title');
-
+	let group = await Group.find({ leader: req.user._id })
+	if (!group)
+		group = await Group.find({ members: req.user._id })
 	if (group.length === 0) return res.status(404).send('You are not a member of any group.');
 
 	res.send(group);
@@ -23,7 +24,7 @@ router.post('/', auth, async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	const {leader, members, plan: planId} = req.body;
+	const {members, plan: planId} = req.body;
 
 	const session = await mongoose.startSession(); //to prevent package overbooking (2 users booking at the same time)
 	session.startTransaction();
@@ -41,10 +42,9 @@ router.post('/', auth, async (req, res) => {
 		}
 
 		const group = new Group({
-			type: req.body.type,
-			leader: req.body.leader,
-			plan: req.body.planId,
-			members
+			leader: req.user._id,
+			plan: planId,
+			members: members
 		});
 
 		await group.save();

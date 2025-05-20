@@ -24,7 +24,6 @@ const Group = mongoose.model('Group', new mongoose.Schema({
 
 function validateGroup(group) {
 	const schema = Joi.object({
-		leader: Joi.objectId().required(),
 		plan: Joi.objectId().required(),
 		members: Joi.array().items(Joi.objectId())
 	});

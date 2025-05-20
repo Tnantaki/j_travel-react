@@ -38,8 +38,8 @@ function validate(booking) {
 		group: Joi.objectId().required(),
 		firstDay: Joi.date().required(),
 		lastDay: Joi.date().required(),
-		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed'),
-		paymentStatus: Joi.string.valid('unpaid', 'paid')
+		status: Joi.string().valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed').required(),
+		paymentStatus: Joi.string().valid('unpaid', 'paid').required()
 	}).validate(booking);
 }
 
