@@ -6,12 +6,12 @@ import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import MotionButton from "../../components/common/MotionButton";
 
 // Mocking
-const testMe: MemberInput = {
-  name: "ณัฐฐานิสร ชาวไร่อ้อย",
-  birthday: new Date("12-10-2000"),
-  gender: "female",
-  phone: "0812345678",
-};
+// const testMe: MemberInput = {
+//   name: "ณัฐฐานิสร ชาวไร่อ้อย",
+//   birthday: new Date("12-10-2000"),
+//   gender: "female",
+//   phone: "0812345678",
+// };
 
 interface Props {
   nextStep: () => void;
@@ -19,10 +19,11 @@ interface Props {
 }
 
 const Member = ({ nextStep, prevStep }: Props) => {
-  const [members, setMember] = useState<MemberInput[]>([]);
+  // const [members, setMember] = useState<MemberInput[]>([]);
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
   // const { group, dispatchGroup } = useGroup();
+  const members: MemberInput[]= []
 
   // const createGroup = async () => {
   //   try {
