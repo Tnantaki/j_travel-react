@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/common/Button";
 import { FaRegClock } from "react-icons/fa";
 import { FaBahtSign } from "react-icons/fa6";
@@ -8,7 +8,9 @@ import LinkButton from "../../components/common/LinkButton";
 import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
 import { useAuth } from "../../contexts/AuthProvider";
-import { useBooking } from "../../contexts/BookingProvider";
+import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import profileService from "../../services/profile-service";
+import { useNavigate } from "react-router";
 
 interface Props {
   nextStep: () => void;
@@ -19,16 +21,51 @@ const ChoosePackage = ({ nextStep }: Props) => {
   const { plan } = usePlan();
   const { bookDispatch } = useBooking();
   const { user } = useAuth();
+  let navigate = useNavigate();
 
   const handleChoosePlan = () => {
     if (user && plan) {
-      bookDispatch({ type: "add_leader", userId: user._id });
       bookDispatch({ type: "add_plan", planId: plan.id });
       nextStep();
     }
   };
 
   const validatePlan = () => (user && plan ? true : false);
+
+  useEffect(() => {
+    const { request, cancel } = profileService.getProfile();
+
+    const reqProfile = async () => {
+      try {
+        const res = await request;
+        const data = res.data;
+
+        if (!data) {
+          throw new Error("No Profile info");
+        }
+
+        const leader: MemberType = {
+          id: data.user,
+          name: data.username,
+          birthday: new Date(data.birthday),
+          gender: data.gender,
+          phone: data.phone,
+        };
+
+        bookDispatch({ type: "add_leader", leader });
+      } catch (error: any) {
+        if (error.code = 'ERR_CANCELED') { // cancel from dev mode
+          return ;
+        }
+        console.log(error);
+        navigate("/account/profile");
+      }
+    };
+    reqProfile();
+    return () => {
+      cancel(); // cancel request in case user navigate away before get response
+    };
+  }, []);
 
   return (
     <>

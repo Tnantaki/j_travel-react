@@ -39,7 +39,7 @@ export interface TourType {
 
 const tours: TourType[]  = [
   {
-    id: "classic",
+    id: "6824a2cf0194398765db4303",
     description:
       "Experience the best of traditional and modern Japan with this balanced tour.",
     name: "Classic Japan (Tokyo & Kyoto)",
@@ -104,7 +104,7 @@ const tours: TourType[]  = [
     ],
   },
   {
-    id: "adventure",
+    id: "6824a2cf0194398765db4303",
     name: "Adventure & Nature (Tokyo, Hakone & Mt. Fuji)",
     description: "A perfect tour for nature lovers and adventure seekers.",
     imgCover: hakone,
@@ -169,7 +169,7 @@ const tours: TourType[]  = [
     ],
   },
   {
-    id: "cultural",
+    id: "6824a2cf0194398765db4303",
     name: "Cultural & Food Tour (Osaka, Kyoto & Hiroshima)",
     description:
       "A tour focused on rich culture and the best Japanese cuisine.",
