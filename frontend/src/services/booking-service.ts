@@ -7,18 +7,28 @@ export interface MemberInput {
   phone: string;
 }
 
+export interface BookingReqType {
+  plan: string
+  group: string
+  firstDay: string
+  lastDay: string
+}
+
 class bookingService {
-  addMember(member: MemberInput) {
-    return apiClients.post("/members", member);
+  createBooking(booking: BookingReqType) {
+    return apiClients.post("/bookings", booking);
   }
+  // addMember(member: MemberInput) {
+  //   return apiClients.post("/members", member);
+  // }
 
-  getMembers() {
-    return apiClients.get<MemberInput[]>("/members");
-  }
+  // getMembers() {
+  //   return apiClients.get<MemberInput[]>("/members");
+  // }
 
-  deleteMember(id: string) {
-    return apiClients.delete(`/members/${id}`);
-  }
+  // deleteMember(id: string) {
+  //   return apiClients.delete(`/members/${id}`);
+  // }
 }
 
 export default new bookingService();

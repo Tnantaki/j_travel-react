@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Member = ({ nextStep, prevStep }: Props) => {
-  const { booking } = useBooking();
+  const { booking, bookDispatch } = useBooking();
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
 
@@ -22,8 +22,15 @@ const Member = ({ nextStep, prevStep }: Props) => {
       members: booking.members.map((m) => m.id),
     };
 
-    await groupService.createGroup(group);
-    nextStep();
+    try {
+      const res = await groupService.createGroup(group);
+      if (res.data._id) {
+        bookDispatch({ type: "add_groupId", groupId: res.data._id });
+        nextStep();
+      }
+    } catch (error) {
+      console.log(error)  
+    }
   };
 
   const renderMemberParagraph = (value: string, label: string) => {

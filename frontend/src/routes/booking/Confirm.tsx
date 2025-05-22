@@ -1,32 +1,60 @@
 import { format } from "date-fns";
 import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
-import { useBooking } from "../../contexts/BookingProvider";
-
-const mockMembers = [
-  { name: "Renee Matthams", age: 25 },
-  { name: "Hattie Zimmerman", age: 18 },
-  { name: "Kyron Snyder", age: 28 },
-];
+import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { getAge } from "../../utils/age";
+import bookingService, { BookingReqType } from "../../services/booking-service";
 
 interface Props {
   nextStep: () => void;
   prevStep: () => void;
 }
 
-const Pay = ({ nextStep, prevStep }: Props) => {
+const Confirm = ({ nextStep, prevStep }: Props) => {
   const { plan } = usePlan();
   const { booking } = useBooking();
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
+  const totalMember = booking.members.length + 1; // 1 is leader
+  let orderMember = 0;
 
-  const handleConfirm = () => {
-    nextStep();
+  console.log(booking);
+
+  const handleConfirm = async () => {
+    const bookingData: BookingReqType = {
+      plan: booking.planId,
+      group: booking.groupId,
+      firstDay: booking.startDate!.toISOString(),
+      lastDay: booking.endDate!.toISOString(),
+    };
+    console.log(bookingData)
+    try {
+      const res = await bookingService.createBooking(bookingData)
+      if (res.status >= 200 && res.status < 300) {
+        console.log('booking success')
+      }
+      // nextStep();
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const renderMemberTableRow = (member: MemberType) => {
+    orderMember += 1;
+
+    return (
+      <tr key={member.id} className="text-center *:py-2">
+        <td>{orderMember}</td>
+        <td>{member.name}</td>
+        <td>{getAge(member.birthday)}</td>
+        <td>{plan!.price}</td>
+      </tr>
+    );
   };
 
   return (
     <>
       <div className="flex flex-col w-full h-full">
-        <h4 className="mb-2">Pay</h4>
+        <h4 className="mb-2">Booking Information</h4>
         <div className="flex flex-col w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-2 h-full">
           <h4 className="mb-2">Package</h4>
           <div className="flex gap-4">
@@ -56,26 +84,20 @@ const Pay = ({ nextStep, prevStep }: Props) => {
               </tr>
             </thead>
             <tbody className="border-b-1 border-primary/40">
-              {mockMembers.map((member, idx) => (
-                <tr key={idx} className="text-center *:py-2">
-                  <td>{idx + 1}</td>
-                  <td>{member.name}</td>
-                  <td>{member.age}</td>
-                  <td>{plan!.price}</td>
-                </tr>
-              ))}
+              {renderMemberTableRow(booking.leader!)}
+              {booking.members.map((member) => renderMemberTableRow(member))}
             </tbody>
           </table>
           <div className="flex flex-row items-center">
             <p className="body2 text-char-pri-tint me-4">Total Member:</p>
             <p className="body1 font-medium text-char-pri">
-              {mockMembers.length} People
+              {totalMember} People
             </p>
           </div>
           <div className="flex flex-row items-center">
             <p className="body2 text-char-pri-tint me-4">Total Price:</p>
             <p className="body1 font-medium text-char-pri">
-              {mockMembers.length * plan!.price} Bath
+              {totalMember * plan!.price} Bath
             </p>
           </div>
         </div>
@@ -85,11 +107,11 @@ const Pay = ({ nextStep, prevStep }: Props) => {
           Previous
         </MotionButton>
         <MotionButton rounded="full" onClick={handleConfirm}>
-          Next
+          Confirm
         </MotionButton>
       </div>
     </>
   );
 };
 
-export default Pay;
+export default Confirm;
