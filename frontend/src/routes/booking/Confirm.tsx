@@ -3,7 +3,7 @@ import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
 import { MemberType, useBooking } from "../../contexts/BookingProvider";
 import { getAge } from "../../utils/age";
-import bookingService, { BookingReqType } from "../../services/booking-service";
+import bookingService, { BookingRequest } from "../../services/booking-service";
 import { useState } from "react";
 import ModalSuccess from "../../components/modals/ModalSuccess";
 
@@ -22,7 +22,7 @@ const Confirm = ({ prevStep }: Props) => {
   console.log(booking);
 
   const handleConfirm = async () => {
-    const bookingData: BookingReqType = {
+    const bookingData: BookingRequest = {
       plan: booking.planId,
       group: booking.groupId,
       firstDay: booking.startDate!.toISOString(),
