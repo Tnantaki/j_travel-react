@@ -90,7 +90,11 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
-      <ModalSuccess message="Your account has been created" isOpen={openModalSuccess} to="/login" />
+      <ModalSuccess
+        message="Your account has been created"
+        isOpen={openModalSuccess}
+        to="/login"
+      />
     </section>
   );
 };

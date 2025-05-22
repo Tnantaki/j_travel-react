@@ -4,13 +4,15 @@ import { usePlan } from "../../Layout";
 import { MemberType, useBooking } from "../../contexts/BookingProvider";
 import { getAge } from "../../utils/age";
 import bookingService, { BookingReqType } from "../../services/booking-service";
+import { useState } from "react";
+import ModalSuccess from "../../components/modals/ModalSuccess";
 
 interface Props {
-  nextStep: () => void;
   prevStep: () => void;
 }
 
-const Confirm = ({ nextStep, prevStep }: Props) => {
+const Confirm = ({ prevStep }: Props) => {
+  const [isConfirmSuccess, setIsConfirmSuccess] = useState<boolean>(false);
   const { plan } = usePlan();
   const { booking } = useBooking();
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
@@ -26,15 +28,15 @@ const Confirm = ({ nextStep, prevStep }: Props) => {
       firstDay: booking.startDate!.toISOString(),
       lastDay: booking.endDate!.toISOString(),
     };
-    console.log(bookingData)
+    console.log(bookingData);
     try {
-      const res = await bookingService.createBooking(bookingData)
+      const res = await bookingService.createBooking(bookingData);
       if (res.status >= 200 && res.status < 300) {
-        console.log('booking success')
+        console.log("booking success");
+        setIsConfirmSuccess(true);
       }
-      // nextStep();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -110,6 +112,12 @@ const Confirm = ({ nextStep, prevStep }: Props) => {
           Confirm
         </MotionButton>
       </div>
+      <ModalSuccess
+        message={`You have booking the plan
+          Wait for admin to contact.`}
+        isOpen={isConfirmSuccess}
+        to="/account/book"
+      />
     </>
   );
 };
