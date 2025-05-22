@@ -1,18 +1,37 @@
 import Modal from "./Modal";
 import Button from "../common/Button";
 import { IoIosSearch } from "react-icons/io";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { FaExclamationCircle } from "react-icons/fa";
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
 }
 
+const mockUpMember: MemberType[] = [
+  {
+    id: "12345",
+    name: "Anna rocker",
+    birthday: new Date("2020-02-11T00:00:00.000Z"),
+    gender: "female",
+    phone: "556 191-5394",
+  },
+  {
+    id: "67890",
+    name: "Anny rocker",
+    birthday: new Date("2020-02-11T00:00:00.000Z"),
+    gender: "female",
+    phone: "556 191-5394",
+  },
+];
+
 const ModalSearchMember = ({ isOpen, onClose }: Props) => {
-  const mockUpMember = [
-    { name: "Anna rocker", gender: "female" },
-    { name: "Anny rocker", gender: "female" },
-  ];
+  const [members, setMembers] = useState<MemberType[]>([]);
+  const [error, setError] = useState("");
+  const textRef = useRef<HTMLInputElement>(null);
+  const { booking, bookDispatch } = useBooking();
 
   const renderMemberList = (value: string, label: string) => {
     return (
@@ -23,12 +42,36 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
     );
   };
 
-  const textRef = useRef<HTMLInputElement>(null);
+  // filter out the member which already added
+  const filterMembers = (getMembers: MemberType[]) => {
+    return getMembers.filter((mem) => {
+      if (mem.id === booking.leader!.id) {
+        return false;
+      }
+      const memFilter = booking.members.filter(memList => memList.id === mem.id)
+      if (memFilter.length) {
+        return false
+      }
+      return true;
+    });
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleAddMember = (member: MemberType) => {
+    bookDispatch({ type: "add_member", member });
+    setMembers(members.filter(mem => mem.id !== member.id));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (textRef.current) {
       console.log(textRef.current.value);
+      try {
+        // search member API
+        const data = mockUpMember;
+        setMembers(filterMembers(data));
+      } catch (error) {
+        setError("Error");
+      }
     }
   };
 
@@ -57,18 +100,29 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
               Search
             </button>
           </div>
+          {error && (
+            <p className="text-info-error flex items-center gap-1 text-sm mt-0.5 absolute drop-shadow-lg sm:text-base sm:mt-1">
+              <FaExclamationCircle />
+              {error}
+            </p>
+          )}
         </form>
         <ul className="lg:h-[500px] w-full flex flex-col gap-2">
-          {mockUpMember.map((mem) => (
+          {members.map((mem) => (
             <li
-              key={mem.name}
+              key={mem.id}
               className="bg-slate-300 border-slate-500 border-1 flex px-6 py-4 rounded-md w-full"
             >
               <div className="grid grid-cols-2 w-full gap-2">
                 {renderMemberList(mem.name, "name")}
                 {renderMemberList(mem.gender, "gender")}
               </div>
-              <Button rounded="full" size="sm" className="self-center">
+              <Button
+                rounded="full"
+                size="sm"
+                className="self-center"
+                onClick={() => handleAddMember(mem)}
+              >
                 Add
               </Button>
             </li>

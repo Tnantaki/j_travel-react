@@ -2,9 +2,9 @@ import { NavLink } from "react-router";
 import Button from "../../components/common/Button";
 import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
-import ModalSuccessPassword from "../../components/modals/ModalSuccessPassword";
 import ModalDelete from "../../components/modals/ModalDelete";
 import profileService from "../../services/profile-service";
+import ModalSuccess from "../../components/modals/ModalSuccess";
 
 export interface ProfileMenu {
   label: string;
@@ -28,9 +28,9 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
 
   const onDelete = async () => {
     try {
-      await profileService.deleteProfile()
+      await profileService.deleteProfile();
     } catch (error) {
-      console.log('error', error)
+      console.log("error", error);
     }
 
     setPopupDeleteProfile(false);
@@ -76,7 +76,8 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
         onClose={() => setIsOpenPassword(false)}
         onSuccess={onSuccess}
       />
-      <ModalSuccessPassword
+      <ModalSuccess
+        message="Password updated successfully"
         isOpen={IsOpenSuccess}
         onClose={() => setIsOpenSuccess(false)}
       />

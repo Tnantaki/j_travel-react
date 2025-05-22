@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
 import Button from "../common/Button";
 import GenderInput from "../GenderInput";
-import bookingService, { MemberInput } from "../../services/booking-service";
+import { MemberInput } from "../../services/booking-service";
 import { AxiosError } from "axios";
 
 interface Props {
@@ -18,7 +18,7 @@ const MemberModal = ({ isOpen, onClose, fetchMemberData }: Props) => {
   const onSubmit: SubmitHandler<MemberInput> = async (data) => {
     console.log(data);
     try {
-      await bookingService.addMember(data);
+      // add member to database
       fetchMemberData();
     } catch (error: any | AxiosError) {
       console.log(error);
