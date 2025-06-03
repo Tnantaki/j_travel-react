@@ -13,9 +13,12 @@ import { getAge } from "../../utils/age";
 import userService from "../../services/user-service";
 import { AxiosError, isAxiosError } from "axios";
 import ModalWarning from "../../components/modals/ModalWarning";
+import FileUpload from "./FileUpload";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender | "">("");
   const [hasProfile, setHasProfile] = useState(false);
@@ -55,6 +58,7 @@ const Profile = () => {
         setAge(getAge(new Date(data.birthday)));
         setGender(data.gender);
         setHasProfile(true);
+        setPreview(data.profileImage);
       } catch (error: any | AxiosError) {
         if (isAxiosError(error)) {
           if (error.response) {
@@ -80,6 +84,9 @@ const Profile = () => {
     try {
       if (hasProfile) {
         await profileService.updateProfile(data);
+        if (file) {
+          await profileService.uploadImage(file);
+        }
       } else {
         const user = userService.getCurrentUser();
         if (!user) {
@@ -113,9 +120,12 @@ const Profile = () => {
       <div className="flex flex-row profile-layout justify-between gap-2">
         <div className="flex flex-col sm:flex-row gap-2 xl:gap-4 w-full">
           <div className="flex justify-between">
-            <div className="rounded-full size-18 lg:size-24 bg-slate-700 shrink-0">
-              {/* <img src="" alt="" /> */}
-            </div>
+            <FileUpload
+              edit={edit}
+              setFile={setFile}
+              preview={preview}
+              setPreview={setPreview}
+            />
             <div className="sm:hidden">
               <Button
                 type="button"
