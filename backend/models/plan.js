@@ -34,6 +34,10 @@ const Plan = mongoose.model('Plan', new mongoose.Schema({
 		max: 30,
 		required: function () {return this.type === 'tour';}
 	},
+	images: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Image'
+	}],
 	createdAt: {
 		type: Date,
 		default: Date.now
