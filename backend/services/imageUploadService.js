@@ -2,7 +2,6 @@ const { S3Client } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
 const { fileTypeFromBuffer } = require('file-type');
 const crypto = require('crypto');
-const { validate } = require('node-cron');
 
 // init connection to aws s3
 const s3Client = new S3Client({
@@ -24,7 +23,9 @@ const ALLOW_IMAGE_TYPES = [
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-async function validateImageFile(fileBuffer, originalName) {
+async function validateImageFile(file, originalName) {
+    const fileBuffer = file.buffer || file;
+
     if (fileBuffer.length > MAX_FILE_SIZE)
         throw new Error(`File too large. Maximum size is ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
 
@@ -101,6 +102,8 @@ async function uploadImageToS3(fileBuffer, originalName) {
 
 module.exports = {
     uploadImageToS3,
+    validateImageFile,
+    generateUniqeFileName,
     ALLOW_IMAGE_TYPES,
     MAX_FILE_SIZE
 }

@@ -1,7 +1,7 @@
-const { required } = require('joi');
+// const { required } = require('joi');
 const mongoose = require('mongoose');
 
-const imageSchema = new mongoose.Scema({
+const imageSchema = new mongoose.Schema({
 	imageUrl: {
 		type: String,
 		trim: true,
@@ -34,7 +34,7 @@ const imageSchema = new mongoose.Scema({
 	},
 	uploadedAt: {
 		type: Date,
-		default: Date.now()
+		default: Date.now
 	},
 	uploadedBy: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -50,7 +50,8 @@ const imageSchema = new mongoose.Scema({
 		type: String,
 		trim: true,
 		lowercase: true
-	}],
+	}]
+}, {
 	timestamps: true,
 	// when converting to JSON (for api responses), include virtual fileds
 	toJSON: {virtuals: true},
@@ -74,7 +75,7 @@ imageSchema.index({
 
 // virtual field: create a human-readable file size
 // this doesn't get stored in the db but is calculated when accessed
-imageSchema.virtaul('fileSizeFormatted').get(function() {
+imageSchema.virtual('fileSizeFormatted').get(function() {
 	const size = this.fileSize;
 	if (size < 1024) return size + ' bytes';
 	if (size < 1024 * 1024) return (size / 1024).toFixed(1) + ' KB';

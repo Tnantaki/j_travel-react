@@ -6,6 +6,7 @@ const auth = require('../routers/auth');
 const profile = require('../routers/profile');
 const profileImage = require('../routers/profileImage');
 const plan = require('../routers/plan');
+const planImage = require('../routers/planImage');
 const group = require('../routers/group');
 const booking = require('../routers/booking');
 const error = require('../middlewares/error');
@@ -21,6 +22,7 @@ module.exports = function(app) {
     app.use('/api/profiles', profile);
     app.use('/api/profiles', profileImage)
     app.use('/api/plans', plan);
+    app.use('/api/plans', planImage);
     app.use('/api/groups', group);
     app.use('/api/bookings', booking);
 

@@ -68,6 +68,7 @@ function validate(profile) {
 	const schema = Joi.object({
 		user: Joi.objectId().required(),
 		username: Joi.string().min(3).max(50).required().trim(),
+		profileImage: Joi.string().trim(),
 		address: Joi.object({
 			street: Joi.string().max(200).required().trim(),
 			building: Joi.string().max(200).allow("").optional().trim(),
@@ -92,6 +93,7 @@ function validateUpdate (profile) {
 	const schema = Joi.object({
 		user: Joi.forbidden(),
 		username: Joi.string().min(3).max(50).trim(),
+		profileImage: Joi.string().trim(),
 		address: Joi.object({
 			street: Joi.string().max(200).trim(),
 			building: Joi.string().max(200).allow("").optional().trim(),
