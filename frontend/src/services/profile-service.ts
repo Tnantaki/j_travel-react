@@ -23,6 +23,7 @@ export interface ProfileAPI {
   idNumber: string;
   passportNumber: string;
   address: Address;
+  profileImage: string
 }
 
 export interface ProfileType {
@@ -44,6 +45,13 @@ class profileService {
       user: userId,
       ...this.convertProfileType(profile),
     });
+  }
+
+  uploadImage(file: File) {
+    const formData = new FormData()
+
+    formData.append('profileImage', file)
+    return apiClients.post("/profiles/upload-profile-image", formData);
   }
 
   updateProfile(profile: ProfileType) {

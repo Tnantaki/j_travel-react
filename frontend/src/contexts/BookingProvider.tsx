@@ -5,11 +5,20 @@ import {
   useContext,
   useReducer,
 } from "react";
+import { Gender } from "../services/profile-service";
+
+export interface MemberType {
+  id: string;
+  name: string;
+  birthday: Date;
+  gender: Gender;
+  phone: string;
+}
 
 interface BookingType {
-  leaderId: string;
+  leader: MemberType | undefined;
   planId: string;
-  memberIds: string[];
+  members: MemberType[];
   groupId: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
@@ -23,12 +32,12 @@ interface AddPlan {
 
 interface AddLeader {
   type: "add_leader";
-  userId: string;
+  leader: MemberType;
 }
 
 interface AddMember {
   type: "add_member";
-  memberId: string;
+  member: MemberType;
 }
 
 interface AddGroup {
@@ -49,45 +58,45 @@ const bookingReducer = (
   switch (action.type) {
     case "add_plan":
       return {
-        leaderId: book.leaderId,
+        leader: book.leader,
         planId: action.planId,
-        memberIds: book.memberIds,
+        members: book.members,
         groupId: book.groupId,
         startDate: book.startDate,
         endDate: book.endDate,
       };
     case "add_leader":
       return {
-        leaderId: action.userId,
+        leader: action.leader,
         planId: book.planId,
-        memberIds: book.memberIds,
+        members: book.members,
         groupId: book.groupId,
         startDate: book.startDate,
         endDate: book.endDate,
       };
     case "add_member":
       return {
-        leaderId: book.leaderId,
+        leader: book.leader,
         planId: book.planId,
-        memberIds: [...book.memberIds, action.memberId],
+        members: [...book.members, action.member],
         groupId: book.groupId,
         startDate: book.startDate,
         endDate: book.endDate,
       };
     case "add_groupId":
       return {
-        leaderId: book.leaderId,
+        leader: book.leader,
         planId: book.planId,
-        memberIds: book.memberIds,
+        members: book.members,
         groupId: action.groupId,
         startDate: book.startDate,
         endDate: book.endDate,
       };
     case "select_date":
       return {
-        leaderId: book.leaderId,
+        leader: book.leader,
         planId: book.planId,
-        memberIds: book.memberIds,
+        members: book.members,
         groupId: book.groupId,
         startDate: action.startDate,
         endDate: action.endDate,
@@ -113,8 +122,8 @@ interface Props {
 const BookingProvider = ({ children }: Props) => {
   const [booking, bookDispatch] = useReducer(bookingReducer, {
     planId: "",
-    leaderId: "",
-    memberIds: [],
+    leader: undefined,
+    members: [],
     groupId: "",
     startDate: undefined,
     endDate: undefined,

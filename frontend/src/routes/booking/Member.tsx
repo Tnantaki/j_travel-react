@@ -1,17 +1,10 @@
 import Button from "../../components/common/Button";
 import { useState } from "react";
-import { MemberInput } from "../../services/booking-service";
 import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import MotionButton from "../../components/common/MotionButton";
-
-// Mocking
-// const testMe: MemberInput = {
-//   name: "ณัฐฐานิสร ชาวไร่อ้อย",
-//   birthday: new Date("12-10-2000"),
-//   gender: "female",
-//   phone: "0812345678",
-// };
+import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import groupService, { GroupType } from "../../services/group-service";
 
 interface Props {
   nextStep: () => void;
@@ -19,56 +12,49 @@ interface Props {
 }
 
 const Member = ({ nextStep, prevStep }: Props) => {
-  // const [members, setMember] = useState<MemberInput[]>([]);
+  const { booking, bookDispatch } = useBooking();
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
-  // const { group, dispatchGroup } = useGroup();
-  const members: MemberInput[]= []
 
-  // const createGroup = async () => {
-  //   try {
-  //     const res = await groupService.createGroup({
-  //       leader: group.leader,
-  //       plan: group.plan,
-  //       members: [],
-  //     });
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleChooseMember = async () => {
+    const group: GroupType = {
+      plan: booking.planId,
+      members: booking.members.map((m) => m.id),
+    };
 
-  // const { getGroup, cancel } = groupService.getGroup()
-
-  // const requestGroup = async () => {
-  //   try {
-  //     const res = await getGroup
-  //     // get Group API shoud got the detail of leader and members
-  //   } catch (error: any) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-
-  // 1. request group if not found, hit post api for create group which have only leader and plan
-  // createGroup()
-  // 2. request group again and render UI
-  // 3. create event handler for adding new members
-
-  // fetchMemberData();
-  // }, []);
-
-  const handleChooseMember = () => {
-    //
-    nextStep();
+    try {
+      const res = await groupService.createGroup(group);
+      if (res.data._id) {
+        bookDispatch({ type: "add_groupId", groupId: res.data._id });
+        nextStep();
+      }
+    } catch (error) {
+      console.log(error)  
+    }
   };
 
-  const renderMemberList = (value: string, label: string) => {
+  const renderMemberParagraph = (value: string, label: string) => {
     return (
       <div className="flex flex-col">
         <p className="body3 text-char-pri-tint me-1">{label}</p>
         <p className="text-lg font-normal text-char-pri">{value}</p>
       </div>
+    );
+  };
+
+  const renderMemberList = (member: MemberType) => {
+    return (
+      <li
+        key={member.id}
+        className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
+      >
+        <div className="grid grid-cols-2 w-full gap-2">
+          {renderMemberParagraph(member.name, "name")}
+          {renderMemberParagraph(getAge(member.birthday), "age")}
+          {renderMemberParagraph(member.phone, "phone")}
+          {renderMemberParagraph(member.gender, "gender")}
+        </div>
+      </li>
     );
   };
 
@@ -78,19 +64,8 @@ const Member = ({ nextStep, prevStep }: Props) => {
         <h4 className="mb-2">Member</h4>
         <div className="booking-sub-frame">
           <ul className="flex flex-col gap-4 w-full">
-            {members.map((member) => (
-              <li
-                key={member.name}
-                className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
-              >
-                <div className="grid grid-cols-2 w-full gap-2">
-                  {renderMemberList(member.name, "name")}
-                  {renderMemberList(getAge(member.birthday), "age")}
-                  {renderMemberList(member.phone, "phone")}
-                  {renderMemberList(member.gender, "gender")}
-                </div>
-              </li>
-            ))}
+            {renderMemberList(booking.leader!)}
+            {booking.members.map((member) => renderMemberList(member))}
             <Button
               rounded="full"
               size="sm"

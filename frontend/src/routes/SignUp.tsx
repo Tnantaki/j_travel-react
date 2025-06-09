@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import UserService from "../services/user-service";
 import { useState } from "react";
-import ModalSuccessSignup from "../components/modals/ModalSuccessSignup";
+import ModalSuccess from "../components/modals/ModalSuccess";
 
 const formSchema = z
   .object({
@@ -90,7 +90,11 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
-      <ModalSuccessSignup isOpen={openModalSuccess} />
+      <ModalSuccess
+        message="Your account has been created"
+        isOpen={openModalSuccess}
+        to="/login"
+      />
     </section>
   );
 };

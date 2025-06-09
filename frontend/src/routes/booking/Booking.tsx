@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 import Member from "./Member";
 import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
-import Pay from "./Pay";
+import Confirm from "./Confirm";
 import { cn } from "../../utils/cn";
 import FadeInSection from "../../components/common/FadeInSection";
 
@@ -17,7 +17,7 @@ const Booking = () => {
     { image: BiSolidNotepad, label: "choose package" },
     { image: HiUserGroup, label: "create group" },
     { image: IoCalendar, label: "select date" },
-    { image: MdPaid, label: "pay" },
+    { image: MdPaid, label: "confirm" },
   ];
 
   const nextStep = () => setStepNum(stepNum + 1);
@@ -71,7 +71,7 @@ const Booking = () => {
           {stepNum === 3 && (
             <DateSelect nextStep={nextStep} prevStep={prevStep} />
           )}
-          {stepNum === 4 && <Pay nextStep={nextStep} prevStep={prevStep} />}
+          {stepNum === 4 && <Confirm prevStep={prevStep} />}
         </div>
       </FadeInSection>
     </section>

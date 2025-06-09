@@ -1,15 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../contexts/AuthProvider";
+import profileService from "../services/profile-service";
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { logout } = useAuth();
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const items = [
     { label: "Profile", to: "/account/profile" },
     { label: "Signout", to: "/login", logout: true },
   ];
+
+  useEffect(() => {
+    const { request, cancel } = profileService.getProfile();
+
+    const reqProfile = async () => {
+      try {
+        const res = await request;
+        const data = res.data;
+
+        if (!data) {
+          return;
+        }
+
+        setProfileImage(data.profileImage);
+      } catch (error: any) {
+        console.log(error.response.data);
+      }
+    };
+    reqProfile();
+    return () => {
+      cancel(); // cancel request in case user navigate away before get response
+    };
+  });
 
   return (
     <div className="flex justify-center items-center p-8">
@@ -18,8 +43,14 @@ const UserDropdown = () => {
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-        <button className="inline-flex size-12 bg-gray-600 rounded-full focus:outline-none">
-          {/* <img src="" alt="" /> */}
+        <button className="inline-flex size-12 bg-gray-600 rounded-full focus:outline-none overflow-hidden">
+          {profileImage && (
+            <img
+              src={profileImage}
+              alt="profile image"
+              className="object-center object-cover w-full h-full"
+            />
+          )}
         </button>
 
         {/* Dropdown menu */}

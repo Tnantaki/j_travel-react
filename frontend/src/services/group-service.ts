@@ -1,7 +1,6 @@
 import apiClients from "./api-clients";
 
 export interface GroupType {
-  leader: string;
   plan: string;
   members: string[];
 }
