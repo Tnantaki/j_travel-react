@@ -1,6 +1,5 @@
 const { S3Client } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
-const { fileTypeFromBuffer } = require('file-type');
 const crypto = require('crypto');
 
 // init connection to aws s3
@@ -23,11 +22,13 @@ const ALLOW_IMAGE_TYPES = [
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-async function validateImageFile(file, originalName) {
+async function validateImageFile(file) {
     const fileBuffer = file.buffer || file;
 
     if (fileBuffer.length > MAX_FILE_SIZE)
         throw new Error(`File too large. Maximum size is ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
+
+    const { fileTypeFromBuffer } = await import('file-type');
 
     // Verify the actual file type by reading the file's magic bytes
     // This prevents someone from renaming a virus.exe to virus.jpg

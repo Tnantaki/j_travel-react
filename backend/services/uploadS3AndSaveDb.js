@@ -17,7 +17,7 @@ async function uploadImageToS3(file) {
         const fileBuffer = file.buffer;
         const originalName = file.originalname;
 
-        const fileType = await validateImageFile(fileBuffer, originalName);
+        const fileType = await validateImageFile(fileBuffer);
         const fileName = generateUniqeFileName(originalName, fileType);
 
         const uploadParams = {
