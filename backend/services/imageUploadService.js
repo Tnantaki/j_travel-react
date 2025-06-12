@@ -64,8 +64,6 @@ async function uploadImageToS3(fileBuffer, originalName) {
             Key: `images/${fileName}`,  // store in an 'uploads' folder for organization
             Body: fileBuffer,
             ContentType: fileType.mime,
-            // make the file publicly readable so broser can display it
-            // ACL: 'public-read',
             // add some useful metadata
             Metadata: {
                 'original-name': originalName,

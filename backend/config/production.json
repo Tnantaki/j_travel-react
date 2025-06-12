@@ -1,0 +1,4 @@
+{
+    "jwtPrivateKey": "1234",
+    "db": "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/jTravel?replicaSet=rs0"
+}

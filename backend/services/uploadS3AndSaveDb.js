@@ -1,7 +1,5 @@
 const { S3Client } = require('@aws-sdk/client-s3');
 const { Upload } = require('@aws-sdk/lib-storage');
-const Image = require('../models/image');
-const { fileTypeFromBuffer } = require('file-type');
 const { validateImageFile, generateUniqeFileName } = require('./imageUploadService');
 
 // init connection to aws s3
@@ -41,8 +39,6 @@ async function uploadImageToS3(file) {
         // const uploadRes = await upload.done();
         const uploadRes = await upload.done()
 
-        // const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/images/${fileName}`;
-
         return {
             imageUrl: uploadRes.Location,
             originalName: file.originalname,
@@ -50,18 +46,6 @@ async function uploadImageToS3(file) {
             size: file.size,
             mimeType: fileType.mime,
         }
-        // return {
-        //     imageUrl,
-        //     originalName,
-        //     fileName,
-        //     fileSize: fileBuffer.length,
-        //     mimeType: fileType.mime,
-        //     s3Key: uploadParams.Key,
-        //     s3Response: uploadRes
-        // }
-        // const savedImage = await imageDoc.save();
-        // return savedImage;
-
     } catch (error) {
         console.error('Error uploading image:', error);
         throw error;
