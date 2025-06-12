@@ -4,7 +4,7 @@ services:
     container_name: mongo1
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
-      - ./mongo/mongod.conf:/etc/mongod.conf
+      - ./backend/mongo/mongod.conf:/etc/mongod.conf
       - mongo1_data:/data/db
     networks:
       - mongo-cluster
@@ -14,7 +14,7 @@ services:
     container_name: mongo2
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
-      - ./mongo/mongod.conf:/etc/mongod.conf
+      - ./backend/mongo/mongod.conf:/etc/mongod.conf
       - mongo2_data:/data/db
     networks:
       - mongo-cluster
@@ -24,7 +24,7 @@ services:
     container_name: mongo3
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
-      - ./mongo/mongod.conf:/etc/mongod.conf
+      - ./backend/mongo/mongod.conf:/etc/mongod.conf
       - mongo3_data:/data/db
     networks:
       - mongo-cluster
@@ -66,10 +66,10 @@ services:
         echo '✅ Replica set initialization completed'
       "
     volumes:
-      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
 
   app:
-    build: .
+    build: ./backend
     container_name: my-node-app
     env_file: .env
     ports:
@@ -79,6 +79,16 @@ services:
     networks:
       - mongo-cluster
     restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    image: jtravel:1.0
+    ports:
+      - "3050:80"
+    depends_on:
+      - app
+    networks:
+      - mongo-cluster
 
 volumes:
   mongo1_data:
