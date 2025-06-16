@@ -5,8 +5,11 @@ const multer = require('multer');
 const { Plan, validate } = require('../models/plan');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
-const Image = require('../models/image');
-const { ALLOW_IMAGE_TYPES, MAX_FILE_SIZE} = require('../services/imageUploadService');
+const { Image, validateImage } = require('../models/image');
+const { ALLOW_IMAGE_TYPES, 
+	MAX_FILE_SIZE, 
+	validateImageFile, 
+	generateUniqeFileName} = require('../services/imageUploadService');
 const uploadImageToS3 = require('../services/uploadS3AndSaveDb');
 
 const upload = multer({
@@ -19,52 +22,77 @@ const upload = multer({
 	}
 });
 
-async function createPlanAndImages(planData, imageFiles) {
+async function createPlanAndImages(planData, imageFiles, req) {
 	const session = await mongoose.startSession();
 
 	try { 
-		session.startTransaction();
+			session.startTransaction();
 
-		const uploadRes = [];
+			const captions = Array.isArray(req.body.caption) ? req.body.caption : [];
+			const tags = Array.isArray(req.body.tag) ? req.body.tag : [];
 
-		// for (let imageFile of imageFiles) {
-		// 	const uploadRes = await uploadImageToS3(imageFile);
-		for (let imageFile of imageFiles) {
-			// console.log(imageFile);
-			const res = await uploadImageToS3(imageFile);
-			uploadRes.push(res);
-		}
+			const imgInfos = [];
+			for (let i = 0; i < imageFiles.length; i++) {
+				// validate file and generate name
+				const file = imageFiles[i];
+				const fileType = await validateImageFile(file.buffer);
+				const fileName = generateUniqeFileName(file.originalname, fileType);
 
-		const createdImgs = [];
-		for (let i = 0; i < uploadRes.length; i++) {
-			const res = uploadRes[i];
-			// console.log(res);
-			const imageFile = imageFiles[i];
+				const payload = {
+					originalName: file.originalname,
+					fileName: fileName,
+					fileSize: file.buffer.length,
+					mimeType: fileType.mime,
+					caption: captions[i],
+					tag: tags[i]
+						? tags[i].split(',').map(t => t.trim().toLowerCase())
+						: [],
+					isActive: true,
+					uploadedBy: req.user._id
+				}
 
-			const imageDoc = new Image({
-				imageUrl: res.imageUrl,
-				originalName: res.originalName,
-				fileName: res.Key,
-				fileSize: res.size,
-				mimeType: res.mimeType,
-				caption: imageFile.caption || '',
-				tags: imageFile.tags || [],
-				uploadedBy: planData.adminId
+				const {error} = validateImage(payload);
+				if (error)
+					throw new Error(`Validation failed for "${payload.originalName}": ${error.details[0].message}`);
+				
+				imgInfos.push({file, fileType, fileName, payload});
+			}
+
+			// upload image to aws
+			const uploadRes = [];
+			for (const {file, fileType, fileName} of imgInfos) {
+				const res = await uploadImageToS3({
+					buffer: file.buffer,
+					originalname: file.originalname,
+					fileName,
+					mimeType: fileType.mime
+				})
+				uploadRes.push(res);
+			}
+
+			// save image to mongoose doc
+			const createdImgs = [];
+			for (let i = 0; i < imgInfos.length; i++) {
+				const {payload} = imgInfos[i];
+				const {imageUrl} = uploadRes[i];
+
+				payload.imageUrl = imageUrl;
+
+				const imgDoc = new Image(payload);
+				const savedImg = await imgDoc.save({session});
+				createdImgs.push(savedImg);
+			}
+
+			// create and save plan
+			const planDoc = new Plan({
+				...planData, // spread operator
+				images: createdImgs.map(img => img._id)
 			});
 
-			const savedImage = await imageDoc.save({session});
-			createdImgs.push(savedImage);
-		}
+			const savedPlan = await planDoc.save({session});
 
-		const planDoc = new Plan({
-			...planData, // spread operator
-			images: createdImgs.map(img => img._id),
-		});
-
-		const savedPlan = await planDoc.save({session});
-
-		await session.commitTransaction();
-		return await savedPlan;
+			await session.commitTransaction();
+			return savedPlan;
 
 	} catch (error) {
 		await session.abortTransaction();
@@ -77,9 +105,8 @@ async function createPlanAndImages(planData, imageFiles) {
 
 router.post('/create-with-image', upload.array('images'), 
 	[auth, admin], async(req, res) => {
-		const {error} = validate(req.body);
-		if (error)
-			return res.status(400).send(error.details[0].message);
+		if (!req.files || req.files.length === 0)
+			return res.status(400).send('No file to upload.');
 
 		const planData = {
 			type: req.body.type,
@@ -88,15 +115,22 @@ router.post('/create-with-image', upload.array('images'),
 			price: parseFloat(req.body.price),
 			duration: parseFloat(req.body.duration),
 			seatsAvailable: req.body.type === 'tour' ? parseInt(req.body.seatsAvailable) : undefined,
-			adminId: req.user._id
+			// adminId: req.user._id
 		}
 
-		const newPlan = await createPlanAndImages(planData, req.files);
+		const {error} = validate(planData);
+		if (error)
+			return res.status(400).send(error.details[0].message);
 
-		res.status(201).send({
-			success: true,
-			plan: newPlan
-		});
+		try {
+			const newPlan = await createPlanAndImages(planData, req.files, req);
+			res.status(201).send({
+				success: true,
+				plan: newPlan
+			});
+		}catch (error) {
+			res.status(400).send(error.message);
+		}
 	}
 );
 

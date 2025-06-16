@@ -11,22 +11,15 @@ const s3Client = new S3Client({
     }
 });
 
-async function uploadImageToS3(file) {
+async function uploadImageToS3({buffer, originalname, fileName, mimeType}) {
     try {
-        // console.log(file);
-        const fileBuffer = file.buffer;
-        const originalName = file.originalname;
-
-        const fileType = await validateImageFile(fileBuffer);
-        const fileName = generateUniqeFileName(originalName, fileType);
-
         const uploadParams = {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: `images/${fileName}`,  // store in an 'uploads' folder for organization
-            Body: fileBuffer,
-            ContentType: fileType.mime,
+            Body: buffer,
+            ContentType: mimeType,
             Metadata: {
-                'original-name': originalName,
+                'original-name': originalname,
                 'upload-date': new Date().toISOString()
             }
         };
@@ -36,15 +29,14 @@ async function uploadImageToS3(file) {
             params: uploadParams
         });
 
-        // const uploadRes = await upload.done();
         const uploadRes = await upload.done()
 
         return {
             imageUrl: uploadRes.Location,
-            originalName: file.originalname,
+            originalName: originalname,
             Key: uploadRes.Key,
-            size: file.size,
-            mimeType: fileType.mime,
+            size: buffer.length,
+            mimeType: mimeType
         }
     } catch (error) {
         console.error('Error uploading image:', error);

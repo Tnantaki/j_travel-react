@@ -1,4 +1,4 @@
-// const { required } = require('joi');
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
@@ -109,6 +109,31 @@ imageSchema.pre('save', async function(next) {
 	next();
   });
 
-  const Image = mongoose.model('Image', imageSchema);
+function validateImage(image) {
+	const schema = Joi.object({
+		originalName: Joi.string().max(255).required(),
+		fileName: Joi.string().max(255).required(),
+		fileSize: Joi.number().min(0).required(),
+		mimeType: Joi.string()
+					.valid(
+						'image/jpeg', 
+						'image/jpg', 
+						'image/png', 
+						'image/webp', 
+						'image/gif')
+						.required(),
+		caption: Joi.string().max(255).allow('').optional(),
+		uploadedBy: Joi.string().regex(/^[a-f\d]{24}$/i).optional(),
+		isActive: Joi.boolean().optional(),
+		tag: Joi.array().items(Joi.string().trim().lowercase()).optional()
+	});
 
-  module.exports = Image;
+	return schema.validate(image, {abortEarly: false});
+}
+
+const Image = mongoose.model('Image', imageSchema);
+
+module.exports = {
+	Image,
+	validateImage
+}
