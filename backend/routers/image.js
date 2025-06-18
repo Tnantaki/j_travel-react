@@ -46,7 +46,7 @@ router.get('/', [auth, admin, validatePage], async(req, res) => {
 			.sort({uploadedAt: -1})
 			.skip(skip)
 			.limit(limit)
-			.select('fileName imageUrl')
+			.select('fileName imageUrl tag')
 	]);
 
 	res.send({
