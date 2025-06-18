@@ -19,8 +19,8 @@ const apiUrl = "http://localhost:3000/api";
 
 // 🔐 Get token from localStorage (or from a token service)
 const getAuthHeader = () => {
-  const token = localStorage.getItem('token');
-  return token ? { 'x-auth-token': token } : {};
+  const token = localStorage.getItem("token");
+  return token ? { "x-auth-token": token } : {};
 };
 
 const baseProvider = jsonServerProvider(apiUrl, httpClient);
@@ -44,9 +44,9 @@ export const dataProvider: DataProvider = {
       console.log("params", params);
       const res = await axios.get(`${apiUrl}/${resource}`, {
         headers: {
-          ...getAuthHeader()
-        }
-      })
+          ...getAuthHeader(),
+        },
+      });
 
       return {
         data: mapId(res.data),
@@ -80,6 +80,50 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
+    if (resource === "plans") {
+      const formData = new FormData();
+
+      // Append regular text fields (if any)
+      for (const key in params.data) {
+        if (key !== "file") {
+          formData.append(key, params.data[key]);
+        }
+      }
+
+      // Append image file(s)
+      if (params.data.file) {
+        const files = Array.isArray(params.data.file)
+          ? params.data.file
+          : [params.data.file];
+
+        files.forEach((file) => {
+          formData.append("images", file.rawFile); // .rawFile is important in react-admin
+        });
+      }
+
+      const token = userService.getToken();
+      const myHeaders = new Headers();
+      if (token) {
+        myHeaders.append("x-auth-token", token);
+      }
+
+      console.log("formData",formData)
+
+      const response = await fetch(`${apiUrl}/plans/create-with-image`, {
+        method: "POST",
+        headers: myHeaders,
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.log(response)
+        throw new Error("Image upload failed");
+      }
+
+      const json = await response.json();
+      return { data: { ...json, id: json.id } };
+    }
+
     const response = await baseProvider.create(resource, params);
     return { data: mapId(response.data) };
   },

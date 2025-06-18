@@ -1,5 +1,7 @@
 import {
   Create,
+  ImageField,
+  ImageInput,
   NumberInput,
   required,
   SelectInput,
@@ -35,6 +37,9 @@ const PlanCreate = () => {
           source="seatsAvailable"
           disabled={!seat}
         />
+        <ImageInput label="Upload Image" source="file" multiple >
+          <ImageField source="src" title="title" />
+        </ImageInput>
       </SimpleForm>
     </Create>
   );
