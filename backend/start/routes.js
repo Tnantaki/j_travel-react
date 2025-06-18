@@ -9,6 +9,7 @@ const plan = require('../routers/plan');
 const planImage = require('../routers/planImage');
 const group = require('../routers/group');
 const booking = require('../routers/booking');
+const image = require('../routers/image');
 const error = require('../middlewares/error');
 
 module.exports = function(app) {
@@ -25,6 +26,7 @@ module.exports = function(app) {
     app.use('/api/plans', planImage);
     app.use('/api/groups', group);
     app.use('/api/bookings', booking);
+    app.use('/api/images', image);
 
     // error handler
     app.use(error);

@@ -54,7 +54,7 @@ const imageSchema = new mongoose.Schema({
 }, {
 	timestamps: true,
 	// when converting to JSON (for api responses), include virtual fileds
-	toJSON: {virtuals: true},
+	toJSON: {virtuals: false},
 	toObject: {virtuals: true}
 });
 
