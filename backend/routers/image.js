@@ -7,8 +7,7 @@ const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
  
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
-	const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-	const limit = Math.min(50, parseInt(req.query.limit, 10) || 10);
+	const {page, limit} = req.query;
 	const skip = (page - 1) * limit;
 
 	const [ totalItems, docs ] = await Promise.all([
@@ -29,6 +28,35 @@ router.get('/all', [auth, admin, validatePage], async(req, res) => {
 		totalItems,
 		items: docs
 	});
+})
+
+router.get('/', [auth, admin, validatePage], async(req, res) => {
+	const {page, limit, tags } = req.query;
+	const skip = (page - 1) * limit;
+
+	let filter = {isActive: true};
+	if (tags) {
+		const tagList = tags.split(',').map(t => t.toLowerCase().trim());
+		filter.tag = {$in: tagList};
+	}
+
+	const [ totalItems, items ] = await Promise.all([
+		Image.countDocuments(filter),
+		Image.find(filter)
+			.sort({uploadedAt: -1})
+			.skip(skip)
+			.limit(limit)
+			.select('fileName imageUrl')
+	]);
+
+	res.send({
+		page,
+		limit,
+		totalPages: Math.ceil(totalItems / limit),
+		totalItems,
+		items
+	})
+
 })
 
 module.exports = router;

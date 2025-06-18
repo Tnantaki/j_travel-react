@@ -54,7 +54,7 @@ const imageSchema = new mongoose.Schema({
 }, {
 	timestamps: true,
 	// when converting to JSON (for api responses), include virtual fileds
-	toJSON: {virtuals: false},
+	// toJSON: {virtuals: false},
 	toObject: {virtuals: true}
 });
 
@@ -82,13 +82,21 @@ imageSchema.virtual('fileSizeFormatted').get(function() {
 	return (size / (1024 * 1024)).toFixed(1) + ' MB';
 });
 
-// static method: find images by tag
-imageSchema.statics.findByTag = function(tag) {
+// static method: find images by tag --> this only allow single tag querying
+// imageSchema.statics.findByTag = function(tag) {
+// 	return this.find({
+// 		tag: {$in: [tag.toLowerCase()]},
+// 		isActive: true
+// 	}).sort({uploadedAt: -1});
+// }
+imageSchema.statics.findByTags = function(tags) {
+	const allTags = tags.map(t => t.toLowerCase().trim());
 	return this.find({
-		tag: {$in: [tag.toLowerCase()]},
+		tag: {$in: allTags},
 		isActive: true
-	}).sort({uploadedAt: -1});
-}
+	})
+	.sort({uploadedAt: -1});
+};
 
 // Middleware: Before saving, ensure filename is unique
 imageSchema.pre('save', async function(next) {
