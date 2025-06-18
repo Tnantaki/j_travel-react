@@ -74,7 +74,6 @@ async function uploadImage(imgInfos) {
 
 async function createPlanAndImages(planData, imageFiles, req) {
 	const session = await mongoose.startSession();
-	session.startTransaction();
 
 	try { 
 			session.startTransaction();
