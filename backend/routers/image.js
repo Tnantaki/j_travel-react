@@ -5,7 +5,7 @@ const auth = require('../middlewares/auth')
 const admin = require('../middlewares/admin')
 const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
- 
+
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit} = req.query;
 	const skip = (page - 1) * limit;
@@ -57,6 +57,12 @@ router.get('/', [auth, admin, validatePage], async(req, res) => {
 		items
 	})
 
+})
+
+router.post('/', [auth, admin], async(req, res) => {
+	if (!req.files || req.files.length === 0)
+		return res.status(400).send(error.detials[0].message);
+	
 })
 
 module.exports = router;

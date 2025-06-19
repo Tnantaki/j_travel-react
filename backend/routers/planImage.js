@@ -1,76 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const multer = require('multer');
 const { Plan, validate } = require('../models/plan');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const { Image, validateImage } = require('../models/image');
-const { ALLOW_IMAGE_TYPES, 
-	MAX_FILE_SIZE, 
-	validateImageFile, 
-	generateUniqeFileName} = require('../services/imageUploadService');
-const uploadImageToS3 = require('../services/uploadS3AndSaveDb');
-
-const upload = multer({
-	storage: multer.memoryStorage(),
-	limit: { fileSize: MAX_FILE_SIZE},
-	fileFilter(req, file, cb) { 
-		if (!ALLOW_IMAGE_TYPES.includes(file.mimetype))
-			return cb(new Error('Only JPEG, PNG, WebP or GIF images allowed'))
-		cb(null, true);
-	}
-});
-
-async function initImage(imageFiles, req) {
-	const captions = Array.isArray(req.body.caption) ? req.body.caption : [];
-	const tags = Array.isArray(req.body.tag) ? req.body.tag : [];
-
-	const imgInfos = [];
-	for (let i = 0; i < imageFiles.length; i++) {
-		// validate file and generate name
-		const file = imageFiles[i];
-		const fileType = await validateImageFile(file.buffer);
-		const fileName = generateUniqeFileName(file.originalname, fileType);
-
-		const payload = {
-			originalName: file.originalname,
-			fileName: fileName,
-			fileSize: file.buffer.length,
-			mimeType: fileType.mime,
-			caption: captions[i],
-			tag: tags[i]
-				? tags[i].split(',').map(t => t.trim().toLowerCase())
-				: [],
-			isActive: true,
-			uploadedBy: req.user._id
-		}
-
-		const {error} = validateImage(payload);
-		if (error)
-			throw new Error(`Validation failed for "${payload.originalName}": ${error.details[0].message}`);
-		
-		imgInfos.push({file, fileType, fileName, payload});
-	}
-
-	return imgInfos;
-}
-
-async function uploadImage(imgInfos) {
-	// upload image to aws
-	const uploadRes = [];
-	for (const {file, fileType, fileName} of imgInfos) {
-		const res = await uploadImageToS3({
-			buffer: file.buffer,
-			originalname: file.originalname,
-			fileName,
-			mimeType: fileType.mime
-		})
-		uploadRes.push(res);
-	}	
-
-	return uploadRes;
-}
+const { upload, initImage, uploadImage} = require('../services/uploadS3AndSaveDb');
 
 async function createPlanAndImages(planData, imageFiles, req) {
 	const session = await mongoose.startSession();
