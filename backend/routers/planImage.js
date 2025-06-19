@@ -4,7 +4,7 @@ const router = express.Router();
 const { Plan, validate } = require('../models/plan');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
-const { Image, validateImage } = require('../models/image');
+const { Image } = require('../models/image');
 const { upload, initImage, uploadImage} = require('../services/uploadS3AndSaveDb');
 
 async function createPlanAndImages(planData, imageFiles, req) {
