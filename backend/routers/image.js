@@ -5,8 +5,9 @@ const auth = require('../middlewares/auth')
 const admin = require('../middlewares/admin')
 const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
-const { upload, initImage, uploadImage } = require('../services/uploadS3AndSaveDb');
+const { upload, initImage, uploadImage, s3Client } = require('../services/uploadS3AndSaveDb');
 const validateDelete = require('../middlewares/validateDelete');
+const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit} = req.query;
@@ -81,8 +82,10 @@ router.post('/', upload.array('images') ,[auth, admin], async(req, res) => {
 		for (let i = 0; i < imgInfos.length; i++) {
 			const {payload} = imgInfos[i];
 			const {imageUrl} = uploadRes[i];
+			const {Key} = uploadRes[i];
 
 			payload.imageUrl = imageUrl;
+			payload.key = Key;
 			
 			const imgDoc = new Image(payload);
 			const savedImg = await imgDoc.save();
@@ -112,5 +115,25 @@ router.delete('/soft-delete', [auth, admin, validateDelete], async(req, res) => 
 
 	res.send('Delete completed.');
 });
+
+router.delete('/hard-delete', [auth, admin, validateDelete], async(req, res) => {
+	const {ids} = req.body
+	
+	const imgs = await Image.find({_id: {$in: ids}});
+	if (!imgs || imgs.length === 0)
+		return res.status(404).send('Images not found.');
+
+	const deleted = await Image.deleteMany({_id: {$in: ids}});
+
+	for (let img of imgs) {
+		const key = img.key;
+		await s3Client.send(new DeleteObjectCommand({
+			Bucket: process.env.AWS_BUCKET_NAME,
+			Key: img.key
+		}));
+	}
+	
+	res.send({deletedCount: deleted.deletedCount, imgs});
+})
 
 module.exports = router;

@@ -22,8 +22,10 @@ async function createPlanAndImages(planData, imageFiles, req) {
 			for (let i = 0; i < imgInfos.length; i++) {
 				const {payload} = imgInfos[i];
 				const {imageUrl} = uploadRes[i];
+				const {Key} = uploadRes[i];
 
 				payload.imageUrl = imageUrl;
+				payload.key = Key;
 
 				const imgDoc = new Image(payload);
 				const savedImg = await imgDoc.save({session});

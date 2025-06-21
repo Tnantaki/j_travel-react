@@ -113,5 +113,6 @@ module.exports = {
     upload,
     uploadImageToS3,
     initImage,
-    uploadImage
+    uploadImage,
+    s3Client
 }
