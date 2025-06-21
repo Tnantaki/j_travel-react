@@ -27,6 +27,11 @@ const imageSchema = new mongoose.Schema({
 		enum: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'], // Only allow these types
 		required: true
 	},
+	key: {
+		type: String,
+		trim: true,
+		required: true
+	},
 	caption: {
 		type: String,
 		maxlength: 500,
