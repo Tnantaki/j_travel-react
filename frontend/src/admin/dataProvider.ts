@@ -65,6 +65,7 @@ interface ImagesType {
     _id: string;
     imageUrl: string;
     fileName: string;
+    tag: string[];
   }[];
 }
 
@@ -74,18 +75,25 @@ export const dataProvider: DataProvider = {
 
   getList: async (resource, params) => {
     try {
-      console.log("resource", resource);
       console.log("params", params);
       if (resource === "images" && params.pagination) {
         const { page, perPage } = params.pagination;
-        const { data } = await axios.get<ImagesType>(
-          `${apiUrl}/${resource}/all?page=${page}&limit=${perPage}`,
-          {
-            headers: {
-              ...getAuthHeader(),
-            },
-          }
-        );
+        const { tags } = params.filter;
+
+        console.log("Fetching images with tags:", tags);
+
+        let url = `${apiUrl}/${resource}/`;
+        if (tags) {
+          url += `?page=${page}&limit=${perPage}&tags=${tags}`;
+        } else {
+          url += `all?page=${page}&limit=${perPage}`;
+        }
+
+        const { data } = await axios.get<ImagesType>(url, {
+          headers: {
+            ...getAuthHeader(),
+          },
+        });
         return {
           data: data.items.map((item) => ({ ...item, id: item._id })),
           total: data.totalItems,
