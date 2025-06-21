@@ -6,6 +6,7 @@ const admin = require('../middlewares/admin')
 const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
 const { upload, initImage, uploadImage } = require('../services/uploadS3AndSaveDb');
+const validateDelete = require('../middlewares/validateDelete');
 
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit} = req.query;
@@ -89,5 +90,19 @@ router.post('/', upload.array('images') ,[auth, admin], async(req, res) => {
 		res.status(400).send(error.message);
 	}
 })
+
+router.delete('/soft-delete', [auth, admin, validateDelete], async(req, res) => {
+	const {ids} = req.body;
+	
+	const imgs = await Image.find({_id: {$in: ids}});
+	if (!imgs || imgs.length === 0) return res.status(404).send('Images not found');
+
+	for (let img of imgs) {
+		img.isActive = false
+		await img.save();
+	}
+
+	res.send('Delete completed.');
+});
 
 module.exports = router;
