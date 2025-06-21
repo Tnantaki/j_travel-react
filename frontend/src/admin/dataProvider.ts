@@ -34,6 +34,29 @@ const mapId = (data: any) => {
   }
 };
 
+const postWithAuth = async (url: string, body: any) => {
+  const { data } = await axios.post(url, {
+    headers: {
+      ...getAuthHeader(),
+    },
+    body,
+  });
+
+  return data;
+};
+
+interface ImagesType {
+  page: number
+  limit: number
+  totalPages: number
+  totalItems: number
+  items: {
+    _id: string
+    imageUrl: string
+    fileName: string
+  }[]
+}
+
 // Wrap and fix both _id -> id and fallback for X-Total-Count
 export const dataProvider: DataProvider = {
   ...baseProvider,
@@ -42,6 +65,22 @@ export const dataProvider: DataProvider = {
     try {
       console.log("resource", resource);
       console.log("params", params);
+      if (resource === "images" && params.pagination) {
+        const { page, perPage } = params.pagination;
+        const { data } = await axios.get<ImagesType>(
+          `${apiUrl}/${resource}/all?page=${page}&limit=${perPage}`,
+          {
+            headers: {
+              ...getAuthHeader(),
+            },
+          }
+        );
+        console.log(data)
+        return {
+          data: data.items.map(item => ({...item, id: item._id})),
+          total: data.totalItems
+        };
+      }
       const res = await axios.get(`${apiUrl}/${resource}`, {
         headers: {
           ...getAuthHeader(),
@@ -63,6 +102,7 @@ export const dataProvider: DataProvider = {
 
   getOne: async (resource, params) => {
     const response = await baseProvider.getOne(resource, params);
+    console.log(response.data);
     return { data: mapId(response.data) };
   },
 
@@ -85,42 +125,32 @@ export const dataProvider: DataProvider = {
 
       // Append regular text fields (if any)
       for (const key in params.data) {
-        if (key !== "file") {
+        if (key !== "images") {
           formData.append(key, params.data[key]);
         }
       }
 
       // Append image file(s)
-      if (params.data.file) {
-        const files = Array.isArray(params.data.file)
-          ? params.data.file
-          : [params.data.file];
+      if (params.data.images) {
+        const images = Array.isArray(params.data.images)
+          ? params.data.images
+          : [params.data.images];
 
-        files.forEach((file) => {
-          formData.append("images", file.rawFile); // .rawFile is important in react-admin
+        images.forEach((image) => {
+          formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
+          if (image.tag) {
+            formData.append("tag", image.tag);
+          }
+          if (image.caption) {
+            formData.append("caption", image.caption);
+          }
         });
       }
 
-      const token = userService.getToken();
-      const myHeaders = new Headers();
-      if (token) {
-        myHeaders.append("x-auth-token", token);
-      }
-
-      console.log("formData",formData)
-
-      const response = await fetch(`${apiUrl}/plans/create-with-image`, {
-        method: "POST",
-        headers: myHeaders,
-        body: formData,
-      });
-
-      if (!response.ok) {
-        console.log(response)
-        throw new Error("Image upload failed");
-      }
-
-      const json = await response.json();
+      const json = await postWithAuth(
+        `${apiUrl}/plans/create-with-image`,
+        formData
+      );
       return { data: { ...json, id: json.id } };
     }
 
