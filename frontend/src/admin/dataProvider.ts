@@ -46,15 +46,15 @@ const postWithAuth = async (url: string, body: any) => {
 };
 
 interface ImagesType {
-  page: number
-  limit: number
-  totalPages: number
-  totalItems: number
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalItems: number;
   items: {
-    _id: string
-    imageUrl: string
-    fileName: string
-  }[]
+    _id: string;
+    imageUrl: string;
+    fileName: string;
+  }[];
 }
 
 // Wrap and fix both _id -> id and fallback for X-Total-Count
@@ -75,10 +75,10 @@ export const dataProvider: DataProvider = {
             },
           }
         );
-        console.log(data)
+        console.log(data);
         return {
-          data: data.items.map(item => ({...item, id: item._id})),
-          total: data.totalItems
+          data: data.items.map((item) => ({ ...item, id: item._id })),
+          total: data.totalItems,
         };
       }
       const res = await axios.get(`${apiUrl}/${resource}`, {
@@ -120,7 +120,7 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
-    if (resource === "plans") {
+    if (resource === "plans" || resource === "images") {
       const formData = new FormData();
 
       // Append regular text fields (if any)
@@ -147,10 +147,18 @@ export const dataProvider: DataProvider = {
         });
       }
 
-      const json = await postWithAuth(
-        `${apiUrl}/plans/create-with-image`,
-        formData
-      );
+      let json;
+      if (resource === "images") {
+        for (const value of formData.values()) {
+          console.log(value)
+        }
+        json = await postWithAuth(`${apiUrl}/images`, formData);
+      } else {
+        json = await postWithAuth(
+          `${apiUrl}/plans/create-with-image`,
+          formData
+        );
+      }
       return { data: { ...json, id: json.id } };
     }
 
