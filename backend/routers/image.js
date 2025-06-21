@@ -61,6 +61,14 @@ router.get('/', [auth, admin, validatePage], async(req, res) => {
 
 })
 
+router.get('/inactive-images', [auth, admin], async(req, res) => {
+	const imgs = await Image.find({isActive: false});
+	if (!imgs || imgs.length === 0)
+		res.status(404).send('No images found.');
+
+	res.send({total: imgs.length, imgs});
+})
+
 router.post('/', upload.array('images') ,[auth, admin], async(req, res) => {
 	if (!req.files || req.files.length === 0)
 		return res.status(400).send('No file to upload.');
