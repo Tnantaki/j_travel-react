@@ -8,7 +8,6 @@ import {
   SelectInput,
   SimpleForm,
   SimpleFormIterator,
-  TextField,
   TextInput,
 } from "react-admin";
 import { useState } from "react";

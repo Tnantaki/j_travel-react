@@ -8,7 +8,6 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     options.headers = new Headers({ Accept: "application/json" });
   }
   const token = userService.getToken();
-  console.log(token);
   if (token) {
     (options.headers as Headers).set("x-auth-token", token);
   }
@@ -34,15 +33,27 @@ const mapId = (data: any) => {
   }
 };
 
-const postWithAuth = async (url: string, body: any) => {
-  const { data } = await axios.post(url, {
-    headers: {
-      ...getAuthHeader(),
-    },
+const formDataPost = async (url: string, body: any) => {
+  const token = userService.getToken();
+  const myHeaders = new Headers();
+  if (token) {
+    myHeaders.append("x-auth-token", token);
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: myHeaders,
     body,
   });
 
-  return data;
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Image upload failed");
+  }
+
+  const json = await response.json();
+
+  return json;
 };
 
 interface ImagesType {
@@ -75,7 +86,6 @@ export const dataProvider: DataProvider = {
             },
           }
         );
-        console.log(data);
         return {
           data: data.items.map((item) => ({ ...item, id: item._id })),
           total: data.totalItems,
@@ -136,25 +146,24 @@ export const dataProvider: DataProvider = {
           ? params.data.images
           : [params.data.images];
 
+        let idxImage = 0;
         images.forEach((image) => {
           formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
           if (image.tag) {
-            formData.append("tag", image.tag);
+            formData.append(`tag[${idxImage}]`, image.tag);
           }
           if (image.caption) {
-            formData.append("caption", image.caption);
+            formData.append(`caption[${idxImage}]`, image.caption);
           }
+          idxImage++;
         });
       }
 
       let json;
       if (resource === "images") {
-        for (const value of formData.values()) {
-          console.log(value)
-        }
-        json = await postWithAuth(`${apiUrl}/images`, formData);
+        json = await formDataPost(`${apiUrl}/images`, formData);
       } else {
-        json = await postWithAuth(
+        json = await formDataPost(
           `${apiUrl}/plans/create-with-image`,
           formData
         );
