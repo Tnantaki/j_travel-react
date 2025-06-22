@@ -9,12 +9,22 @@ const router = express.Router();
 
 router.get('/', [auth, admin], async (req, res) => {
 	const group = await Group.find().sort('-createdAt');
+
+	res.send(group);
 });
 
 router.get('/me', auth, async (req, res) => {
 	let group = await Group.find({ leader: req.user._id })
+		.populate('leader', 'email')
+		.populate('plan')
+		.populate('members', 'email')
+
 	if (!group)
 		group = await Group.find({ members: req.user._id })
+		.populate('leader', 'email')
+		.populate('plan')
+		.populate('members', 'email')
+
 	if (group.length === 0) return res.status(404).send('You are not a member of any group.');
 
 	res.send(group);
