@@ -6,12 +6,15 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-	const plan = await Plan.find().sort('-createdAt');
+	const plan = await Plan.find()
+		.sort('-createdAt')
+		.populate('images')
 	res.send(plan);
 });
 
 router.get('/:id', async (req, res) => {
-	const plan = await Plan.findById(req.params.id);
+	const plan = await Plan.findById(req.params.id)
+		.populate('images')
 	if (!plan) return res.status(404).send('Plan not found.');
 	res.send(plan);
 })
