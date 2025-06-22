@@ -4,7 +4,7 @@ const Joi = require('joi');
 const Group = mongoose.model('Group', new mongoose.Schema({
 	leader: {
 		type: mongoose.Schema.Types.ObjectId, 
-		ref: 'User', 
+		ref: 'Profile', 
 		required: true
 	},
 	plan: {
@@ -14,7 +14,7 @@ const Group = mongoose.model('Group', new mongoose.Schema({
 	},
 	members: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'Profile'
 	}],
 	createdAt: {
 		type: Date,

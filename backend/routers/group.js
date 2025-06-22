@@ -5,19 +5,43 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const validateDelete = require('../middlewares/validateDelete');
 const express = require('express');
+const { Profile } = require('../models/profile');
 const router = express.Router();
 
 router.get('/', [auth, admin], async (req, res) => {
 	const group = await Group.find().sort('-createdAt');
+
+	res.send(group);
 });
 
 router.get('/me', auth, async (req, res) => {
-	let group = await Group.find({ leader: req.user._id })
-	if (!group)
-		group = await Group.find({ members: req.user._id })
-	if (group.length === 0) return res.status(404).send('You are not a member of any group.');
+		const profile = await Profile.findOne({user: req.user._id});
+		if (!profile) res.status(404).send('Your profile does not exist.');
 
-	res.send(group);
+		const isLeader = await Group.find({leader: profile._id})
+			.populate('leader', 'user username birthday gender phone')
+			.populate('members', 'user username birthday gender phone')
+
+		const leaderCount = isLeader.length;
+		
+
+
+		const isMembers = await Group.find({members: profile._id})
+			.populate('leader', 'user username birthday gender phone')
+			.populate('members', 'user username birthday gender phone')
+		const memberCount = isMembers.length;
+		
+
+		res.send({
+			'total leader': leaderCount > 0 
+			? leaderCount
+			: 'You are not a leader of any group',
+			'leaderGroups': isLeader,
+			'total member': memberCount > 0
+			? memberCount
+			: 'You are not a member of any group',
+			'memberGroup': isMembers}
+		)
 });
 
 router.post('/', auth, async (req, res) => {
@@ -27,9 +51,10 @@ router.post('/', auth, async (req, res) => {
 	const {members, plan: planId} = req.body;
 
 	const session = await mongoose.startSession(); //to prevent package overbooking (2 users booking at the same time)
-	session.startTransaction();
 
 	try {
+		session.startTransaction();
+
 		const planObj = await Plan.findById(planId);
 		if (!planObj) return res.status(404).send('Plan not found');
 
@@ -41,10 +66,17 @@ router.post('/', auth, async (req, res) => {
 			await planObj.save();
 		}
 
+		const leaderProfile = await Profile.findOne({user: req.user._id}).select('_id');
+		if (!leaderProfile) return res.status(404).send('Leader Id does not exist.');
+
+		const memberProfiles = await Profile.find({_id: {$in: members}}).select('_id');
+		if (!memberProfiles || memberProfiles.length === 0) 
+			return res.status(404).send('Invalid members.');
+
 		const group = new Group({
-			leader: req.user._id,
+			leader: leaderProfile,
 			plan: planId,
-			members: members
+			members: memberProfiles
 		});
 
 		await group.save();
