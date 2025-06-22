@@ -78,7 +78,7 @@ const Profile = () => {
       cancel(); // cancel request in case user navigate away before get response
       setPopupCreateProfile(false);
     };
-  }, [hasProfile]);
+  }, [edit]);
 
   const onSubmit: SubmitHandler<ProfileType> = async (data) => {
     try {
@@ -95,7 +95,6 @@ const Profile = () => {
 
         await profileService.createProfile(user._id, data);
       }
-      setHasProfile(false); // make effect to re-render profile again
       setEdit(false);
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
