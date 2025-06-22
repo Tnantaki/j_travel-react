@@ -203,6 +203,21 @@ export const dataProvider: DataProvider = {
   },
 
   deleteMany: async (resource, params) => {
+    console.log('delete many')
+    if (resource === 'images') {
+        const res = await axios.delete(`${apiUrl}/images/soft-delete`, {
+          headers: {
+            ...getAuthHeader(),
+          },
+          data: {
+            ids: params.ids
+          }
+        });
+      console.log('execute delete images')
+      console.log(res)
+      return { data: [params.ids] };
+    }
+
     const response = await baseProvider.deleteMany(resource, params);
     return { data: mapId(response.data) };
   },

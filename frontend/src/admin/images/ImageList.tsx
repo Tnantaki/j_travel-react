@@ -9,7 +9,7 @@ const ImageList = () => (
     <Datagrid rowClick="edit">
       <ImageField source="imageUrl" label="image" />
       <TextField source="fileName" />
-      {/* <TextField source="id" /> */}
+      <TextField source="id" />
     </Datagrid>
   </List>
 );
