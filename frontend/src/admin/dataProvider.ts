@@ -99,15 +99,27 @@ export const dataProvider: DataProvider = {
           total: data.totalItems,
         };
       }
-      const res = await axios.get(`${apiUrl}/${resource}`, {
-        headers: {
-          ...getAuthHeader(),
-        },
-      });
+      let res;
+      if (resource === "inactiveImages") {
+        console.log("inactive iamges");
+        res = await axios.get(`${apiUrl}/images/inactive-images`, {
+          headers: {
+            ...getAuthHeader(),
+          },
+        });
+        console.log(mapId(res.data.imgs));
+        return { data: mapId(res.data.imgs), total: 25 };
+      } else {
+        res = await axios.get(`${apiUrl}/${resource}`, {
+          headers: {
+            ...getAuthHeader(),
+          },
+        });
+      }
 
       return {
         data: mapId(res.data),
-        total: 10,
+        total: 25,
       };
     } catch (error: any) {
       console.log(error);
@@ -138,8 +150,13 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
-    if ((resource === "plans" && Array.isArray(params.data.images) && params.data.images.length) || resource === "images") {
-      console.log('There are images')
+    if (
+      (resource === "plans" &&
+        Array.isArray(params.data.images) &&
+        params.data.images.length) ||
+      resource === "images"
+    ) {
+      console.log("There are images");
       const formData = new FormData();
 
       // Append regular text fields (if any)
@@ -180,7 +197,7 @@ export const dataProvider: DataProvider = {
       return { data: { ...json, id: json.id } };
     }
     if (resource === "plans") {
-      delete params.data.images
+      delete params.data.images;
     }
 
     const response = await baseProvider.create(resource, params);
@@ -203,18 +220,22 @@ export const dataProvider: DataProvider = {
   },
 
   deleteMany: async (resource, params) => {
-    console.log('delete many')
-    if (resource === 'images') {
-        const res = await axios.delete(`${apiUrl}/images/soft-delete`, {
-          headers: {
-            ...getAuthHeader(),
-          },
-          data: {
-            ids: params.ids
-          }
-        });
-      console.log('execute delete images')
-      console.log(res)
+    console.log("delete many");
+    if (resource === "images" || resource === "inactiveImages") {
+      let url;
+      if (resource === "images") {
+        url = `${apiUrl}/images/soft-delete`;
+      } else {
+        url = `${apiUrl}/images/hard-delete`;
+      }
+      const res = await axios.delete(url, {
+        headers: {
+          ...getAuthHeader(),
+        },
+        data: {
+          ids: params.ids,
+        },
+      });
       return { data: [params.ids] };
     }
 
