@@ -3,6 +3,7 @@ import { Datagrid, DateField, List, TextField } from "react-admin";
 const UserList = () => (
   <List>
     <Datagrid>
+      <TextField source="id" />
       <TextField source="email" />
       <TextField source="isAdmin" />
       <DateField source="createdAt" />

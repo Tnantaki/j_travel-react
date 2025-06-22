@@ -7,7 +7,7 @@ import SelectDuration from "./SelectDuration";
 
 const Packages = () => {
   return (
-    <section className="bg-linear-light justify-center hero sec-padding py-20">
+    <section className="bg-blue-100 justify-center hero sec-padding py-20">
       <FadeInSection className="page-container mt-3 flex flex-col items-center gap-12 sm:mt-5">
         <div className="flex flex-col items-center gap-2 lg:gap-4 text-center">
           <h3>Discover Our Top Japan Tour Packages</h3>

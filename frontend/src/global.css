@@ -164,7 +164,7 @@
   }
 
   .profile-layout {
-    @apply rounded-lg border-1 border-slate-400 bg-frame-sec-tint p-4 xl:px-8 xl:py-4;
+    @apply rounded-lg bg-frame-sec-tint p-4 xl:px-8 xl:py-4;
   }
 
   .profile-info-grid {
