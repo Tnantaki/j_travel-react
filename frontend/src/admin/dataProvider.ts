@@ -138,7 +138,8 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
-    if (resource === "plans" || resource === "images") {
+    if ((resource === "plans" && Array.isArray(params.data.images) && params.data.images.length) || resource === "images") {
+      console.log('There are images')
       const formData = new FormData();
 
       // Append regular text fields (if any)
@@ -177,6 +178,9 @@ export const dataProvider: DataProvider = {
         );
       }
       return { data: { ...json, id: json.id } };
+    }
+    if (resource === "plans") {
+      delete params.data.images
     }
 
     const response = await baseProvider.create(resource, params);

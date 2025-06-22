@@ -1,5 +1,6 @@
 import { DateField, Show, SimpleShowLayout, TextField } from "react-admin"
 
+// there no api for get by id, some field will didn't display value
 const ShowUser = () => ( 
   <Show>
     <SimpleShowLayout>
