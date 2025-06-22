@@ -8,7 +8,6 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     options.headers = new Headers({ Accept: "application/json" });
   }
   const token = userService.getToken();
-  console.log(token);
   if (token) {
     (options.headers as Headers).set("x-auth-token", token);
   }
@@ -19,8 +18,8 @@ const apiUrl = "http://localhost:3000/api";
 
 // 🔐 Get token from localStorage (or from a token service)
 const getAuthHeader = () => {
-  const token = localStorage.getItem('token');
-  return token ? { 'x-auth-token': token } : {};
+  const token = localStorage.getItem("token");
+  return token ? { "x-auth-token": token } : {};
 };
 
 const baseProvider = jsonServerProvider(apiUrl, httpClient);
@@ -34,19 +33,77 @@ const mapId = (data: any) => {
   }
 };
 
+const formDataPost = async (url: string, body: any) => {
+  const token = userService.getToken();
+  const myHeaders = new Headers();
+  if (token) {
+    myHeaders.append("x-auth-token", token);
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: myHeaders,
+    body,
+  });
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Image upload failed");
+  }
+
+  const json = await response.json();
+
+  return json;
+};
+
+interface ImagesType {
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalItems: number;
+  items: {
+    _id: string;
+    imageUrl: string;
+    fileName: string;
+    tag: string[];
+  }[];
+}
+
 // Wrap and fix both _id -> id and fallback for X-Total-Count
 export const dataProvider: DataProvider = {
   ...baseProvider,
 
   getList: async (resource, params) => {
     try {
-      console.log("resource", resource);
       console.log("params", params);
+      if (resource === "images" && params.pagination) {
+        const { page, perPage } = params.pagination;
+        const { tags } = params.filter;
+
+        console.log("Fetching images with tags:", tags);
+
+        let url = `${apiUrl}/${resource}/`;
+        if (tags) {
+          url += `?page=${page}&limit=${perPage}&tags=${tags}`;
+        } else {
+          url += `all?page=${page}&limit=${perPage}`;
+        }
+
+        const { data } = await axios.get<ImagesType>(url, {
+          headers: {
+            ...getAuthHeader(),
+          },
+        });
+        return {
+          data: data.items.map((item) => ({ ...item, id: item._id })),
+          total: data.totalItems,
+        };
+      }
       const res = await axios.get(`${apiUrl}/${resource}`, {
         headers: {
-          ...getAuthHeader()
-        }
-      })
+          ...getAuthHeader(),
+        },
+      });
 
       return {
         data: mapId(res.data),
@@ -63,6 +120,7 @@ export const dataProvider: DataProvider = {
 
   getOne: async (resource, params) => {
     const response = await baseProvider.getOne(resource, params);
+    console.log(response.data);
     return { data: mapId(response.data) };
   },
 
@@ -80,6 +138,47 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
+    if (resource === "plans" || resource === "images") {
+      const formData = new FormData();
+
+      // Append regular text fields (if any)
+      for (const key in params.data) {
+        if (key !== "images") {
+          formData.append(key, params.data[key]);
+        }
+      }
+
+      // Append image file(s)
+      if (params.data.images) {
+        const images = Array.isArray(params.data.images)
+          ? params.data.images
+          : [params.data.images];
+
+        let idxImage = 0;
+        images.forEach((image) => {
+          formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
+          if (image.tag) {
+            formData.append(`tag[${idxImage}]`, image.tag);
+          }
+          if (image.caption) {
+            formData.append(`caption[${idxImage}]`, image.caption);
+          }
+          idxImage++;
+        });
+      }
+
+      let json;
+      if (resource === "images") {
+        json = await formDataPost(`${apiUrl}/images`, formData);
+      } else {
+        json = await formDataPost(
+          `${apiUrl}/plans/create-with-image`,
+          formData
+        );
+      }
+      return { data: { ...json, id: json.id } };
+    }
+
     const response = await baseProvider.create(resource, params);
     return { data: mapId(response.data) };
   },

@@ -51,8 +51,8 @@ const Login = () => {
           message: error.message,
         });
       }
+      console.log(errors);
     }
-    console.log(errors);
   };
 
   return (

@@ -11,13 +11,15 @@ import PlanEdit from "./plans/PlanEdit";
 import { FaUser } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { FaPlane } from "react-icons/fa";
+import { FaRegImage } from "react-icons/fa6";
+import ImageList from "./images/ImageList";
+import ImageCreate from "./images/ImageCreate";
 
 const HomePage = () => {
   return <h1>Home Page</h1>;
 };
 
 const AdminPanel = () => {
-
   return (
     <Admin
       layout={Layout}
@@ -40,6 +42,12 @@ const AdminPanel = () => {
         show={PlanShow}
         create={PlanCreate}
         edit={PlanEdit}
+      />
+      <Resource
+        icon={FaRegImage}
+        name="images"
+        list={ImageList}
+        create={ImageCreate}
       />
     </Admin>
   );

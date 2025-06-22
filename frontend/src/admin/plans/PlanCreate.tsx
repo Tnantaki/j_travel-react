@@ -1,9 +1,13 @@
 import {
+  ArrayInput,
   Create,
+  ImageField,
+  ImageInput,
   NumberInput,
   required,
   SelectInput,
   SimpleForm,
+  SimpleFormIterator,
   TextInput,
 } from "react-admin";
 import { useState } from "react";
@@ -14,7 +18,7 @@ export const planChoices = [
 ];
 
 const PlanCreate = () => {
-  const [seat, setSeat] = useState(false)
+  const [seat, setSeat] = useState(false);
 
   return (
     <Create>
@@ -24,7 +28,7 @@ const PlanCreate = () => {
           source="type"
           choices={planChoices}
           validate={required()}
-          onChange={(e) => setSeat(e.target.value === 'tour')}
+          onChange={(e) => setSeat(e.target.value === "tour")}
         />
         <TextInput label="Title" source="title" />
         <TextInput label="Description" source="description" />
@@ -35,6 +39,17 @@ const PlanCreate = () => {
           source="seatsAvailable"
           disabled={!seat}
         />
+        <ArrayInput source="images" label="Images">
+          <SimpleFormIterator>
+            <ImageInput label="Upload Image" source="file">
+              <ImageField source="src" title="title" />
+            </ImageInput>
+            <div className="flex gap-4">
+              <TextInput source="tag" label="Tag" />
+              <TextInput source="caption" label="Caption" />
+            </div>
+          </SimpleFormIterator>
+        </ArrayInput>
       </SimpleForm>
     </Create>
   );
