@@ -2,13 +2,16 @@ import { HiUserGroup } from "react-icons/hi2";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoCalendar } from "react-icons/io5";
 import { MdPaid } from "react-icons/md";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Member from "./Member";
 import ChoosePackage from "./ChoosePackage";
 import DateSelect from "./DateSelect";
 import Confirm from "./Confirm";
 import { cn } from "../../utils/cn";
 import FadeInSection from "../../components/common/FadeInSection";
+import profileService from "../../services/profile-service";
+import { useNavigate } from "react-router";
+import { AxiosError, isAxiosError } from "axios";
 
 const Booking = () => {
   const [stepNum, setStepNum] = useState(1);
@@ -22,6 +25,35 @@ const Booking = () => {
 
   const nextStep = () => setStepNum(stepNum + 1);
   const prevStep = () => setStepNum(stepNum - 1);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    const { request, cancel } = profileService.getProfile();
+
+    const reqProfile = async () => {
+      try {
+        // check if user had created profile yet?
+        await request;
+      } catch (error: any | AxiosError) {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              navigate("/account/profile");
+            } else {
+              console.log(error.response.data);
+            }
+          }
+        } else {
+          console.log(error.response.data);
+        }
+      }
+    };
+    reqProfile();
+    return () => {
+      cancel(); // cancel request in case user navigate away before get response
+    };
+  }, []);
 
   return (
     // <section className="bg-linear-light justify-center hero sec-padding">
