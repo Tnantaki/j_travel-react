@@ -38,11 +38,28 @@ const Plan = mongoose.model('Plan', new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Image'
 	}],
+	schedules: [{
+		day: {type: Number, min: 1, max: 7, required: true},
+		title: {type: String, minlength: 5, maxlength: 150, required: true},
+		events: {type: [String], required: true}
+	}],
 	createdAt: {
 		type: Date,
 		default: Date.now
 	}
 }));
+
+const scheduleSchema = Joi.object({
+	day: Joi.number().integer().min(1).max(7).required(),
+	title: Joi.string().min(5).max(150).required(),
+	events: Joi.array().items(Joi.string().min(5).max(250)).required()
+})
+
+const scheduleUpdate = Joi.object({
+	day: Joi.number().integer().min(1).max(7),
+	title: Joi.string().min(5).max(150),
+	events: Joi.array().items(Joi.string().min(5).max(250)),
+})
 
 function validatePlan(plan) {
 	const schema = Joi.object({
@@ -56,6 +73,7 @@ function validatePlan(plan) {
 			then: Joi.number().min(0).max(30).required(),
 			otherwise: Joi.forbidden
 		}),
+		schedules: Joi.array().items(scheduleSchema).required()
 	});
 	
 	return schema.validate(plan)
@@ -73,6 +91,7 @@ function validateUpdatePlan(plan) {
 			then: Joi.number().min(0).max(30),
 			otherwise: Joi.forbidden
 		}),
+		schedules: Joi.array().items(scheduleUpdate)
 	}).min(1); // ensure at least 1 filed is provided
 	
 	return schema.validate(plan)
