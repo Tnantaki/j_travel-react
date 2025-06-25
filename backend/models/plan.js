@@ -73,7 +73,7 @@ function validatePlan(plan) {
 			then: Joi.number().min(0).max(30).required(),
 			otherwise: Joi.forbidden
 		}),
-		schedules: Joi.array().items(scheduleSchema).min(5).required()
+		schedules: Joi.array().items(scheduleSchema)
 	});
 	
 	return schema.validate(plan)
