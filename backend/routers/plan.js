@@ -43,9 +43,6 @@ router.put('/:id', [auth, admin], async (req, res) => {
 	const { error } = validateUpdate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	if ('schedules' in req.body)
-		return res.status(400).send('Use a specific endpoint to update schedules.');
-
 	const plan = await Plan.findByIdAndUpdate(
 		req.params.id,
 		{$set: req.body},
@@ -62,6 +59,9 @@ router.put('/update-plans', [auth, admin], async (req, res) => {
 		return res.status(404).send('Please provide an array of plan IDs to update.');
 	if (typeof updateData !== 'object' || Objject.keys(updateData).length === 0)
 		return res.status(400).send('Please provide the fields to update.');
+
+	if ('schedules' in req.body)
+		return res.status(400).send('Use a specific endpoint to update schedules.');
 
 	const { error } = validateUpdate(updateData);
 	if (error) return res.status(400).send(error.details[0].message);
