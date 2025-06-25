@@ -99,6 +99,45 @@ router.patch('/:id/schedules/:scheduleIndex', [auth, admin, validateId], async(r
 	res.send(plan);
 })
 
+router.patch('/schedules/:id', [auth, admin, validateId], async(req, res) => {
+	const {error} = validateUpdate(req.body);
+	if (!error) return res.status(400).send(error.details[0].message);
+
+	const {index: idx, schedules: sc} = req.body;
+
+	if(!Array.isArray(idx) || idx.length === 0)
+		return res.status(400).send('Missing index.');
+
+	if (!idx.some(isNaN)) 
+		return res.status(400).send('Index must be number only.');
+
+	if (sc.length !== idx.length)
+		return res.status(400).send('Index and schedules length must match.');
+
+	const updates = [];
+	let i = 0;
+	for (const obj of sc) {
+		const newSc = Object.entries(obj).reduce((acc, [key, val]) => {
+			acc[`schedules.${idx[i]}.${key}`] = val;
+			return acc;
+		}, {})
+		i++;
+		updates.push(newSc);
+	}
+
+	// flatten array into one object
+	const setObj = Object.assign({}, ...updates);
+
+	const plan = await Plan.findByIdAndUpdate(
+		req.params.id,
+		{$set: setObj},
+		{new: true, runValidators: true}
+	);
+	if (!plan) res.status(404).send('Plan not found.');
+
+	res.send(plan);
+})
+
 
 
 router.delete('/:id', [auth, admin], async (req, res) => {
