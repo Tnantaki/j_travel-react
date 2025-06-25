@@ -26,8 +26,11 @@ router.post('/', [auth, admin], async (req, res) => {
 	if (error) return res.status(400).send(error.details[0].message);
 
 	const {duration, schedules: sc} = req.body
-	
-	if (sc.length != duration)
+
+	if (!sc || sc.length === 0)
+		return res.status(400).send('Schedules is required.');
+
+	if (sc.length !== duration)
 		return res.status(400).send('Duration and schedules lenght must match.');
 
 	const plan = new Plan({

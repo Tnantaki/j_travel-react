@@ -63,7 +63,7 @@ router.post('/create-with-image', upload.array('images'),
 			description: req.body.description,
 			price: parseFloat(req.body.price),
 			duration: parseFloat(req.body.duration),
-			seatsAvailable: req.body.type === 'tour' ? parseInt(req.body.seatsAvailable) : undefined,
+			seatsAvailable: req.body.type === 'tour' ? req.body.seatsAvailable : undefined,
 		}
 
 		const {error} = validate(planData);
