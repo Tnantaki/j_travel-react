@@ -25,6 +25,11 @@ router.post('/', [auth, admin], async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
+	const {duration, schedules: sc} = req.body
+	
+	if (sc.length != duration)
+		return res.status(400).send('Duration and schedules lenght must match.');
+
 	const plan = new Plan({
 		type: req.body.type,
 		title: req.body.title,
@@ -60,11 +65,11 @@ router.put('/update-plans', [auth, admin], async (req, res) => {
 	if (typeof updateData !== 'object' || Objject.keys(updateData).length === 0)
 		return res.status(400).send('Please provide the fields to update.');
 
-	if ('schedules' in req.body)
-		return res.status(400).send('Use a specific endpoint to update schedules.');
-
 	const { error } = validateUpdate(updateData);
 	if (error) return res.status(400).send(error.details[0].message);
+
+	if ('schedules' in req.body)
+		return res.status(400).send('Schedules cannot be updated with this endpoint.');
 
 	const plan = Plan.updateMany(
 		{ _id: { $in: ids } },
@@ -108,7 +113,7 @@ router.patch('/schedules/:id', [auth, admin, validateId], async(req, res) => {
 	if(!Array.isArray(idx) || idx.length === 0)
 		return res.status(400).send('Missing index.');
 
-	if (!idx.some(isNaN)) 
+	if (idx.some(isNaN)) 
 		return res.status(400).send('Index must be number only.');
 
 	if (sc.length !== idx.length)

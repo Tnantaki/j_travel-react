@@ -73,7 +73,7 @@ function validatePlan(plan) {
 			then: Joi.number().min(0).max(30).required(),
 			otherwise: Joi.forbidden
 		}),
-		schedules: Joi.array().items(scheduleSchema).required()
+		schedules: Joi.array().items(scheduleSchema).min(5).required()
 	});
 	
 	return schema.validate(plan)
@@ -91,7 +91,7 @@ function validateUpdatePlan(plan) {
 			then: Joi.number().min(0).max(30),
 			otherwise: Joi.forbidden
 		}),
-		schedules: Joi.array().items(scheduleUpdate)
+		schedules: Joi.array().items(scheduleUpdate).min(5)
 	}).min(1); // ensure at least 1 filed is provided
 	
 	return schema.validate(plan)
