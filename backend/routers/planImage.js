@@ -6,6 +6,7 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const { Image } = require('../models/image');
 const { upload, initImage, uploadImage} = require('../services/uploadS3AndSaveDb');
+const { schedule } = require('node-cron');
 
 async function createPlanAndImages(planData, imageFiles, req) {
 	const session = await mongoose.startSession();
@@ -63,6 +64,7 @@ router.post('/create-with-image', upload.array('images'),
 			price: parseFloat(req.body.price),
 			duration: parseFloat(req.body.duration),
 			seatsAvailable: req.body.type === 'tour' ? parseInt(req.body.seatsAvailable) : undefined,
+			schedules: []
 		}
 
 		const {error} = validate(planData);
