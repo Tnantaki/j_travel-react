@@ -64,7 +64,6 @@ router.post('/create-with-image', upload.array('images'),
 			price: parseFloat(req.body.price),
 			duration: parseFloat(req.body.duration),
 			seatsAvailable: req.body.type === 'tour' ? parseInt(req.body.seatsAvailable) : undefined,
-			schedules: []
 		}
 
 		const {error} = validate(planData);
@@ -106,9 +105,10 @@ router.patch('/image-to-plan/:id', upload.array('images'),
 			const createdImgs = [];
 			for (let i = 0; i < imgInfos.length; i++) {
 				const {payload} = imgInfos[i];
-				const {imageUrl} = uploadRes[i];
+				const {imageUrl, Key} = uploadRes[i];
 
 				payload.imageUrl = imageUrl;
+				payload.key = Key;
 
 				const imgDoc = new Image(payload);
 				const savedImg = await imgDoc.save({session});
