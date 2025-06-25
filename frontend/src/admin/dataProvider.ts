@@ -228,7 +228,7 @@ export const dataProvider: DataProvider = {
       } else {
         url = `${apiUrl}/images/hard-delete`;
       }
-      const res = await axios.delete(url, {
+      await axios.delete(url, {
         headers: {
           ...getAuthHeader(),
         },
