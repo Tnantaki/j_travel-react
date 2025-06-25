@@ -138,8 +138,6 @@ router.patch('/schedules/:id', [auth, admin, validateId], async(req, res) => {
 	res.send(plan);
 })
 
-
-
 router.delete('/:id', [auth, admin], async (req, res) => {
 	const plan = await Plan.findByIdAndDelete(req.params.id);
 
