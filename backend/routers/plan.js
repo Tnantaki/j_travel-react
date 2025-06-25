@@ -48,6 +48,11 @@ router.put('/:id', [auth, admin], async (req, res) => {
 	const { error } = validateUpdate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
+	const {duration, schedules: sc} = req.body
+	
+	if (sc.length != duration)
+		return res.status(400).send('Duration and schedules lenght must match.');
+
 	const plan = await Plan.findByIdAndUpdate(
 		req.params.id,
 		{$set: req.body},
