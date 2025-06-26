@@ -1,4 +1,4 @@
-import { Admin, Layout, ListGuesser, Resource } from "react-admin";
+import { Admin, Layout, ListGuesser, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { authProvider } from "./authProvider";
 import UserList from "./users/UserList";
