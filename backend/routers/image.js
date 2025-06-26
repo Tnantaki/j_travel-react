@@ -14,8 +14,8 @@ router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const skip = (page - 1) * limit;
 
 	const [ totalItems, docs ] = await Promise.all([
-		Image.countDocuments(),
-		Image.find()
+		Image.countDocuments({isActive: true}),
+		Image.find({isActive: true})
 			.sort({uploadedAt: -1})
 			.skip(skip)
 			.select('')
@@ -33,7 +33,7 @@ router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	});
 })
 
-router.get('/', [auth, admin, validatePage], async(req, res) => {
+router.get('/by-tag', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit, tags } = req.query;
 	const skip = (page - 1) * limit;
 
@@ -63,7 +63,9 @@ router.get('/', [auth, admin, validatePage], async(req, res) => {
 })
 
 router.get('/inactive-images', [auth, admin], async(req, res) => {
-	const imgs = await Image.find({isActive: false});
+	const imgs = await Image.find({isActive: false})
+		.select('fileName imaggeUrl tag')
+
 	if (!imgs || imgs.length === 0)
 		res.status(404).send('No images found.');
 
