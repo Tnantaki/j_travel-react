@@ -7,7 +7,8 @@ const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
 const { upload, initImage, uploadImage, s3Client } = require('../services/uploadS3AndSaveDb');
 const validateDelete = require('../middlewares/validateDelete');
-const { DeleteObjectCommand, DeleteObjectsCommand } = require('@aws-sdk/client-s3');
+const { DeleteObjectsCommand } = require('@aws-sdk/client-s3');
+const { validateIds } = require('../middlewares/validateObjId');
 
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit} = req.query;
@@ -104,6 +105,24 @@ router.post('/', upload.array('images') ,[auth, admin], async(req, res) => {
 	}
 })
 
+router.patch('/active-images', [auth, admin, validateIds], async(req, res) => {
+	const {ids} = req.body;
+	if (!ids || ids.length === 0)
+		return res.status(400).send("IDs are not provided.");
+	
+	const images = await Image.updateMany(
+		{_id: {$in: ids}},
+		{isActive: true},
+		{new: true, runValidators: true}
+	)
+	if (!images) return res.status(400).send('Invalid IDs');
+
+	res.send({
+		success: images.acknowledged,
+		updated: images.matchedCount
+	})
+})
+ 
 router.delete('/soft-delete', [auth, admin, validateDelete], async(req, res) => {
 	const {ids} = req.body;
 	
