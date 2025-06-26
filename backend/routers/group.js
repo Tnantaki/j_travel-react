@@ -1,9 +1,10 @@
-const { Group, validate } = require('../models/group');
+const { Group, validate, validateUpdate } = require('../models/group');
 const { Plan } = require('../models/plan');
 const mongoose = require('mongoose');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const validateDelete = require('../middlewares/validateDelete');
+const validateSearch = require('../middlewares/validateSearch');
 const express = require('express');
 const { Profile } = require('../models/profile');
 const router = express.Router();
@@ -23,8 +24,6 @@ router.get('/me', auth, async (req, res) => {
 			.populate('members', 'user username birthday gender phone')
 
 		const leaderCount = isLeader.length;
-		
-
 
 		const isMembers = await Group.find({members: profile._id})
 			.populate('leader', 'user username birthday gender phone')
@@ -43,6 +42,20 @@ router.get('/me', auth, async (req, res) => {
 			'memberGroup': isMembers}
 		)
 });
+
+router.get('/search-member', [auth, validateSearch], async(req, res) => {
+	const {email, limit} = req.query;
+	console.log(req.user._id)
+
+	const users = await Profile.find({
+		user: {$ne: req.user._id},
+		email: {$regex: email, $options: 'i'}
+	})
+	.select('_id email username')
+	.limit(parseInt(limit));
+
+	res.send(users);
+})
 
 router.post('/', auth, async (req, res) => {
 	const { error } = validate(req.body);
@@ -167,7 +180,7 @@ router.post('/transfer-leadership', auth, async (req, res) => {
 });
 
 router.put('/:id', auth, async (req, res) => {
-	const { error } = validate(req.body);
+	const { error } = validateUpdate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
 	const { leader, members, plan: planId } = req.body;

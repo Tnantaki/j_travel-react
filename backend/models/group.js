@@ -31,8 +31,18 @@ function validateGroup(group) {
 	return schema.validate(group);
 }
 
+function validateUpdate(group) {
+	const schema = Joi.object({
+		plan: Joi.objectId(),
+		members: Joi.array().items(Joi.objectId())
+	});
+	
+	return schema.validate(group);
+}
+
 exports.Group = Group;
 exports.validate = validateGroup;
+module.exports = validateUpdate;
 
 // package: {
 // 	type: mongoose.Schema.Types.ObjectId,
