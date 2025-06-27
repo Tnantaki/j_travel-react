@@ -6,5 +6,9 @@
 ## 🧰 Built with
 [![Tools](https://skillicons.dev/icons?i=bun,typescript,react)](https://skillicons.dev)
 
+## 🧪 To test
+- access to *test* folder
+- run `bun main.mts`
+
 ## 📌 Visit Site
 https://tnantaki.github.io/j_travel-react/
