@@ -1,9 +1,6 @@
 const Joi = require('joi');
 
 module.exports = function(req, res, next) {
-    console.log('in middleware');
-    console.log(req.query);
-
     const schema = Joi.object({
         email: Joi.string().min(2).required(),
         limit: Joi.number().integer().min(1).max(10).default(5)
