@@ -2,6 +2,6 @@ function escapeRegex(text) {
     return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-module.expoers = {
+module.exports = {
     escapeRegex
 }

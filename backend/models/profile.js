@@ -67,7 +67,6 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 
 function validate(profile) {
 	const schema = Joi.object({
-		user: Joi.objectId().required(),
 		username: Joi.string().min(3).max(50).required().trim(),
 		profileImage: Joi.string().trim(),
 		address: Joi.object({
