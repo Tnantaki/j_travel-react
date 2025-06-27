@@ -13,6 +13,7 @@ require('./start/routes')(app);
 require('./start/config')();
 require('./start/db')();
 require('./start/validation')();
+require('./utils')
 
 
 const port = process.env.PORT || 3000;

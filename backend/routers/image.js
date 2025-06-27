@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const auth = require('../middlewares/auth')
@@ -7,15 +6,16 @@ const validatePage = require('../middlewares/validatePagination');
 const { Image } = require('../models/image');
 const { upload, initImage, uploadImage, s3Client } = require('../services/uploadS3AndSaveDb');
 const validateDelete = require('../middlewares/validateDelete');
-const { DeleteObjectCommand, DeleteObjectsCommand } = require('@aws-sdk/client-s3');
+const { DeleteObjectsCommand } = require('@aws-sdk/client-s3');
+const { validateIds } = require('../middlewares/validateObjId');
 
 router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit} = req.query;
 	const skip = (page - 1) * limit;
 
 	const [ totalItems, docs ] = await Promise.all([
-		Image.countDocuments(),
-		Image.find()
+		Image.countDocuments({isActive: true}),
+		Image.find({isActive: true})
 			.sort({uploadedAt: -1})
 			.skip(skip)
 			.select('')
@@ -33,7 +33,7 @@ router.get('/all', [auth, admin, validatePage], async(req, res) => {
 	});
 })
 
-router.get('/', [auth, admin, validatePage], async(req, res) => {
+router.get('/by-tag', [auth, admin, validatePage], async(req, res) => {
 	const {page, limit, tags } = req.query;
 	const skip = (page - 1) * limit;
 
@@ -63,7 +63,9 @@ router.get('/', [auth, admin, validatePage], async(req, res) => {
 })
 
 router.get('/inactive-images', [auth, admin], async(req, res) => {
-	const imgs = await Image.find({isActive: false});
+	const imgs = await Image.find({isActive: false})
+		.select('fileName imaggeUrl tag')
+
 	if (!imgs || imgs.length === 0)
 		res.status(404).send('No images found.');
 
@@ -102,6 +104,24 @@ router.post('/', upload.array('images') ,[auth, admin], async(req, res) => {
 	}
 })
 
+router.patch('/active-images', [auth, admin, validateIds], async(req, res) => {
+	const {ids} = req.body;
+	if (!ids || ids.length === 0)
+		return res.status(400).send("IDs are not provided.");
+	
+	const images = await Image.updateMany(
+		{_id: {$in: ids}},
+		{isActive: true},
+		{new: true, runValidators: true}
+	)
+	if (!images) return res.status(400).send('Invalid IDs');
+
+	res.send({
+		success: images.acknowledged,
+		updated: images.matchedCount
+	})
+})
+ 
 router.delete('/soft-delete', [auth, admin, validateDelete], async(req, res) => {
 	const {ids} = req.body;
 	

@@ -39,6 +39,7 @@ const Profile = mongoose.model('Profile', new mongoose.Schema({
 		type: String,
 		minlength: 3,
 		maxlength: 50,
+		index: true,
 		unique: true,
 		required: true
 	},

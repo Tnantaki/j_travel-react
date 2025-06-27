@@ -151,14 +151,6 @@ router.patch('/schedules/:id', [auth, admin, validateId], async(req, res) => {
 	res.send(plan);
 })
 
-router.delete('/:id', [auth, admin], async (req, res) => {
-	const plan = await Plan.findByIdAndDelete(req.params.id);
-
-	if (!plan) return res.status(404).send('Plan not found.');
-
-	res.send(plan);
-})
-
 router.delete('/delete-plans', [auth, admin, validateDelete], async (req, res) => {
 	const { ids } = req.body;
 
@@ -168,6 +160,14 @@ router.delete('/delete-plans', [auth, admin, validateDelete], async (req, res) =
 	const plan = await Plan.deleteMany({ _id: { $in: ids } });
 
 	res.send({ deletedCount: plan.deletedCount });
+})
+
+router.delete('/:id', [auth, admin, validateId], async (req, res) => {
+	const plan = await Plan.findByIdAndDelete(req.params.id);
+
+	if (!plan) return res.status(404).send('Plan not found.');
+
+	res.send(plan);
 })
 
 module.exports = router;
