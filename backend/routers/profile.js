@@ -30,8 +30,12 @@ router.post('/', auth, async (req, res) => {
 	const {error} = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	const hasProfile = await Profile.findOne({user: req.user._id});
+	const [hasProfile, dupEmail] = await Promise.all([
+		Profile.findOne({user: req.user._id}),
+		Profile.findOne({email: req.body.email})
+	])
 	if (hasProfile) return res.status(400).send('User already has a profile.');
+	if (dupEmail) return res.status(400).send('This email is already existed.');
 
 	const profile = new Profile({
 		user: req.user._id,
