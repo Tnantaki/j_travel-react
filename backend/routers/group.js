@@ -45,11 +45,13 @@ router.get('/me', auth, async (req, res) => {
 
 router.get('/search-member', [auth, validateSearch], async(req, res) => {
 	const {email, limit} = req.query;
-	console.log(req.user._id)
+	const safe = escapeRegex(email);
+	const pattern = '^' + safe;
+
 
 	const users = await Profile.find({
 		user: {$ne: req.user._id},
-		email: {$regex: email, $options: 'i'}
+		email: {$regex: pattern, $options: 'i'}
 	})
 	.select('_id email username')
 	.limit(parseInt(limit));
