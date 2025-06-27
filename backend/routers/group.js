@@ -7,6 +7,7 @@ const validateDelete = require('../middlewares/validateDelete');
 const validateSearch = require('../middlewares/validateSearch');
 const express = require('express');
 const { Profile } = require('../models/profile');
+const { escapeRegex } = require('../utils/utils');
 const router = express.Router();
 
 router.get('/', [auth, admin], async (req, res) => {
