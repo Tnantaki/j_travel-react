@@ -50,9 +50,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
       >
         <div className="grid grid-cols-2 w-full gap-2">
           {renderMemberParagraph(member.name, "name")}
-          {renderMemberParagraph(getAge(member.birthday), "age")}
-          {renderMemberParagraph(member.phone, "phone")}
-          {renderMemberParagraph(member.gender, "gender")}
+          {renderMemberParagraph(member.email, "email")}
         </div>
       </li>
     );

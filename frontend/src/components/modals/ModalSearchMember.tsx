@@ -16,6 +16,7 @@ const mockUpMember: MemberType[] = [
     name: "Anna rocker",
     birthday: new Date("2020-02-11T00:00:00.000Z"),
     gender: "female",
+    email: 'anna@email.com',
     phone: "556 191-5394",
   },
   {
@@ -23,6 +24,7 @@ const mockUpMember: MemberType[] = [
     name: "Anny rocker",
     birthday: new Date("2020-02-11T00:00:00.000Z"),
     gender: "female",
+    email: 'anny@email.com',
     phone: "556 191-5394",
   },
 ];
@@ -115,7 +117,7 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
             >
               <div className="grid grid-cols-2 w-full gap-2">
                 {renderMemberList(mem.name, "name")}
-                {renderMemberList(mem.gender, "gender")}
+                {renderMemberList(mem.email, "email")}
               </div>
               <Button
                 rounded="full"

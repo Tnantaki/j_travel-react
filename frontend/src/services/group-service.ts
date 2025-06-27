@@ -5,6 +5,12 @@ export interface GroupType {
   members: string[];
 }
 
+export interface MemberSearchType {
+  _id: string
+  username: string
+  email: string
+}
+
 class GroupService {
   createGroup(group: GroupType) {
     return apiClients.post("/groups", group);
@@ -26,6 +32,15 @@ class GroupService {
   // deleteProfile() {
   //   return apiClients.delete("/profiles/me");
   // }
+
+  searchMember(email: string) {
+    const controller = new AbortController();
+
+    const getMemberSearch = apiClients.get<MemberSearchType[]>(`/groups/search-member?email=${email}&limit=5`, {
+      signal: controller.signal,
+    });
+    return { getMemberSearch, cancel: () => controller.abort() };
+  }
 }
 
 export default new GroupService();

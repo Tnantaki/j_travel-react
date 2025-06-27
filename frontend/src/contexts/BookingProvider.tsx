@@ -10,9 +10,10 @@ import { Gender } from "../services/profile-service";
 export interface MemberType {
   id: string;
   name: string;
-  birthday: Date;
-  gender: Gender;
-  phone: string;
+  email: string
+  birthday?: Date;
+  gender?: Gender;
+  phone?: string;
 }
 
 interface BookingType {
