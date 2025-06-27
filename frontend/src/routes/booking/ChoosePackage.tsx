@@ -93,7 +93,7 @@ const ChoosePackage = ({ nextStep }: Props) => {
                 <div className="bg-slate-300 border-slate-400 border-2 flex flex-col md:flex-row px-6 py-4 rounded-md">
                   <div className="overflow-hidden max-w-[300px] md:max-w-[260px] lg:max-w-[320px] shrink-0 self-center lg:self-auto">
                     <img
-                      src={plan.images ? plan.images[0].imageUrl : placeHolder}
+                      src={plan.images.length ? plan.images[0].imageUrl : placeHolder}
                       alt="Image cover"
                       className="object-center object-cover w-full h-full"
                     />

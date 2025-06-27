@@ -27,10 +27,10 @@ class PlanService {
   getAll() {
     const controller = new AbortController();
 
-    const getAll = apiClients.get<PlanType>("/plans", {
+    const request = apiClients.get<PlanType[]>("/plans", {
       signal: controller.signal,
     });
-    return { getAll, cancel: () => controller.abort() };
+    return { request, cancel: () => controller.abort() };
   }
 }
 

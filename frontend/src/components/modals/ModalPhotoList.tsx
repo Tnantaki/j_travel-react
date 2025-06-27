@@ -3,10 +3,9 @@ import Modal from "./Modal";
 
 interface Props extends LiHTMLAttributes<HTMLLIElement> {
   img: string;
-  name: string;
 }
 
-const ModalPhotoList = ({ img, name }: Props) => {
+const ModalPhotoList = ({ img }: Props) => {
   const [openModalPhoto, setOpenModalPhoto] = useState<boolean>(false);
 
   return (
@@ -28,9 +27,6 @@ const ModalPhotoList = ({ img, name }: Props) => {
             alt="Travel Location photo"
             className="object-center object-cover self-center"
           />
-          <figcaption className="text-char-pri text-2xl py-1">
-            {name}
-          </figcaption>
         </figure>
       </Modal>
     </li>

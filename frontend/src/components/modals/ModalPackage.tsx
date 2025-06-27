@@ -27,7 +27,7 @@ const ModalPackage = ({
         <div className="flex flex-col lg:flex-row rounded-md overflow-hidden bg-frame-sec-tint border-slate-400 border-1">
           <div className="overflow-hidden sm:max-w-[480px] lg:max-w-[320px] shrink-0 self-center lg:self-auto">
             <img
-              src={plan.images ? plan.images[0].imageUrl : placeHolder}
+              src={plan.images.length ? plan.images[0].imageUrl : placeHolder}
               alt="Image cover"
               className="object-center object-cover w-full h-full"
             />
@@ -104,7 +104,7 @@ const ModalPackage = ({
           </div>
           <ul className="flex flex-col justify-evenly lg:w-[300px] m-8 gap-8 items-center">
             {plan.images.map((image, idx) => (
-              <ModalPhotoList key={idx} img={image.imageUrl} name={image.fileName} />
+              <ModalPhotoList key={idx} img={image.imageUrl} />
             ))}
           </ul>
         </div>

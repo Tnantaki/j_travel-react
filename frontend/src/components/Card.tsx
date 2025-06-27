@@ -43,8 +43,7 @@ const Card = ({ plan }: Props) => {
     <div className="grid grid-rows-[auto_1fr] max-w-[320px] sm:max-w-[400px] rounded-xl overflow-hidden items-center bg-frame-pri shadow-2xl border-1 border-slate-600">
       <div className="w-full overflow-hidden h-[200px] xl:h-[250px]">
         <img
-          src={plan.images ? plan.images[0].imageUrl : placeHolder}
-          // src={tour.imgCover}
+          src={plan.images.length ? plan.images[0].imageUrl : placeHolder}
           alt="location image"
           className="object-center object-cover w-full h-full"
         />

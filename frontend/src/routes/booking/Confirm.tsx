@@ -62,7 +62,7 @@ const Confirm = ({ prevStep }: Props) => {
           <h4 className="mb-2">Package</h4>
           <div className="flex gap-4">
             <img
-              src={plan!.images ? plan!.images[0].imageUrl : placeHolder}
+              src={plan!.images.length ? plan!.images[0].imageUrl : placeHolder}
               className="size-32 rounded-md"
             />
             <div className="grid grid-cols-2 justify-between">
