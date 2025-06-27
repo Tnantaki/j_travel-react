@@ -11,9 +11,9 @@ export interface MemberType {
   id: string;
   name: string;
   email: string
-  birthday?: Date;
-  gender?: Gender;
-  phone?: string;
+  birthday: Date;
+  gender: Gender;
+  phone: string;
 }
 
 interface BookingType {

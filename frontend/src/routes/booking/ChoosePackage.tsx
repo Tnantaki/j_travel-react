@@ -11,6 +11,7 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { MemberType, useBooking } from "../../contexts/BookingProvider";
 import profileService from "../../services/profile-service";
 import { useNavigate } from "react-router";
+import placeHolder from "@img/background/placeholder-image.jpg";
 
 interface Props {
   nextStep: () => void;
@@ -25,7 +26,7 @@ const ChoosePackage = ({ nextStep }: Props) => {
 
   const handleChoosePlan = () => {
     if (user && plan) {
-      bookDispatch({ type: "add_plan", planId: plan.id });
+      bookDispatch({ type: "add_plan", planId: plan._id });
       nextStep();
     }
   };
@@ -50,12 +51,14 @@ const ChoosePackage = ({ nextStep }: Props) => {
           birthday: new Date(data.birthday),
           gender: data.gender,
           phone: data.phone,
+          email: data.email,
         };
 
         bookDispatch({ type: "add_leader", leader });
       } catch (error: any) {
-        if (error.code = 'ERR_CANCELED') { // cancel from dev mode
-          return ;
+        if ((error.code = "ERR_CANCELED")) {
+          // cancel from dev mode
+          return;
         }
         console.log(error);
         navigate("/account/profile");
@@ -84,13 +87,13 @@ const ChoosePackage = ({ nextStep }: Props) => {
                 <ModalPackage
                   isOpen={isOpenPackage}
                   onClose={() => setIsOpenPackage(false)}
-                  tour={plan}
+                  plan={plan}
                   hasBookingBtn={false}
                 />
                 <div className="bg-slate-300 border-slate-400 border-2 flex flex-col md:flex-row px-6 py-4 rounded-md">
                   <div className="overflow-hidden max-w-[300px] md:max-w-[260px] lg:max-w-[320px] shrink-0 self-center lg:self-auto">
                     <img
-                      src={plan.imgCover}
+                      src={plan.images ? plan.images[0].imageUrl : placeHolder}
                       alt="Image cover"
                       className="object-center object-cover w-full h-full"
                     />
@@ -98,7 +101,7 @@ const ChoosePackage = ({ nextStep }: Props) => {
                   <div className="flex flex-col px-6 w-full gap-1 justify-between">
                     <div className="flex flex-col gap-2">
                       <p className="body1 font-medium border-b-1 border-primary/20 w-full">
-                        {plan.name}
+                        {plan.title}
                       </p>
                       <p className="indent-4">{plan.description}</p>
                     </div>

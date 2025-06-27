@@ -3,10 +3,11 @@ import axios, { AxiosError } from "axios";
 function handleError(error: any) {
   if (axios.isAxiosError(error)) {
     const axiosError = error as AxiosError;
+    console.log(axiosError.request.headers)
 
     if (axiosError.response) {
       // Server responded with error status
-      // console.log("Error response status:", axiosError.response.status);
+      console.log("Error response status:", axiosError.response.status);
       // console.log("Error response data:", axiosError.response.data);
 
       const contentType = axiosError.response.headers["content-type"];

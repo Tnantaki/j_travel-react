@@ -1,14 +1,15 @@
 import { FaBahtSign, FaRegClock } from "react-icons/fa6";
 import Modal from "./Modal";
-import { TourType } from "../../routes/data/tours";
 import Button from "../common/Button";
 import { AiFillSchedule } from "react-icons/ai";
 import ModalPhotoList from "./ModalPhotoList";
+import { PlanType } from "../../services/plan-service";
+import placeHolder from "@img/background/placeholder-image.jpg";
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
-  tour: TourType;
+  plan: PlanType;
   hasBookingBtn: boolean;
   bookPackage?: () => void;
 }
@@ -16,7 +17,7 @@ interface Props {
 const ModalPackage = ({
   isOpen,
   onClose,
-  tour,
+  plan,
   hasBookingBtn,
   bookPackage,
 }: Props) => {
@@ -26,16 +27,16 @@ const ModalPackage = ({
         <div className="flex flex-col lg:flex-row rounded-md overflow-hidden bg-frame-sec-tint border-slate-400 border-1">
           <div className="overflow-hidden sm:max-w-[480px] lg:max-w-[320px] shrink-0 self-center lg:self-auto">
             <img
-              src={tour.imgCover}
+              src={plan.images ? plan.images[0].imageUrl : placeHolder}
               alt="Image cover"
               className="object-center object-cover w-full h-full"
             />
           </div>
           <div className="flex flex-col px-2 text-char-pri items-start text-start py-4 sm:px-8 justify-between shrink">
             <div className="grid gap-4">
-              <h4>{tour.name}</h4>
+              <h4>{plan.title}</h4>
               <p className="body2 text-char-pri-tint indent-4">
-                {tour.description}
+                {plan.description}
               </p>
             </div>
             <div className="flex flex-col md:flex-row w-full justify-between mt-4">
@@ -45,7 +46,7 @@ const ModalPackage = ({
                     <FaRegClock />
                     &nbsp;:&nbsp;
                   </p>
-                  <p className="body2">{tour.duration}</p>
+                  <p className="body2">{plan.duration}</p>
                 </div>
                 <div className="flex flex-row items-center">
                   <p className="flex items-center">
@@ -53,15 +54,15 @@ const ModalPackage = ({
                     &nbsp;:&nbsp;
                   </p>
                   <p className="body1 font-semibold">
-                    {tour.price.toLocaleString()}
+                    {plan.price.toLocaleString()}
                   </p>
                 </div>
-                <div className="flex flex-row items-center border-red-400 border-1 rounded-sm px-2 py-1 bg-red-200 text-char-pri-tint">
+                {/* <div className="flex flex-row items-center border-red-400 border-1 rounded-sm px-2 py-1 bg-red-200 text-char-pri-tint">
                   <p className="body2 font-medium flex items-center">
-                    For private guide +{tour.privateGuide.toLocaleString()} ฿
+                    For private guide +{plan.privateGuide.toLocaleString()} ฿
                     per group.
                   </p>
-                </div>
+                </div> */}
               </div>
               <div className="flex mt-4 items-end sm:mt-0">
                 {hasBookingBtn && (
@@ -81,7 +82,7 @@ const ModalPackage = ({
               <h6>Schedule</h6>
             </div>
             <ul className="flex flex-col items-start gap-6">
-              {tour.itinerary.map((item, idx) => (
+              {plan.schedules.map((item, idx) => (
                 <li
                   key={idx}
                   className="flex flex-col text-char-pri-tint gap-2"
@@ -102,8 +103,8 @@ const ModalPackage = ({
             </ul>
           </div>
           <ul className="flex flex-col justify-evenly lg:w-[300px] m-8 gap-8 items-center">
-            {tour.photos.map((photo, idx) => (
-              <ModalPhotoList key={idx} img={photo.img} name={photo.name} />
+            {plan.images.map((image, idx) => (
+              <ModalPhotoList key={idx} img={image.imageUrl} name={image.fileName} />
             ))}
           </ul>
         </div>

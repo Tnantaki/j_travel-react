@@ -1,15 +1,15 @@
 import { Outlet, useOutletContext } from "react-router";
 import Navbar from "./components/Navbar";
 import { Dispatch, SetStateAction, useState } from "react";
-import { TourType } from "./routes/data/tours";
+import { PlanType } from "./services/plan-service";
 
 export type PlanContextType = {
-  plan: TourType | null;
-  setPlan: Dispatch<SetStateAction<TourType>>;
+  plan: PlanType | null;
+  setPlan: Dispatch<SetStateAction<PlanType>>;
 };
 
 const Layout = () => {
-  const [plan, setPlan] = useState<TourType | null>(null);
+  const [plan, setPlan] = useState<PlanType | null>(null);
 
   return (
     <>

@@ -6,6 +6,7 @@ import { getAge } from "../../utils/age";
 import bookingService, { BookingRequest } from "../../services/booking-service";
 import { useState } from "react";
 import ModalSuccess from "../../components/modals/ModalSuccess";
+import placeHolder from "@img/background/placeholder-image.jpg";
 
 interface Props {
   prevStep: () => void;
@@ -60,10 +61,13 @@ const Confirm = ({ prevStep }: Props) => {
         <div className="flex flex-col w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-2 h-full">
           <h4 className="mb-2">Package</h4>
           <div className="flex gap-4">
-            <img src={plan!.imgCover} className="size-32 rounded-md" />
+            <img
+              src={plan!.images ? plan!.images[0].imageUrl : placeHolder}
+              className="size-32 rounded-md"
+            />
             <div className="grid grid-cols-2 justify-between">
               <p className="body2 text-char-pri-tint me-1">Package:</p>
-              <p className="body1 font-medium text-char-pri">{plan!.name}</p>
+              <p className="body1 font-medium text-char-pri">{plan!.title}</p>
               <p className="body2 text-char-pri-tint me-1">Departure date:</p>
               <p className="body1 text-char-pri">
                 {format(booking.startDate!, "dd MMM yyyy")}

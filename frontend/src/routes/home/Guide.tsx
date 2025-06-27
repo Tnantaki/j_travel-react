@@ -1,8 +1,8 @@
 import Carousel from "../../components/Carousel";
 import ListItem from "../../components/ListItem";
-import fujiyoshida from "@img/tours/classic/Fujiyoshida-Yamanashi.jpg";
-import hakone from "@img/tours/adventure/Hakone.jpg";
-import osakaCastle from "@img/tours/cultural/OsakaCastle.jpg";
+import fujiyoshida from "@img/tours/Fujiyoshida-Yamanashi.jpg";
+import hakone from "@img/tours/Hakone.jpg";
+import osakaCastle from "@img/tours/OsakaCastle.jpg";
 import FadeInSection from "../../components/common/FadeInSection";
 
 const Guide = () => {

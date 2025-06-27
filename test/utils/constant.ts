@@ -44,6 +44,21 @@ export const planDatas: PlanType[] = [
       "Experience the best of traditional and modern Japan with this balanced tour.",
     price: 26300,
     duration: 5,
+    images: [
+      {
+        name: "Fujiyoshida",
+        path: "./utils/plans/classic/Fujiyoshida-Yamanashi.jpg",
+      },
+      {
+        name: "Asakusa-Sensoji Temple",
+        path: "./utils/plans/classic/Asakusa-SensoJiTemple.jpg",
+      },
+      { name: "Kinkaku-Ji", path: "./utils/plans/classic/Kinkaku-ji.jpg" },
+      {
+        name: "Todia-Ji Temple",
+        path: "./utils/plans/classic/Todia-jiTemple.jpg",
+      },
+    ],
     schedules: [
       {
         day: 1,
@@ -101,6 +116,12 @@ export const planDatas: PlanType[] = [
     description: "A perfect tour for nature lovers and adventure seekers.",
     price: 28000,
     duration: 5,
+    images: [
+      { name: "Hokone", path: "./utils/plans/adventure/Hakone.jpg" },
+      { name: "Lake Ashi", path: "./utils/plans/adventure/LakeAshi.jpg" },
+      { name: "Shijuku", path: "./utils/plans/adventure/Shijuku.jpg" },
+      { name: "Ueno Park", path: "./utils/plans/adventure/UenoPark.jpg" },
+    ],
     schedules: [
       {
         day: 1,
@@ -160,6 +181,18 @@ export const planDatas: PlanType[] = [
       "A tour focused on rich culture and the best Japanese cuisine.",
     price: 29300,
     duration: 5,
+    images: [
+      { name: "Osaka Castle", path: "./utils/plans/cultural/OsakaCastle.jpg" },
+      { name: "Dotonbori", path: "./utils/plans/cultural/Dotonbori.jpg" },
+      {
+        name: "Hiroshima-Peace Memorial",
+        path: "./utils/plans/cultural/Hiroshima-Peace-Memorial.jpg",
+      },
+      {
+        name: "Kiyomizu-Dera Temple",
+        path: "./utils/plans/cultural/Kiyomizu-DeraTemple.jpg",
+      },
+    ],
     schedules: [
       {
         day: 1,

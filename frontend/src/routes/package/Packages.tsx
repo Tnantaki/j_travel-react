@@ -1,7 +1,7 @@
-import Card from "../../components/Card";
+// import Card from "../../components/Card";
 import FadeInSection from "../../components/common/FadeInSection";
 import SearchPlan from "./SearchPlan";
-import tours from "../data/tours";
+// import tours from "../data/tours";
 import SelectPrice from "./SelectPrice";
 import SelectDuration from "./SelectDuration";
 
@@ -25,9 +25,9 @@ const Packages = () => {
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-12">
-          {tours.map((tour, i) => (
+          {/* {tours.map((tour, i) => (
             <Card key={i} tour={tour} />
-          ))}
+          ))} */}
         </div>
       </FadeInSection>
     </section>

@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import Modal from "./Modal";
 import { MemberType } from "../../contexts/BookingProvider";
 import { BookingType } from "../../services/booking-service";
-import { getAge } from "../../utils/age";
+// import { getAge } from "../../utils/age";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const ModalBookingInfo = ({ isOpen, onClose, book }: Props) => {
       <tr key={member.id} className="text-center *:py-2">
         <td>{orderMember}</td>
         <td>{member.name}</td>
-        <td>{getAge(member.birthday)}</td>
+        {/* <td>{getAge(member.birthday)}</td> */}
         <td>{book.plan.price}</td>
       </tr>
     );

@@ -10,7 +10,7 @@ interface ApiResponse<T = any> {
 interface UserData {
   email: string;
   password: string;
-  isAdmin?: boolean
+  isAdmin?: boolean;
 }
 
 interface ProfileData {
@@ -20,19 +20,22 @@ interface ProfileData {
 }
 
 interface ScheduleType {
-  day: number
-  title: string
-  events: string[]
+  day: number;
+  title: string;
+  events: string[];
 }
 
 interface PlanType {
-  type: 'private' | 'tour'
-  title: string
-  description: string
-  price: number
-  duration: number
-  schedules: ScheduleType[]
-
+  type: "private" | "tour";
+  title: string;
+  description: string;
+  price: number;
+  duration: number;
+  schedules: ScheduleType[];
+  images?: {
+    name: string;
+    path: string;
+  }[];
 }
 
 export type { ApiResponse, ProfileData, UserData, PlanType };
