@@ -1,37 +1,19 @@
-import { createProfile, createUser, loginUser } from "./mockUser.mts";
+import { adminData, planDatas, userDatas } from "./utils/constant";
+import {
+  createProfile,
+  createUser,
+  loginUser,
+} from "./mockFuntion/mockUser.mts";
+import type { ApiResponse } from "./utils/type";
+import { createPlan } from "./mockFuntion/mockPlan.mts";
 
-const userDatas = [
-  {
-    email: "admin@email.com",
-    token: "",
-    name: "admin scotland",
-  },
-  {
-    email: "mos1@email.com",
-    token: "",
-    name: "mos1 america",
-  },
-  {
-    email: "mos2@email.com",
-    token: "",
-    name: "mos2 thailand",
-  },
-  {
-    email: "mos3@email.com",
-    token: "",
-    name: "mos3 british",
-  },
-  {
-    email: "test1@email.com",
-    token: "",
-    name: "test1 japan",
-  },
-  {
-    email: "test2@email.com",
-    token: "",
-    name: "test2 india",
-  },
-];
+function printResult(msg: string, result: ApiResponse, email: string) {
+  if (result.success) {
+    console.log(`✅ ${msg} successfully: ${email}`);
+  } else {
+    console.log(`❌ Failed to ${msg}: ${email} - ${result.error}`);
+  }
+}
 
 // Create multiple user
 async function createMultiUser() {
@@ -40,11 +22,7 @@ async function createMultiUser() {
       email: user.email,
       password: "12345678",
     });
-    if (result.success) {
-      console.log(`✅ User created successfully: ${user.email}`);
-    } else {
-      console.log(`❌ Failed to create user: ${user.email} - ${result.error}`);
-    }
+    printResult("Create user", result, user.email);
   }
 }
 
@@ -56,10 +34,8 @@ async function loginMultiUser() {
     });
     if (result.success) {
       user.token = result.data;
-      console.log(`✅ Login successfully: ${user.email}`);
-    } else {
-      console.log(`❌ Failed to login user: ${user.email} - ${result.error}`);
     }
+    printResult("Login user", result, user.email);
   }
 }
 
@@ -70,17 +46,45 @@ async function createMutiProfile() {
       token: user.token,
       name: user.name,
     });
-    if (result.success) {
-      user.token = result.data;
-      console.log(`✅ Create Profile successfully: ${user.email}`);
-    } else {
-      console.log(
-        `❌ Failed to create Profile: ${user.email} - ${result.error}`
-      );
-    }
+    printResult("Create Profile", result, user.email);
   }
 }
 
-await createMultiUser();
-await loginMultiUser();
-await createMutiProfile();
+async function createAdmin() {
+  let result = await createUser({
+    email: adminData.email,
+    password: "12345678",
+    isAdmin: true
+  });
+  printResult("Create admin", result, adminData.email);
+
+  result = await loginUser({
+    email: adminData.email,
+    password: "12345678",
+  });
+  if (result.success) {
+    adminData.token = result.data;
+  }
+  printResult("Login admin", result, adminData.email);
+
+  result = await createProfile({
+    email: adminData.email,
+    token: adminData.token,
+    name: adminData.name,
+  });
+  printResult("Create Admin Profile", result, adminData.email);
+}
+
+async function createMutiPlan() {
+  for (const plan of planDatas) {
+    const result = await createPlan(plan, adminData.token);
+    console.log(result)
+    printResult("Create Plan", result, plan.title);
+  }
+}
+
+// await createMultiUser();
+// await loginMultiUser();
+// await createMutiProfile();
+await createAdmin();
+await createMutiPlan()

@@ -1,25 +1,13 @@
 import axios from "axios";
-import { handleError } from "./error.mts";
-
-const BACKEND_URL = "http://localhost:3000/api/";
+import { handleError } from "../utils/error.mts";
+import { BACKEND_URL } from "../utils/constant";
+import type { ApiResponse, ProfileData, UserData } from "../utils/type";
 
 const API_USER = BACKEND_URL + "users";
 const API_LOGIN = BACKEND_URL + "auth";
 const API_PROFILE = BACKEND_URL + "profiles";
 
-// Type definitions
-interface UserData {
-  email: string;
-  password: string;
-}
-
-interface ProfileData {
-  token: string;
-  name: string;
-  email: string;
-}
-
-async function createUser(userData: UserData) {
+async function createUser(userData: UserData): Promise<ApiResponse> {
   try {
     const response = await axios.post(API_USER, userData);
 

@@ -10,10 +10,11 @@ function handleError(error: any) {
       // console.log("Error response data:", axiosError.response.data);
 
       const contentType = axiosError.response.headers["content-type"];
-      if (typeof axiosError.response.data === 'string') {
+      if (typeof axiosError.response.data === "string") {
         return {
           error: axiosError.response.data,
           status: axiosError.response.status,
+          contentType,
         };
       }
 
@@ -53,12 +54,14 @@ function handleError(error: any) {
     } else if (axiosError.request) {
       // Request was made but no response received
       return {
+        status: 500,
         error:
           "No response from server. Check if the server is running on http://localhost:3000",
       };
     } else {
       // Something else happened
       return {
+        status: 500,
         error: `Request setup error: ${axiosError.message}`,
       };
     }
@@ -67,7 +70,10 @@ function handleError(error: any) {
   // Non-Axios error
   return {
     success: false,
+    status: 500,
     error: error instanceof Error ? error.message : "Unknown error occurred",
+    data: "",
+    contentType: "",
   };
 }
 
