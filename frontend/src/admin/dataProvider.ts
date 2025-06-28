@@ -19,7 +19,9 @@ const apiUrl = "http://localhost:3000/api";
 // 🔐 Get token from localStorage (or from a token service)
 const getAuthHeader = () => {
   const token = localStorage.getItem("token");
-  return token ? { "x-auth-token": token } : {};
+  return {
+    headers: token ? { "x-auth-token": token } : {},
+  };
 };
 
 const baseProvider = jsonServerProvider(apiUrl, httpClient);
@@ -33,28 +35,22 @@ const mapId = (data: any) => {
   }
 };
 
-const formDataPost = async (url: string, body: any) => {
-  const token = userService.getToken();
-  const myHeaders = new Headers();
-  if (token) {
-    myHeaders.append("x-auth-token", token);
+export async function fetchFormData(
+  url: string,
+  formData: any,
+  method: "post" | "patch"
+) {
+  const headers = {
+    "x-auth-token": userService.getToken(),
+  };
+  if (method === "post") {
+    const { data } = await axios.post(url, formData, { headers });
+    return data;
+  } else {
+    const { data } = await axios.patch(url, formData, { headers });
+    return data;
   }
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: myHeaders,
-    body,
-  });
-
-  if (!response.ok) {
-    console.log(response);
-    throw new Error("Image upload failed");
-  }
-
-  const json = await response.json();
-
-  return json;
-};
+}
 
 interface ImagesType {
   page: number;
@@ -89,11 +85,9 @@ export const dataProvider: DataProvider = {
           url += `all?page=${page}&limit=${perPage}`;
         }
 
-        const { data } = await axios.get<ImagesType>(url, {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
+        const headers = getAuthHeader();
+        console.log("header", headers);
+        const { data } = await axios.get<ImagesType>(url, headers);
         return {
           data: data.items.map((item) => ({ ...item, id: item._id })),
           total: data.totalItems,
@@ -102,19 +96,13 @@ export const dataProvider: DataProvider = {
       let res;
       if (resource === "inactiveImages") {
         console.log("inactive iamges");
-        res = await axios.get(`${apiUrl}/images/inactive-images`, {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
-        console.log(mapId(res.data.imgs));
+        res = await axios.get(
+          `${apiUrl}/images/inactive-images`,
+          getAuthHeader()
+        );
         return { data: mapId(res.data.imgs), total: 25 };
       } else {
-        res = await axios.get(`${apiUrl}/${resource}`, {
-          headers: {
-            ...getAuthHeader(),
-          },
-        });
+        res = await axios.get(`${apiUrl}/${resource}`, getAuthHeader());
       }
 
       return {
@@ -138,7 +126,7 @@ export const dataProvider: DataProvider = {
 
   getMany: async (resource, params) => {
     const response = await baseProvider.getMany(resource, params);
-    console.log('response data', response.data)
+    console.log("response data", response.data);
     return { data: mapId(response.data) };
   },
 
@@ -188,11 +176,12 @@ export const dataProvider: DataProvider = {
 
       let json;
       if (resource === "images") {
-        json = await formDataPost(`${apiUrl}/images`, formData);
+        json = await fetchFormData(`${apiUrl}/images`, formData, "post");
       } else {
-        json = await formDataPost(
+        json = await fetchFormData(
           `${apiUrl}/plans/create-with-image`,
-          formData
+          formData,
+          "post"
         );
       }
       return { data: { ...json, id: json.id } };
@@ -206,8 +195,6 @@ export const dataProvider: DataProvider = {
   },
 
   update: async (resource, params) => {
-    console.log('update')
-    console.log(params.data)
     const response = await baseProvider.update(resource, params);
     return { data: mapId(response.data) };
   },
@@ -223,7 +210,6 @@ export const dataProvider: DataProvider = {
   },
 
   deleteMany: async (resource, params) => {
-    console.log("delete many");
     if (resource === "images" || resource === "inactiveImages") {
       let url;
       if (resource === "images") {
@@ -232,9 +218,7 @@ export const dataProvider: DataProvider = {
         url = `${apiUrl}/images/hard-delete`;
       }
       await axios.delete(url, {
-        headers: {
-          ...getAuthHeader(),
-        },
+        ...getAuthHeader(),
         data: {
           ids: params.ids,
         },

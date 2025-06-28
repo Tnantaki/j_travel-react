@@ -2,11 +2,8 @@ import { useState } from "react";
 import {
   DateInput,
   Edit,
-  FileField,
-  FileInput,
   ImageField,
   ImageInput,
-  ReferenceInput,
   SelectInput,
   SimpleForm,
   TextInput,
