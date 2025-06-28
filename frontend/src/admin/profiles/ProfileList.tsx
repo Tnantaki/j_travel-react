@@ -4,9 +4,8 @@ const ProfileList = () => (
   <List>
     <Datagrid>
       <ImageField source="profileImage" />
-      <TextField source="id" />
-      <TextField source="email" />
       <TextField source="username" />
+      <TextField source="email" />
     </Datagrid>
   </List>
 );

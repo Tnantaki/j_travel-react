@@ -17,6 +17,9 @@ import ImageList from "./images/ImageList";
 import ImageCreate from "./images/ImageCreate";
 import InactiveImageList from "./images/InactiveImageList";
 import ProfileList from "./profiles/ProfileList";
+import { ProfileShow } from "./profiles/ProfileShow";
+import { ProfileEdit } from "./profiles/ProfileEdit";
+import ProfileCreate from "./profiles/ProfileCreate";
 
 const HomePage = () => {
   return <h1>Home Page</h1>;
@@ -37,7 +40,14 @@ const AdminPanel = () => {
         show={ShowUser}
         create={UserCreate}
       />
-      <Resource icon={ImProfile} name="profiles" list={ProfileList} />
+      <Resource
+        icon={ImProfile}
+        name="profiles"
+        list={ProfileList}
+        show={ProfileShow}
+        create={ProfileCreate}
+        edit={ProfileEdit}
+      />
       <Resource
         icon={FaPlane}
         name="plans"
