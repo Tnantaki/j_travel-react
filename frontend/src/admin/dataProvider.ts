@@ -138,6 +138,7 @@ export const dataProvider: DataProvider = {
 
   getMany: async (resource, params) => {
     const response = await baseProvider.getMany(resource, params);
+    console.log('response data', response.data)
     return { data: mapId(response.data) };
   },
 
@@ -205,6 +206,8 @@ export const dataProvider: DataProvider = {
   },
 
   update: async (resource, params) => {
+    console.log('update')
+    console.log(params.data)
     const response = await baseProvider.update(resource, params);
     return { data: mapId(response.data) };
   },

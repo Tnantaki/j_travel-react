@@ -5,7 +5,6 @@ const PlanList = () => (
     <Datagrid>
       <TextField source="title" />
       <TextField source="type" />
-      <TextField source="description" />
       <TextField source="price" />
       <TextField source="duration" />
     </Datagrid>

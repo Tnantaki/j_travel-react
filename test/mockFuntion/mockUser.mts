@@ -1,11 +1,19 @@
 import axios from "axios";
 import { handleError } from "../utils/error.mts";
 import { BACKEND_URL } from "../utils/constant";
-import type { ApiResponse, ProfileData, UserData } from "../utils/type";
+import type {
+  ApiResponse,
+  ProfileData,
+  UserData,
+} from "../utils/type";
+import FormData from "form-data";
+import { readFileSync } from "fs";
+import path from "path";
 
 const API_USER = BACKEND_URL + "users";
 const API_LOGIN = BACKEND_URL + "auth";
 const API_PROFILE = BACKEND_URL + "profiles";
+const API_PROFILE_IMAGE = BACKEND_URL + "profiles/upload-profile-image";
 
 async function createUser(userData: UserData): Promise<ApiResponse> {
   try {
@@ -92,4 +100,36 @@ async function createProfile(profile: ProfileData) {
   }
 }
 
-export { createUser, loginUser, createProfile };
+async function uploadProfileImage(imgPath: string, token: string) {
+  const headers = {
+    "x-auth-token": token,
+  };
+  try {
+    const formData = new FormData();
+    const fileData = readFileSync(imgPath);
+    const fileName = path.basename(imgPath);
+    formData.append("profileImage", fileData, {
+      filename: fileName,
+    });
+
+    const response = await axios.post(API_PROFILE_IMAGE, formData, {
+      headers,
+    });
+
+    return {
+      success: true,
+      status: response.status,
+      data: response.data,
+      contentType: response.headers["content-type"],
+      error: "",
+    };
+  } catch (error) {
+    const data = handleError(error);
+    return {
+      ...data,
+      success: false,
+    };
+  }
+}
+
+export { createUser, loginUser, createProfile, uploadProfileImage };

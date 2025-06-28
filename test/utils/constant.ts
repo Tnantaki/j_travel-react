@@ -6,6 +6,7 @@ export const adminData = {
   email: "admin@email.com",
   token: "",
   name: "admin scotland",
+  imgPath: "./utils/profiles/admin.png"
 };
 
 export const userDatas = [
@@ -13,26 +14,31 @@ export const userDatas = [
     email: "mos1@email.com",
     token: "",
     name: "mos1 america",
+    imgPath: "./utils/profiles/profile1.png"
   },
   {
     email: "mos2@email.com",
     token: "",
     name: "mos2 thailand",
+    imgPath: "./utils/profiles/profile2.png"
   },
   {
     email: "mos3@email.com",
     token: "",
     name: "mos3 british",
+    imgPath: "./utils/profiles/profile3.png"
   },
   {
     email: "test1@email.com",
     token: "",
     name: "test1 japan",
+    imgPath: "./utils/profiles/profile4.png"
   },
   {
     email: "test2@email.com",
     token: "",
     name: "test2 india",
+    imgPath: "./utils/profiles/profile5.png"
   },
 ];
 

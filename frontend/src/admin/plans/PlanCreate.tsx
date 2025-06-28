@@ -18,10 +18,10 @@ export const planChoices = [
   { id: "tour", name: "Tour", seat: false },
 ];
 
-const ArrayCountDisplay: React.FC<{ source: string; label?: string }> = ({
-  source,
-  label = "duration",
-}) => {
+export const ArrayCountDisplay: React.FC<{
+  source: string;
+  label?: string;
+}> = ({ source, label = "duration" }) => {
   const { watch } = useFormContext();
   const arrayValue = watch(source) || [];
 
@@ -35,25 +35,27 @@ const ArrayCountDisplay: React.FC<{ source: string; label?: string }> = ({
   );
 };
 
+export const transformPlanData = (data: any) => {
+  if (data.schedules) {
+    const schedules = data.schedules.map((schedule: any, index: number) => ({
+      ...schedule,
+      day: index + 1,
+      events: schedule.events || [],
+    }));
+    data = {
+      ...data,
+      schedules,
+      duration: schedules.length,
+    };
+  }
+  console.log(data);
+
+  return data;
+};
+
 const PlanCreate = () => {
   const [seat, setSeat] = useState(false);
-  const transformData = useCallback((data: any) => {
-    if (data.schedules) {
-      const schedules = data.schedules.map((schedule: any, index: number) => ({
-        ...schedule,
-        day: index + 1,
-        events: schedule.events || [],
-      }));
-      data = {
-        ...data,
-        schedules,
-        duration: schedules.length
-      };
-    }
-    console.log(data);
-
-    return data;
-  }, []);
+  const transformData = useCallback(transformPlanData, []);
 
   return (
     <Create transform={transformData}>

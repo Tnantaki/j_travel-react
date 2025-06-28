@@ -1,8 +1,10 @@
 import {
   ArrayField,
+  ImageField,
   NumberField,
   Show,
   SimpleShowLayout,
+  SingleFieldList,
   TextField,
   WithListContext,
 } from "react-admin";
@@ -38,6 +40,11 @@ const PlanShow = () => (
             </ul>
           )}
         />
+      </ArrayField>
+      <ArrayField source="images">
+        <SingleFieldList>
+          <ImageField source="imageUrl" />
+        </SingleFieldList>
       </ArrayField>
     </SimpleShowLayout>
   </Show>

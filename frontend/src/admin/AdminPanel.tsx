@@ -1,4 +1,4 @@
-import { Admin, Layout, ListGuesser, Resource } from "react-admin";
+import { Admin, Layout, Resource } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { authProvider } from "./authProvider";
 import UserList from "./users/UserList";
@@ -16,6 +16,7 @@ import { CiImageOff } from "react-icons/ci";
 import ImageList from "./images/ImageList";
 import ImageCreate from "./images/ImageCreate";
 import InactiveImageList from "./images/InactiveImageList";
+import ProfileList from "./profiles/ProfileList";
 
 const HomePage = () => {
   return <h1>Home Page</h1>;
@@ -36,7 +37,7 @@ const AdminPanel = () => {
         show={ShowUser}
         create={UserCreate}
       />
-      <Resource icon={ImProfile} name="profiles" list={ListGuesser} />
+      <Resource icon={ImProfile} name="profiles" list={ProfileList} />
       <Resource
         icon={FaPlane}
         name="plans"

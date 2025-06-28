@@ -3,6 +3,7 @@ import {
   createProfile,
   createUser,
   loginUser,
+  uploadProfileImage,
 } from "./mockFuntion/mockUser.mts";
 import type { ApiResponse } from "./utils/type";
 import { createPlan } from "./mockFuntion/mockPlan.mts";
@@ -42,12 +43,15 @@ async function loginMultiUser() {
 }
 
 async function createMutiProfile() {
+  let result;
   for (const user of userDatas) {
-    const result = await createProfile({
+    result = await createProfile({
       email: user.email,
       token: user.token,
       name: user.name,
     });
+    result = await uploadProfileImage(user.imgPath, user.token);
+
     printResult("Create Profile", result, user.email);
   }
 }
@@ -56,7 +60,7 @@ async function createAdmin() {
   let result = await createUser({
     email: adminData.email,
     password: "12345678",
-    isAdmin: true
+    isAdmin: true,
   });
   printResult("Create admin", result, adminData.email);
 
@@ -74,6 +78,7 @@ async function createAdmin() {
     token: adminData.token,
     name: adminData.name,
   });
+  result = await uploadProfileImage(adminData.imgPath, adminData.token);
   printResult("Create Admin Profile", result, adminData.email);
 }
 
@@ -85,7 +90,7 @@ async function createMutiPlan() {
 }
 
 // await createMultiUser();
-// await loginMultiUser();
-// await createMutiProfile();
-await createAdmin();
-await createMutiPlan()
+await loginMultiUser();
+await createMutiProfile();
+// await createAdmin();
+// await createMutiPlan()
