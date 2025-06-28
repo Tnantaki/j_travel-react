@@ -7,8 +7,6 @@ import {
 } from "./mockFuntion/mockUser.mts";
 import type { ApiResponse } from "./utils/type";
 import { createPlan } from "./mockFuntion/mockPlan.mts";
-import { stat } from "fs/promises";
-import { chownSync } from "fs";
 
 function printResult(msg: string, result: ApiResponse, email: string) {
   if (result.success) {

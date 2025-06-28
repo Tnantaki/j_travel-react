@@ -2,6 +2,7 @@ import jsonServerProvider from "ra-data-json-server";
 import { DataProvider, fetchUtils } from "react-admin";
 import userService from "../services/user-service";
 import axios from "axios";
+import { PlanType } from "./transform";
 
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   if (!options.headers) {
@@ -95,7 +96,6 @@ export const dataProvider: DataProvider = {
       }
       let res;
       if (resource === "inactiveImages") {
-        console.log("inactive iamges");
         res = await axios.get(
           `${apiUrl}/images/inactive-images`,
           getAuthHeader()
@@ -139,55 +139,29 @@ export const dataProvider: DataProvider = {
   },
 
   create: async (resource, params) => {
-    if (
-      (resource === "plans" &&
-        Array.isArray(params.data.images) &&
-        params.data.images.length) ||
-      resource === "images"
-    ) {
-      console.log("There are images");
-      const formData = new FormData();
-
-      // Append regular text fields (if any)
-      for (const key in params.data) {
-        if (key !== "images") {
-          formData.append(key, params.data[key]);
-        }
-      }
-
-      // Append image file(s)
-      if (params.data.images) {
-        const images = Array.isArray(params.data.images)
-          ? params.data.images
-          : [params.data.images];
-
-        let idxImage = 0;
-        images.forEach((image) => {
-          formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
-          if (image.tag) {
-            formData.append(`tag[${idxImage}]`, image.tag);
-          }
-          if (image.caption) {
-            formData.append(`caption[${idxImage}]`, image.caption);
-          }
-          idxImage++;
-        });
-      }
-
-      let json;
-      if (resource === "images") {
-        json = await fetchFormData(`${apiUrl}/images`, formData, "post");
-      } else {
-        json = await fetchFormData(
-          `${apiUrl}/plans/create-with-image`,
-          formData,
-          "post"
-        );
-      }
+    if (resource === "images") {
+      const json = await fetchFormData(
+        `${apiUrl}/images`,
+        params.data.formData,
+        "post"
+      );
       return { data: { ...json, id: json.id } };
     }
     if (resource === "plans") {
-      delete params.data.images;
+      const planData: PlanType = params.data.plan;
+      const { data } = await axios.post(
+        `${apiUrl}/${resource}`,
+        planData,
+        getAuthHeader()
+      );
+      if (!params.data.formData) {
+        return { data: { ...data, id: data._id } };
+      }
+
+      // Upload images
+      const endpoint = `${apiUrl}/plans/image-to-plan/${data._id}`;
+      const json = await fetchFormData(endpoint, params.data.formData, "patch");
+      return { data: { ...json, id: json.id } };
     }
 
     const response = await baseProvider.create(resource, params);

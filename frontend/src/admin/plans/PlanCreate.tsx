@@ -3,6 +3,7 @@ import {
   Create,
   ImageField,
   ImageInput,
+  minLength,
   NumberInput,
   required,
   SelectInput,
@@ -12,6 +13,12 @@ import {
 } from "react-admin";
 import { useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import {
+  handleFormImage,
+  handlePlanData,
+  ImageType,
+  PlanType,
+} from "../transform";
 
 export const planChoices = [
   { id: "private", name: "Private", seat: true },
@@ -35,22 +42,16 @@ export const ArrayCountDisplay: React.FC<{
   );
 };
 
-export const transformPlanData = (data: any) => {
-  if (data.schedules) {
-    const schedules = data.schedules.map((schedule: any, index: number) => ({
-      ...schedule,
-      day: index + 1,
-      events: schedule.events || [],
-    }));
-    data = {
-      ...data,
-      schedules,
-      duration: schedules.length,
-    };
-  }
-  console.log(data);
+interface PlanInput extends PlanType {
+  images: ImageType[];
+}
 
-  return data;
+export const transformPlanData = (data: PlanInput) => {
+  const { images, ...planMeta } = data;
+  const formData = handleFormImage(images);
+  const plan = handlePlanData(planMeta);
+
+  return { plan, formData };
 };
 
 const PlanCreate = () => {
@@ -82,7 +83,7 @@ const PlanCreate = () => {
         <ArrayCountDisplay source="schedules" label="Duration " />
         <ArrayInput source="schedules" label="Daily Schedules" name="schedules">
           <SimpleFormIterator getItemLabel={(i) => `day ${i + 1}`}>
-            <TextInput source="title" label="Locations" validate={required()} />
+            <TextInput source="title" label="Locations" validate={[required(), minLength(5, '5 charactor at least.')]} />
 
             <ArrayInput source="events" label="Events">
               <SimpleFormIterator getItemLabel={(i) => `${i + 1}`}>
