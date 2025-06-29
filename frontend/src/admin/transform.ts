@@ -21,14 +21,25 @@ export interface PlanType {
   schedules: ScheduleType[];
 }
 
+export interface PlanInput extends PlanType {
+  images: ImageType[];
+}
+
 export function handleFormImage(images: ImageType[]) {
   if (images.length === 0) {
     return undefined;
   }
   const formData = new FormData();
 
+  let countFile = 0
   images.forEach((image) => {
+    console.log(image)
+    if (!image.file.rawFile) {
+      return;
+    }
+
     formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
+    countFile++
     if (image.tag) {
       formData.append("tag", image.tag);
     }
@@ -36,21 +47,37 @@ export function handleFormImage(images: ImageType[]) {
       formData.append("caption", image.caption);
     }
   });
+
+  if (countFile === 0) {
+    return undefined
+  }
+
   return formData;
 }
 
-export function handlePlanData(plan: PlanType) {
+function handlePlanData(plan: PlanType) {
   const schedules = plan.schedules.map((schedule, idx) => ({
-    ...schedule,
     day: idx + 1,
+    title: schedule.title,
     events: schedule.events || [],
   }));
 
-  const data = {
-    ...plan,
+  const data: PlanType = {
+    type: plan.type,
+    title: plan.title,
+    description: plan.description,
+    price: plan.price,
     schedules,
     duration: schedules.length,
   };
 
   return data;
 }
+
+export const transformPlanData = (data: PlanInput) => {
+  const { images, ...planMeta } = data;
+  const formData = handleFormImage(images);
+  const plan = handlePlanData(planMeta);
+
+  return { plan, formData };
+};

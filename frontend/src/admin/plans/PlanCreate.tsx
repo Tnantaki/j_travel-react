@@ -13,12 +13,7 @@ import {
 } from "react-admin";
 import { useCallback, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import {
-  handleFormImage,
-  handlePlanData,
-  ImageType,
-  PlanType,
-} from "../transform";
+import { transformPlanData } from "../transform";
 
 export const planChoices = [
   { id: "private", name: "Private", seat: true },
@@ -40,18 +35,6 @@ export const ArrayCountDisplay: React.FC<{
       disabled
     />
   );
-};
-
-interface PlanInput extends PlanType {
-  images: ImageType[];
-}
-
-export const transformPlanData = (data: PlanInput) => {
-  const { images, ...planMeta } = data;
-  const formData = handleFormImage(images);
-  const plan = handlePlanData(planMeta);
-
-  return { plan, formData };
 };
 
 const PlanCreate = () => {

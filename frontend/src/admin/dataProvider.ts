@@ -71,7 +71,6 @@ export const dataProvider: DataProvider = {
   ...baseProvider,
 
   getList: async (resource, params) => {
-    console.log("params", params);
     if (resource === "images" && params.pagination) {
       const { page, perPage } = params.pagination;
       const { tags } = params.filter;
@@ -111,13 +110,11 @@ export const dataProvider: DataProvider = {
 
   getOne: async (resource, params) => {
     const response = await baseProvider.getOne(resource, params);
-    console.log(response.data);
     return { data: mapId(response.data) };
   },
 
   getMany: async (resource, params) => {
     const response = await baseProvider.getMany(resource, params);
-    console.log("response data", response.data);
     return { data: mapId(response.data) };
   },
 
@@ -160,6 +157,19 @@ export const dataProvider: DataProvider = {
   },
 
   update: async (resource, params) => {
+    if (resource === "plans") {
+      const planData: PlanType = params.data.plan;
+      const url = `${apiUrl}/${resource}/${params.id}`;
+      const { data } = await axios.put(url, planData, getAuthHeader());
+      if (!params.data.formData) {
+        return { data: { ...data, id: data._id } };
+      }
+
+      // Upload images
+      const endpoint = `${apiUrl}/plans/image-to-plan/${data._id}`;
+      const json = await fetchFormData(endpoint, params.data.formData, "patch");
+      return { data: { ...json, id: json.id } };
+    }
     const response = await baseProvider.update(resource, params);
     return { data: mapId(response.data) };
   },
