@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   DateInput,
   Edit,
@@ -7,27 +6,25 @@ import {
   SelectInput,
   SimpleForm,
   TextInput,
+  useEditController,
 } from "react-admin";
 
 export const ProfileEdit = () => {
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const controllerProps = useEditController();
 
-  const handleChange = (files: any) => {
-    setSelectedFiles(files);
-    console.log("Files selected:", files);
-  };
+  const modifiedRecord = controllerProps.record
+    ? {
+        ...controllerProps.record,
+        profileImage: controllerProps.record.profileImage
+          ? { src: controllerProps.record.profileImage }
+          : undefined,
+      }
+    : undefined;
 
   return (
-    <Edit>
-      <SimpleForm>
-        {!selectedFiles && (
-          <ImageField source="profileImage" title="Current Profile Image" />
-        )}
-        <ImageInput
-          source="newProfileImage"
-          label="Upload New Profile Image"
-          onChange={handleChange}
-        >
+    <Edit {...controllerProps}>
+      <SimpleForm record={modifiedRecord}>
+        <ImageInput source="profileImage">
           <ImageField source="src" title="title" />
         </ImageInput>
         <TextInput source="username" />
