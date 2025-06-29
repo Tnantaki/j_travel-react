@@ -91,7 +91,7 @@ const Confirm = ({ prevStep }: Props) => {
             </thead>
             <tbody className="border-b-1 border-primary/40">
               {renderMemberTableRow(booking.leader!)}
-              {booking.members.map((member) => renderMemberTableRow(member))}
+              {/* {booking.members.map((member) => renderMemberTableRow(member))} */}
             </tbody>
           </table>
           <div className="flex flex-row items-center">

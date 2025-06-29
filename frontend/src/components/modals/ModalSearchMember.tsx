@@ -2,35 +2,17 @@ import Modal from "./Modal";
 import Button from "../common/Button";
 import { IoIosSearch } from "react-icons/io";
 import { useRef, useState } from "react";
-import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { SearchedMemberType, useBooking } from "../../contexts/BookingProvider";
 import { FaExclamationCircle } from "react-icons/fa";
+import groupService from "../../services/group-service";
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
 }
 
-const mockUpMember: MemberType[] = [
-  {
-    id: "12345",
-    name: "Anna rocker",
-    birthday: new Date("2020-02-11T00:00:00.000Z"),
-    gender: "female",
-    email: 'anna@email.com',
-    phone: "556 191-5394",
-  },
-  {
-    id: "67890",
-    name: "Anny rocker",
-    birthday: new Date("2020-02-11T00:00:00.000Z"),
-    gender: "female",
-    email: 'anny@email.com',
-    phone: "556 191-5394",
-  },
-];
-
 const ModalSearchMember = ({ isOpen, onClose }: Props) => {
-  const [members, setMembers] = useState<MemberType[]>([]);
+  const [members, setMembers] = useState<SearchedMemberType[]>([]);
   const [error, setError] = useState("");
   const textRef = useRef<HTMLInputElement>(null);
   const { booking, bookDispatch } = useBooking();
@@ -45,32 +27,43 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
   };
 
   // filter out the member which already added
-  const filterMembers = (getMembers: MemberType[]) => {
+  const filterMembers = (getMembers: SearchedMemberType[]) => {
     return getMembers.filter((mem) => {
       if (mem.id === booking.leader!.id) {
         return false;
       }
-      const memFilter = booking.members.filter(memList => memList.id === mem.id)
+      const memFilter = booking.members.filter(
+        (memList) => memList.id === mem.id
+      );
       if (memFilter.length) {
-        return false
+        return false;
       }
       return true;
     });
   };
 
-  const handleAddMember = (member: MemberType) => {
+  const handleAddMember = (member: SearchedMemberType) => {
     bookDispatch({ type: "add_member", member });
-    setMembers(members.filter(mem => mem.id !== member.id));
+    setMembers(members.filter((mem) => mem.id !== member.id));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (textRef.current) {
       console.log(textRef.current.value);
+      const email = textRef.current.value;
       try {
         // search member API
-        const data = mockUpMember;
-        setMembers(filterMembers(data));
+        const { data } = await groupService.searchMember(email);
+        console.log(data)
+
+        const members = data.map((mem) => ({
+          id: mem._id,
+          name: mem.username,
+          email: mem.email,
+        }));
+
+        setMembers(filterMembers(members));
       } catch (error) {
         setError("Error");
       }
@@ -91,7 +84,7 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
               <input
                 ref={textRef}
                 type="text"
-                placeholder="Name..."
+                placeholder="Email..."
                 className="py-2 w-full focus:border-0 focus:outline-0"
               />
             </div>

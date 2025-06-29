@@ -16,10 +16,16 @@ export interface MemberType {
   phone: string;
 }
 
+export interface SearchedMemberType {
+  id: string;
+  name: string;
+  email: string
+}
+
 interface BookingType {
   leader: MemberType | undefined;
   planId: string;
-  members: MemberType[];
+  members: SearchedMemberType[];
   groupId: string;
   startDate: Date | undefined;
   endDate: Date | undefined;
@@ -38,7 +44,7 @@ interface AddLeader {
 
 interface AddMember {
   type: "add_member";
-  member: MemberType;
+  member: SearchedMemberType;
 }
 
 interface AddGroup {

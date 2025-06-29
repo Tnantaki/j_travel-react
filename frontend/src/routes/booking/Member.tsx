@@ -3,7 +3,7 @@ import { useState } from "react";
 // import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import MotionButton from "../../components/common/MotionButton";
-import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { SearchedMemberType, useBooking } from "../../contexts/BookingProvider";
 import groupService, { GroupType } from "../../services/group-service";
 
 interface Props {
@@ -42,7 +42,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
     );
   };
 
-  const renderMemberList = (member: MemberType) => {
+  const renderMemberList = (member: SearchedMemberType) => {
     return (
       <li
         key={member.id}

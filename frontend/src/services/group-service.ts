@@ -5,9 +5,9 @@ export interface GroupType {
   members: string[];
 }
 
-export interface MemberSearchType {
-  _id: string
-  username: string
+export interface ResMemberType {
+  _id: string;
+  username: string;
   email: string
 }
 
@@ -34,12 +34,9 @@ class GroupService {
   // }
 
   searchMember(email: string) {
-    const controller = new AbortController();
-
-    const getMemberSearch = apiClients.get<MemberSearchType[]>(`/groups/search-member?email=${email}&limit=5`, {
-      signal: controller.signal,
-    });
-    return { getMemberSearch, cancel: () => controller.abort() };
+    return apiClients.get<ResMemberType[]>(
+      `/groups/search-member?email=${email}&limit=5`
+    );
   }
 }
 
