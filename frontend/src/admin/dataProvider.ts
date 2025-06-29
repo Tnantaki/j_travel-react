@@ -71,51 +71,42 @@ export const dataProvider: DataProvider = {
   ...baseProvider,
 
   getList: async (resource, params) => {
-    try {
-      console.log("params", params);
-      if (resource === "images" && params.pagination) {
-        const { page, perPage } = params.pagination;
-        const { tags } = params.filter;
+    console.log("params", params);
+    if (resource === "images" && params.pagination) {
+      const { page, perPage } = params.pagination;
+      const { tags } = params.filter;
 
-        console.log("Fetching images with tags:", tags);
+      console.log("Fetching images with tags:", tags);
 
-        let url = `${apiUrl}/${resource}/`;
-        if (tags) {
-          url += `?page=${page}&limit=${perPage}&tags=${tags}`;
-        } else {
-          url += `all?page=${page}&limit=${perPage}`;
-        }
-
-        const headers = getAuthHeader();
-        console.log("header", headers);
-        const { data } = await axios.get<ImagesType>(url, headers);
-        return {
-          data: data.items.map((item) => ({ ...item, id: item._id })),
-          total: data.totalItems,
-        };
-      }
-      let res;
-      if (resource === "inactiveImages") {
-        res = await axios.get(
-          `${apiUrl}/images/inactive-images`,
-          getAuthHeader()
-        );
-        return { data: mapId(res.data.imgs), total: 25 };
+      let url = `${apiUrl}/${resource}/`;
+      if (tags) {
+        url += `?page=${page}&limit=${perPage}&tags=${tags}`;
       } else {
-        res = await axios.get(`${apiUrl}/${resource}`, getAuthHeader());
+        url += `all?page=${page}&limit=${perPage}`;
       }
 
+      const headers = getAuthHeader();
+      const { data } = await axios.get<ImagesType>(url, headers);
       return {
-        data: mapId(res.data),
-        total: 25,
-      };
-    } catch (error: any) {
-      console.log(error);
-      return {
-        data: mapId(error.body),
-        total: 10,
+        data: data.items.map((item) => ({ ...item, id: item._id })),
+        total: data.totalItems,
       };
     }
+    let res;
+    if (resource === "inactiveImages") {
+      res = await axios.get(
+        `${apiUrl}/images/inactive-images`,
+        getAuthHeader()
+      );
+      return { data: mapId(res.data.imgs), total: res.data.total };
+    } else {
+      res = await axios.get(`${apiUrl}/${resource}`, getAuthHeader());
+    }
+
+    return {
+      data: mapId(res.data),
+      total: 25,
+    };
   },
 
   getOne: async (resource, params) => {
@@ -174,6 +165,13 @@ export const dataProvider: DataProvider = {
   },
 
   updateMany: async (resource, params) => {
+    if (resource === "inactiveImages") {
+      const url = `${apiUrl}/images/active-images`;
+      const data = { ids: params.ids };
+      await axios.patch(url, data, getAuthHeader());
+      return { data: [params.ids] };
+    }
+
     const response = await baseProvider.updateMany(resource, params);
     return { data: mapId(response.data) };
   },
@@ -184,12 +182,19 @@ export const dataProvider: DataProvider = {
   },
 
   deleteMany: async (resource, params) => {
-    if (resource === "images" || resource === "inactiveImages") {
+    if (
+      resource === "images" ||
+      resource === "inactiveImages" ||
+      resource === "plans"
+    ) {
+      console.log("delete many ", params);
       let url;
       if (resource === "images") {
         url = `${apiUrl}/images/soft-delete`;
-      } else {
+      } else if (resource === "inactiveImages") {
         url = `${apiUrl}/images/hard-delete`;
+      } else {
+        url = `${apiUrl}/plans/delete-plans`;
       }
       await axios.delete(url, {
         ...getAuthHeader(),
@@ -204,8 +209,3 @@ export const dataProvider: DataProvider = {
     return { data: mapId(response.data) };
   },
 };
-
-// export const dataProvider = jsonServerProvider(
-//   "http://localhost:3000/api",
-//   httpClient
-// );

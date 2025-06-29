@@ -87,8 +87,8 @@ async function createMutiPlan() {
   }
 }
 
-// await createMultiUser();
+await createMultiUser();
 await loginMultiUser();
 await createMutiProfile();
-// await createAdmin();
-// await createMutiPlan()
+await createAdmin();
+await createMutiPlan()

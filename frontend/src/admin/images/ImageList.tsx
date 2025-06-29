@@ -5,7 +5,7 @@ const tagFilter = [
 ]
 
 const ImageList = () => (
-  <List pagination={<Pagination />} title="Images" filters={tagFilter}>
+  <List pagination={<Pagination />} title="Images" filters={tagFilter} >
     <Datagrid rowClick="edit">
       <ImageField source="imageUrl" label="image" />
       <TextField source="fileName" />
