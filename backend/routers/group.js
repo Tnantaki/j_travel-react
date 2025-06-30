@@ -86,7 +86,7 @@ router.post('/', auth, async (req, res) => {
 		if (!leaderProfile) return res.status(404).send('Leader Id does not exist.');
 
 		const memberProfiles = await Profile.find({_id: {$in: members}}).select('_id');
-		if (!memberProfiles || memberProfiles.length === 0) 
+		if (members.length !== 0 && memberProfiles.length === 0) 
 			return res.status(404).send('Invalid members.');
 
 		const group = new Group({

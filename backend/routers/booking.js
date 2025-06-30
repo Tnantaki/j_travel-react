@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const { Booking, validate, validateUpdate} = require('../models/booking');
+const { Profile } = require('../models/profile');
 const { Group } = require('../models/group');
 
 router.get('/', [auth, admin], async (req, res) => {
@@ -13,21 +14,40 @@ router.get('/', [auth, admin], async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
+	const profile = await Profile.findOne({user: req.user._id});
+	if (!profile) 
+		res.status(400).send('User profile not found.');
+
 	const groups = await Group.find({
 		$or: [
-			{leader: req.user._id},
-			{members: req.user._id}
+			{leader: profile._id},
+			{members: profile._id}
 		]
-	});
-	if (!groups) return res.status(404).send('No booking.');
+	})
+	if (!groups || groups.length === 0) 
+		return res.status(404).send('You are not in a group.');
 
 	const groupIds = groups.map(group => group._id);
 
 	const bookings = await Booking.find({
 		group: {$in: groupIds}
 	})
-	.populate('plan')
-	.populate('group')
+	.populate({
+		path: 'plan',
+		populate: {
+			path: 'images',
+			select: 'imageUrl fileName caption tag -_id' 
+		}
+	})
+	.populate({
+		path: 'group',
+		populate: {
+			path: 'leader members',
+			select: '-address -idNumber -profileImage -passportNumber -user -_id -__v'
+		}
+		// select: '-__v'
+	})
+	.select('-__v')
 	.sort({schedule: -1});
 
 	res.send(bookings);
@@ -37,9 +57,26 @@ router.post('/', auth, async (req, res) => {
 	const {error} = validate(req.body);
 	if (!error) return res.status(400).send(error.details[0].message);
 
+	const {plan, group: groupId} = req.body;
+
+	const group = await Group.findOne({_id: groupId});
+	if (!group) return res.status(400).send('Group not found.');
+
+	const profile = await Profile.findOne({user: req.user._id});
+	if(!profile) return res.status(400).send('Profile not found.');
+
+	// make sure that the one who's make the booking
+	// belong to the group and is a leader
+	if (group.leader.toString() !== profile._id.toString())
+		return res.status(400).send('Only leader of the group can make a booking.');
+
+	// make sure that the plan in the booking and group are the same
+	if (group.plan.toString() !== plan)
+		return res.status(400).send('Group plan and Booking plan has to be the same');
+
 	const booking = new Booking ({
-		plan: req.body.plan,
-		group: req.body.group,
+		plan: plan,
+		group: groupId,
 		firstDay:  req.body.firstDay,
 		lastDay:  req.body.lastDay,
 		status: 'pending',
