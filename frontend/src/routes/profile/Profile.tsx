@@ -10,7 +10,6 @@ import profileService, {
   ProfileType,
 } from "../../services/profile-service";
 import { getAge } from "../../utils/age";
-import userService from "../../services/user-service";
 import { AxiosError, isAxiosError } from "axios";
 import ModalWarning from "../../components/modals/ModalWarning";
 import FileUpload from "./FileUpload";
@@ -36,12 +35,7 @@ const Profile = () => {
 
     const reqProfile = async () => {
       try {
-        const res = await request;
-        const data = res.data;
-
-        if (!data) {
-          return console.log(res);
-        }
+        const { data } = await request;
 
         const name = data.username.split(" ");
         reset({
@@ -74,6 +68,7 @@ const Profile = () => {
       }
     };
     reqProfile();
+
     return () => {
       cancel(); // cancel request in case user navigate away before get response
       setPopupCreateProfile(false);
@@ -88,12 +83,7 @@ const Profile = () => {
           await profileService.uploadImage(file);
         }
       } else {
-        const user = userService.getCurrentUser();
-        if (!user) {
-          throw new Error("No user id.");
-        }
-
-        await profileService.createProfile(user._id, data);
+        await profileService.createProfile(data);
       }
       setEdit(false);
     } catch (error: any | AxiosError) {
@@ -195,8 +185,6 @@ const Profile = () => {
               label="Age"
               value={age}
               disabled
-              // {...register("age")}
-              // disabled={!edit}
             />
             <InputInfo
               type="tel"

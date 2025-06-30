@@ -40,11 +40,8 @@ export interface ProfileType {
 }
 
 class profileService {
-  createProfile(userId: string, profile: ProfileType) {
-    return apiClients.post("/profiles", {
-      user: userId,
-      ...this.convertProfileType(profile),
-    });
+  createProfile(profile: ProfileType) {
+    return apiClients.post("/profiles", this.convertProfileType(profile));
   }
 
   uploadImage(file: File) {
