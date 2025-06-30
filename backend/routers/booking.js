@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const { Booking, validate, validateUpdate} = require('../models/booking');
+const { Profile } = require('../models/profile');
 const { Group } = require('../models/group');
 
 router.get('/', [auth, admin], async (req, res) => {
@@ -13,13 +14,18 @@ router.get('/', [auth, admin], async (req, res) => {
 });
 
 router.get('/me', auth, async (req, res) => {
+	const profile = await Profile.findOne({user: req.user._id});
+	if (!profile) 
+		res.status(400).send('User profile not found.');
+
 	const groups = await Group.find({
 		$or: [
-			{leader: req.user._id},
-			{members: req.user._id}
+			{leader: profile._id},
+			{members: profile._id}
 		]
 	});
-	if (!groups) return res.status(404).send('No booking.');
+	if (!groups || groups.length === 0) 
+		return res.status(404).send('You are not in a group.');
 
 	const groupIds = groups.map(group => group._id);
 
