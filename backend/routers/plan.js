@@ -10,13 +10,13 @@ const router = express.Router();
 router.get('/', async (req, res) => {
 	const plan = await Plan.find()
 		.sort('-createdAt')
-		.populate('images')
+		.populate('images', 'imageUrl fileName caption tag -_id')
 	res.send(plan);
 });
 
 router.get('/:id', async (req, res) => {
 	const plan = await Plan.findById(req.params.id)
-		.populate('images')
+		.populate('images', 'imageUrl fileName caption tag -_id')
 	if (!plan) return res.status(404).send('Plan not found.');
 	res.send(plan);
 })
