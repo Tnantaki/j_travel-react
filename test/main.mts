@@ -3,10 +3,12 @@ import {
   createProfile,
   createUser,
   loginUser,
+  prepareUserData,
   uploadProfileImage,
 } from "./mockFuntion/mockUser.mts";
-import type { ApiResponse } from "./utils/type";
-import { createPlan } from "./mockFuntion/mockPlan.mts";
+import type { ApiResponse, ResponsePlanType } from "./utils/type";
+import { createPlan, getAllPlans } from "./mockFuntion/mockPlan.mts";
+import { createBooking, createGroup } from "./mockFuntion/mockBooking.mts";
 
 function printResult(msg: string, result: ApiResponse, email: string) {
   if (result.success) {
@@ -21,7 +23,7 @@ async function createMultiUser() {
   for (const user of userDatas) {
     const result = await createUser({
       email: user.email,
-      password: "12345678",
+      password: user.password,
     });
     printResult("Create user", result, user.email);
   }
@@ -31,7 +33,7 @@ async function loginMultiUser() {
   for (const user of userDatas) {
     const result = await loginUser({
       email: user.email,
-      password: "12345678",
+      password: user.password,
     });
     if (result.success) {
       user.token = result.data;
@@ -57,14 +59,14 @@ async function createMutiProfile() {
 async function createAdmin() {
   let result = await createUser({
     email: adminData.email,
-    password: "12345678",
+    password: adminData.password,
     isAdmin: true,
   });
   printResult("Create admin", result, adminData.email);
 
   result = await loginUser({
     email: adminData.email,
-    password: "12345678",
+    password: adminData.password,
   });
   if (result.success) {
     adminData.token = result.data;
@@ -87,8 +89,34 @@ async function createMutiPlan() {
   }
 }
 
-await createMultiUser();
-await loginMultiUser();
-await createMutiProfile();
-await createAdmin();
-await createMutiPlan()
+async function createMultiBooking() {
+  await prepareUserData();
+  const plans = await getAllPlans();
+  const planIds: string[] = (plans.data as ResponsePlanType[]).map(
+    (plan) => plan._id
+  );
+
+  let result;
+  result = await createBooking(planIds[0]!, adminData, [
+    userDatas[0]!,
+    userDatas[1]!,
+    userDatas[2]!,
+  ]);
+  printResult("Create Booking", result, "");
+
+  result = await createGroup(planIds[1]!, adminData, [
+    userDatas[3]!,
+    userDatas[4]!,
+  ]);
+  printResult("Create Booking", result, "");
+
+  result = await createGroup(planIds[2]!, adminData);
+  printResult("Create Booking", result, "");
+}
+
+// await createMultiUser();
+// await loginMultiUser();
+// await createMutiProfile();
+// await createAdmin();
+// await createMutiPlan()
+// await createMultiBooking();

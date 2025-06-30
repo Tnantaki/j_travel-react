@@ -7,10 +7,16 @@ interface ApiResponse<T = any> {
   contentType?: string;
 }
 
-interface UserData {
+interface User {
   email: string;
   password: string;
   isAdmin?: boolean;
+}
+interface UserData {
+  email: string;
+  password: string;
+  token: string
+  id: string
 }
 
 interface ProfileData {
@@ -38,4 +44,9 @@ interface PlanType {
   }[];
 }
 
-export type { ApiResponse, ProfileData, UserData, PlanType };
+interface ResponsePlanType {
+  _id: string
+}
+
+
+export type { ApiResponse, ProfileData, User, UserData, PlanType, ResponsePlanType };

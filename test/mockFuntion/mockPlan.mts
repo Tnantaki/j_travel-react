@@ -1,6 +1,6 @@
 import axios from "axios";
 import { handleError } from "../utils/error.mts";
-import { BACKEND_URL } from "../utils/constant";
+import { adminData, BACKEND_URL } from "../utils/constant";
 import type * as type from "../utils/type";
 import FormData from "form-data";
 import { readFileSync } from "fs";
@@ -49,4 +49,25 @@ async function createPlan(plan: type.PlanType, adminToken: string) {
   }
 }
 
-export { createPlan };
+async function getAllPlans() {
+  try {
+    const headers = { "x-auth-token": adminData.token };
+    const response = await axios.get(API_PLAN, { headers });
+
+    return {
+      success: true,
+      status: response.status,
+      data: response.data,
+      contentType: response.headers["content-type"],
+      error: "",
+    };
+  } catch (error) {
+    const data = handleError(error);
+    return {
+      ...data,
+      success: false,
+    };
+  }
+}
+
+export { createPlan, getAllPlans };
