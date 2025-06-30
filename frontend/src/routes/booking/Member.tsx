@@ -1,10 +1,9 @@
 import Button from "../../components/common/Button";
 import { useState } from "react";
-// import { getAge } from "../../utils/age";
 import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import MotionButton from "../../components/common/MotionButton";
 import { SearchedMemberType, useBooking } from "../../contexts/BookingProvider";
-import groupService, { GroupType } from "../../services/group-service";
+import groupService, { ReqGroupType } from "../../services/group-service";
 
 interface Props {
   nextStep: () => void;
@@ -17,7 +16,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
 
   const handleChooseMember = async () => {
-    const group: GroupType = {
+    const group: ReqGroupType = {
       plan: booking.planId,
       members: booking.members.map((m) => m.id),
     };
@@ -29,7 +28,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
         nextStep();
       }
     } catch (error) {
-      console.log(error)  
+      console.log(error);
     }
   };
 
@@ -72,11 +71,6 @@ const Member = ({ nextStep, prevStep }: Props) => {
             >
               + Member
             </Button>
-            {/* <MemberModal
-            isOpen={IsOpenMember}
-            onClose={() => setIsOpenMember(!IsOpenMember)}
-            fetchMemberData={fetchMemberData}
-          /> */}
             <ModalSearchMember
               isOpen={IsOpenMember}
               onClose={() => setIsOpenMember(!IsOpenMember)}

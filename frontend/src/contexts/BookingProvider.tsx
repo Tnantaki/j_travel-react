@@ -5,25 +5,15 @@ import {
   useContext,
   useReducer,
 } from "react";
-import { Gender } from "../services/profile-service";
-
-export interface MemberType {
-  id: string;
-  name: string;
-  email: string
-  birthday: Date;
-  gender: Gender;
-  phone: string;
-}
 
 export interface SearchedMemberType {
   id: string;
   name: string;
-  email: string
+  email: string;
 }
 
 interface BookingType {
-  leader: MemberType | undefined;
+  leader: SearchedMemberType | undefined;
   planId: string;
   members: SearchedMemberType[];
   groupId: string;
@@ -39,7 +29,7 @@ interface AddPlan {
 
 interface AddLeader {
   type: "add_leader";
-  leader: MemberType;
+  leader: SearchedMemberType;
 }
 
 interface AddMember {

@@ -8,7 +8,7 @@ import LinkButton from "../../components/common/LinkButton";
 import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
 import { useAuth } from "../../contexts/AuthProvider";
-import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { useBooking } from "../../contexts/BookingProvider";
 import profileService from "../../services/profile-service";
 import { useNavigate } from "react-router";
 import placeHolder from "@img/background/placeholder-image.jpg";
@@ -45,12 +45,9 @@ const ChoosePackage = ({ nextStep }: Props) => {
           throw new Error("No Profile info");
         }
 
-        const leader: MemberType = {
+        const leader = {
           id: data.user,
           name: data.username,
-          birthday: new Date(data.birthday),
-          gender: data.gender,
-          phone: data.phone,
           email: data.email,
         };
 

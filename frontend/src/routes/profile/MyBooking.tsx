@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import bookingService, { BookingType } from "../../services/booking-service";
 import ModalBookingInfo from "../../components/modals/ModalBookingInfo";
+import placeHolder from "@img/background/placeholder-image.jpg";
 
 // const bookings = [
 //   {
@@ -29,13 +30,7 @@ const MyBooking = () => {
           return console.log(res);
         }
 
-        setBooks(
-          data.map((book) => ({
-            ...book,
-            firstDay: new Date(book.firstDay),
-            lastDay: new Date(book.lastDay),
-          }))
-        );
+        setBooks(data);
       } catch (error: any) {
         console.log(error);
       }
@@ -48,7 +43,7 @@ const MyBooking = () => {
 
   const handleViewMore = (book: BookingType) => {
     setCurrentBook(book);
-    setIsOpenModalBook(true)
+    setIsOpenModalBook(true);
   };
 
   return (
@@ -67,7 +62,7 @@ const MyBooking = () => {
               <div className="flex flex-row gap-2">
                 <img
                   className="size-20 shrink-0 rounded-sm"
-                  src={book.plan.image}
+          src={book.plan.images.length ? book.plan.images[0].imageUrl : placeHolder}
                 />
                 <div className="flex flex-col justify-between">
                   <div className="flex items-center">
@@ -82,9 +77,9 @@ const MyBooking = () => {
                   <div className="flex items-center">
                     <p className="body3 text-char-pri-tint me-1">date:</p>
                     <p className="body2 text-char-pri">
-                      {book.firstDay.toISOString().split("T")[0] +
+                      {new Date(book.firstDay).toISOString().split("T")[0] +
                         " - " +
-                        book.lastDay.toISOString().split("T")[0]}
+                        new Date(book.lastDay).toISOString().split("T")[0]}
                     </p>
                   </div>
                 </div>

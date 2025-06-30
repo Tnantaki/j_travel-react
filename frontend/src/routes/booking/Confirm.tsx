@@ -1,12 +1,14 @@
 import { format } from "date-fns";
 import MotionButton from "../../components/common/MotionButton";
 import { usePlan } from "../../Layout";
-import { MemberType, useBooking } from "../../contexts/BookingProvider";
+import { useBooking } from "../../contexts/BookingProvider";
 import { getAge } from "../../utils/age";
-import bookingService, { BookingRequest } from "../../services/booking-service";
-import { useState } from "react";
+import bookingService from "../../services/booking-service";
+import { useEffect, useState } from "react";
 import ModalSuccess from "../../components/modals/ModalSuccess";
 import placeHolder from "@img/background/placeholder-image.jpg";
+import groupService, { MemberType } from "../../services/group-service";
+import { AxiosError, isAxiosError } from "axios";
 
 interface Props {
   prevStep: () => void;
@@ -14,6 +16,9 @@ interface Props {
 
 const Confirm = ({ prevStep }: Props) => {
   const [isConfirmSuccess, setIsConfirmSuccess] = useState<boolean>(false);
+  const [leader, setLeader] = useState<MemberType>();
+  const [members, setMembers] = useState<MemberType[]>();
+
   const { plan } = usePlan();
   const { booking } = useBooking();
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
@@ -21,15 +26,42 @@ const Confirm = ({ prevStep }: Props) => {
   let orderMember = 0;
 
   console.log(booking);
+  useEffect(() => {
+    const { getGroup, cancel } = groupService.getGroup();
+
+    const reqGroup = async () => {
+      try {
+        const { data } = await getGroup;
+
+        if (data.leaderGroups.length) {
+          const group = data.leaderGroups[data.leaderGroups.length - 1];
+
+          setLeader(groupService.transformMember(group.leader));
+          setMembers(groupService.transformMember(group.members));
+        }
+      } catch (error: any | AxiosError) {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        } else {
+          console.log(error.response.data);
+        }
+      }
+    };
+    reqGroup();
+    return () => {
+      cancel(); // cancel request in case user navigate away before get response
+    };
+  }, []);
 
   const handleConfirm = async () => {
-    const bookingData: BookingRequest = {
+    const bookingData = {
       plan: booking.planId,
       group: booking.groupId,
       firstDay: booking.startDate!.toISOString(),
       lastDay: booking.endDate!.toISOString(),
     };
-    console.log(bookingData);
     try {
       const res = await bookingService.createBooking(bookingData);
       if (res.status >= 200 && res.status < 300) {
@@ -90,8 +122,8 @@ const Confirm = ({ prevStep }: Props) => {
               </tr>
             </thead>
             <tbody className="border-b-1 border-primary/40">
-              {renderMemberTableRow(booking.leader!)}
-              {/* {booking.members.map((member) => renderMemberTableRow(member))} */}
+              {leader && renderMemberTableRow(leader)}
+              {members && members.map((member) => renderMemberTableRow(member))}
             </tbody>
           </table>
           <div className="flex flex-row items-center">

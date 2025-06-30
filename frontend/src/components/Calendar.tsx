@@ -13,8 +13,8 @@ const Calendar = ({ onDateChange, duration }: Props) => {
   const minDate = new Date(today);
   minDate.setDate(today.getDate() + operatedDays);
 
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState(minDate);
+  const [selectedDate, setSelectedDate] = useState<Date>(minDate);
 
   useEffect(() => {
     const defaultSelectedDate = new Date(minDate);

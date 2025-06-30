@@ -6,7 +6,7 @@ import { FaExclamationCircle, FaRegSave } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { SubmitHandler, useForm } from "react-hook-form";
 import profileService, {
-  Gender,
+  GenderType,
   ProfileType,
 } from "../../services/profile-service";
 import { getAge } from "../../utils/age";
@@ -20,7 +20,7 @@ const Profile = () => {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState<Gender | "">("");
+  const [gender, setGender] = useState<GenderType | "">("");
   const [hasProfile, setHasProfile] = useState(false);
   const [popupCreateProfile, setPopupCreateProfile] = useState(false);
   const {

@@ -1,6 +1,6 @@
 import apiClients from "./api-clients";
 
-export type Gender = "male" | "female";
+export type GenderType = "male" | "female";
 
 interface Address {
   street: string;
@@ -19,11 +19,11 @@ export interface ProfileAPI {
   phone: string;
   email: string;
   birthday: string;
-  gender: Gender;
+  gender: GenderType;
   idNumber: string;
   passportNumber: string;
   address: Address;
-  profileImage: string
+  profileImage: string;
 }
 
 export interface ProfileType {
@@ -33,7 +33,7 @@ export interface ProfileType {
   age: string;
   phone: string;
   email: string;
-  gender: Gender;
+  gender: GenderType;
   idNo: string;
   passportNo: string;
   address: Address;
@@ -48,9 +48,9 @@ class profileService {
   }
 
   uploadImage(file: File) {
-    const formData = new FormData()
+    const formData = new FormData();
 
-    formData.append('profileImage', file)
+    formData.append("profileImage", file);
     return apiClients.post("/profiles/upload-profile-image", formData);
   }
 

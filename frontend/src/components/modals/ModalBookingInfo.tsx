@@ -1,8 +1,9 @@
 import { format } from "date-fns";
 import Modal from "./Modal";
-import { MemberType } from "../../contexts/BookingProvider";
 import { BookingType } from "../../services/booking-service";
-// import { getAge } from "../../utils/age";
+import { getAge } from "../../utils/age";
+import groupService, { MemberType } from "../../services/group-service";
+import placeHolder from "@img/background/placeholder-image.jpg";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +23,7 @@ const ModalBookingInfo = ({ isOpen, onClose, book }: Props) => {
       <tr key={member.id} className="text-center *:py-2">
         <td>{orderMember}</td>
         <td>{member.name}</td>
-        {/* <td>{getAge(member.birthday)}</td> */}
+        <td>{getAge(member.birthday)}</td>
         <td>{book.plan.price}</td>
       </tr>
     );
@@ -36,7 +37,14 @@ const ModalBookingInfo = ({ isOpen, onClose, book }: Props) => {
           <div className="flex flex-col w-full rounded-lg border-1 border-lg border-slate-400 p-6 gap-2 h-full">
             <h4 className="mb-2">Package</h4>
             <div className="flex gap-4 lg:gap-12">
-              <img src={book.plan.image} className="size-32 rounded-md" />
+              <img
+                src={
+                  book.plan.images.length
+                    ? book.plan.images[0].imageUrl
+                    : placeHolder
+                }
+                className="size-32 rounded-md"
+              />
               <div className="grid grid-cols-2 justify-between">
                 <p className="body2 text-char-pri-tint me-1">Package:</p>
                 <p className="body1 font-medium text-char-pri">
@@ -66,7 +74,7 @@ const ModalBookingInfo = ({ isOpen, onClose, book }: Props) => {
               <tbody className="border-b-1 border-primary/40">
                 {/* {renderMemberTableRow(book.group.leader)} */}
                 {book.group.members.map((member) =>
-                  renderMemberTableRow(member)
+                  renderMemberTableRow(groupService.transformMember(member))
                 )}
               </tbody>
             </table>
