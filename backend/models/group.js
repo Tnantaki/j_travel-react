@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 
 const Group = mongoose.model('Group', new mongoose.Schema({
 	leader: {
@@ -40,17 +41,6 @@ function validateUpdate(group) {
 	return schema.validate(group);
 }
 
-exports.Group = Group;
-exports.validate = validateGroup;
-module.exports = validateUpdate;
-
-// package: {
-// 	type: mongoose.Schema.Types.ObjectId,
-// 	ref: 'Package',
-// 	required: function() {return this.type === 'tour';}
-// },
-// leader: Joi.when('type', {
-// 	is: 'private',
-// 	then: Joi.objectId().required(),
-// 	otherwise: Joi.forbidden()
-// }),
+module.exports.Group = Group;
+module.exports.validate = validateGroup;
+module.exports.validateUpdate = validateUpdate;

@@ -6,7 +6,6 @@ const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 const { Image } = require('../models/image');
 const { upload, initImage, uploadImage} = require('../services/uploadS3AndSaveDb');
-const { schedule } = require('node-cron');
 
 async function createPlanAndImages(planData, imageFiles, req) {
 	const session = await mongoose.startSession();
@@ -102,7 +101,6 @@ router.patch('/image-to-plan/:id', upload.array('images'),
 			const uploadRes = await uploadImage(imgInfos);
 
 			// save image to mongoose doc
-			const createdImgs = [];
 			for (let i = 0; i < imgInfos.length; i++) {
 				const {payload} = imgInfos[i];
 				const {imageUrl, Key} = uploadRes[i];
@@ -112,12 +110,12 @@ router.patch('/image-to-plan/:id', upload.array('images'),
 
 				const imgDoc = new Image(payload);
 				const savedImg = await imgDoc.save({session});
-				createdImgs.push(savedImg);
+				plan.images.push(savedImg);
 			}
 
 			const updated = await Plan.findByIdAndUpdate(
 				req.params.id,
-				{images: createdImgs.map(img => img._id)},
+				{images: plan.images.map(img => img._id)},
 				{new: true, runValidators: true}
 			).session(session);
 			if (!updated) return res.status(400).send('Plan with the given ID was not found.');
