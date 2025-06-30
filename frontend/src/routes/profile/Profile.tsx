@@ -73,7 +73,7 @@ const Profile = () => {
       cancel(); // cancel request in case user navigate away before get response
       setPopupCreateProfile(false);
     };
-  }, [edit]);
+  }, []);
 
   const onSubmit: SubmitHandler<ProfileType> = async (data) => {
     try {
@@ -84,6 +84,9 @@ const Profile = () => {
         }
       } else {
         await profileService.createProfile(data);
+        setAge(getAge(new Date(data.birthday)));
+        setGender(data.gender);
+        setHasProfile(true);
       }
       setEdit(false);
     } catch (error: any | AxiosError) {
