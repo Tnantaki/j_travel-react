@@ -14,30 +14,6 @@ router.get('/', [auth, admin], async (req, res) => {
 	res.send(booking);
 });
 
-router.get('/:id', [auth, admin, validateId], async(req, res) => {
-	const booking = await Booking.findById(req.params.id)
-	.populate({
-		path: 'plan',
-		populate: {
-			path: 'images',
-			select: 'imageUrl fileName caption tag -_id' 
-		}
-	})
-	.populate({
-		path: 'group',
-		populate: {
-			path: 'leader members',
-			select: '-address -idNumber -profileImage -passportNumber -user -_id -__v'
-		}
-		// select: '-__v'
-	})
-	.select('-__v')
-
-	if(!booking) return res.status(400).send('Group not found.');
-
-	res.send(booking);
-})
-
 router.get('/me', auth, async (req, res) => {
 	const profile = await Profile.findOne({user: req.user._id});
 	if (!profile) 
@@ -77,6 +53,31 @@ router.get('/me', auth, async (req, res) => {
 
 	res.send(bookings);
 });
+
+router.get('/:id', [auth, admin, validateId], async(req, res) => {
+	const booking = await Booking.findById(req.params.id)
+	.populate({
+		path: 'plan',
+		populate: {
+			path: 'images',
+			select: 'imageUrl fileName caption tag -_id' 
+		}
+	})
+	.populate({
+		path: 'group',
+		populate: {
+			path: 'leader members',
+			select: '-address -idNumber -profileImage -passportNumber -user -_id -__v'
+		}
+		// select: '-__v'
+	})
+	.select('-__v')
+
+	if(!booking) return res.status(400).send('Group not found.');
+	
+	res.send(booking);
+})
+
 
 router.post('/', auth, async (req, res) => {
 	const {error} = validate(req.body);
