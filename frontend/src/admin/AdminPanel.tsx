@@ -1,4 +1,4 @@
-import { Admin, Layout, Resource } from "react-admin";
+import { Admin, Layout, ListGuesser, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { authProvider } from "./authProvider";
 import UserList from "./users/UserList";
@@ -20,6 +20,8 @@ import ProfileList from "./profiles/ProfileList";
 import { ProfileShow } from "./profiles/ProfileShow";
 import { ProfileEdit } from "./profiles/ProfileEdit";
 import ProfileCreate from "./profiles/ProfileCreate";
+import { FaBook } from "react-icons/fa";
+import { BookingList } from "./booking/BookingList";
 
 const HomePage = () => {
   return <h1>Home Page</h1>;
@@ -55,6 +57,14 @@ const AdminPanel = () => {
         show={PlanShow}
         create={PlanCreate}
         edit={PlanEdit}
+      />
+      <Resource
+        icon={FaBook}
+        name="bookings"
+        list={BookingList}
+        // show={PlanShow}
+        // create={PlanCreate}
+        // edit={PlanEdit}
       />
       <Resource
         icon={FaRegImage}
