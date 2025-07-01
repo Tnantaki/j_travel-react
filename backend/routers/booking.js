@@ -5,6 +5,7 @@ const admin = require('../middlewares/admin');
 const { Booking, validate, validateUpdate} = require('../models/booking');
 const { Profile } = require('../models/profile');
 const { Group } = require('../models/group');
+const { validateId } = require('../middlewares/validateObjId');
 
 router.get('/', [auth, admin], async (req, res) => {
 	const booking = await Booking.find().sort('createdAt');
@@ -12,6 +13,30 @@ router.get('/', [auth, admin], async (req, res) => {
 
 	res.send(booking);
 });
+
+router.get('/:id', [auth, admin, validateId], async(req, res) => {
+	const booking = await Booking.findById(req.params.id)
+	.populate({
+		path: 'plan',
+		populate: {
+			path: 'images',
+			select: 'imageUrl fileName caption tag -_id' 
+		}
+	})
+	.populate({
+		path: 'group',
+		populate: {
+			path: 'leader members',
+			select: '-address -idNumber -profileImage -passportNumber -user -_id -__v'
+		}
+		// select: '-__v'
+	})
+	.select('-__v')
+
+	if(!booking) return res.status(400).send('Group not found.');
+
+	res.send(booking);
+})
 
 router.get('/me', auth, async (req, res) => {
 	const profile = await Profile.findOne({user: req.user._id});
@@ -92,11 +117,14 @@ router.put('/:id', auth, async (req, res) => {
 	const {error} = validateUpdate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	const booking = await Booking.findById(req.params.id).populate('group', 'leader');
+	const booking = await Booking.findById(req.params.id);
 	if (!booking) return res.status(404).send('Booking not found.');
 
+	const profile = await Profile.findOne({user: req.user._id});
+	if (!profile) res.status(400).send('Profile not found.');
+
 	const group = booking.group;
-	const isLeader = group.leader.toString() === req.user._id.toString();
+	const isLeader = group.leader.toString() === profile.user.toString();
 	if (!isLeader) 
 		return res.status(403).send('Access denied. You must be a leader of this group.');
 
@@ -116,8 +144,11 @@ router.patch('/cancel-booking/:id', auth, async (req, res) => {
 	const booking = await Booking.findById(req.params.id).populate('group', 'leader');
 	if (!booking) return res.status(404).send('Booking not found.');
 
+	const profile = await Profile.findOne({user: req.user._id});
+	if (!profile) res.status(400).send('Profile not found.');
+
 	const group = booking.group;
-	const isLeader = group.leader.toString() === req.user._id.toString();
+	const isLeader = group.leader.toString() === profile.user.toString();
 	if (!isLeader)
 		return res.status(403).send('Access denied. You must be the leader of this group');
 
@@ -137,8 +168,11 @@ router.patch('/pay-booking/:id', auth, async (req, res) => {
 	const booking = await Booking.findById(req.params.id).populate('group', 'leader');
 	if (!booking) return res.status(404).send('Booking not found.');
 
+	const profile = await Profile.findOne({user: req.user._id});
+	if (!profile) res.status(400).send('Profile not found.');
+
 	const group = booking.group;
-	const isLeader = group.leader.toString() === req.user._id.toString();
+	const isLeader = group.leader.toString() === profile.user.toString();
 	if (!isLeader)
 		return res.status(403).send('Access denied. You must be the leader of this group');
 
