@@ -22,6 +22,7 @@ import { ProfileEdit } from "./profiles/ProfileEdit";
 import ProfileCreate from "./profiles/ProfileCreate";
 import { FaBook } from "react-icons/fa";
 import { BookingList } from "./booking/BookingList";
+import { BookingShow } from "./booking/BookingShow";
 
 const HomePage = () => {
   return <h1>Home Page</h1>;
@@ -62,7 +63,7 @@ const AdminPanel = () => {
         icon={FaBook}
         name="bookings"
         list={BookingList}
-        // show={PlanShow}
+        show={BookingShow}
         // create={PlanCreate}
         // edit={PlanEdit}
       />
