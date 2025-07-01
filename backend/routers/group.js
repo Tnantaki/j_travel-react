@@ -10,6 +10,11 @@ const { Profile } = require('../models/profile');
 const { escapeRegex } = require('../utils/utils');
 const router = express.Router();
 
+async function getLeader(userId) {
+	const leaderProfile = await Profile.findOne({user: userId}).select('_id');
+	return leaderProfile?._id || null;
+}
+
 router.get('/', [auth, admin], async (req, res) => {
 	const group = await Group.find().sort('-createdAt');
 
@@ -82,15 +87,16 @@ router.post('/', auth, async (req, res) => {
 			await planObj.save();
 		}
 
-		const leaderProfile = await Profile.findOne({user: req.user._id}).select('_id');
-		if (!leaderProfile) return res.status(404).send('Leader Id does not exist.');
+		const leaderId = await getLeader(req.user._id);
+		if (!leaderId) 
+			return res.status(404).send('Leader profile not found.');
 
 		const memberProfiles = await Profile.find({_id: {$in: members}}).select('_id');
 		if (members.length !== 0 && memberProfiles.length === 0) 
 			return res.status(404).send('Invalid members.');
 
 		const group = new Group({
-			leader: leaderProfile,
+			leader: leaderId,
 			plan: planId,
 			members: memberProfiles
 		});
@@ -195,10 +201,11 @@ router.put('/:id', auth, async (req, res) => {
 		const group = await Group.findById(req.params.id).session(session);
 		if (!group) return res.status(404).send('Group not found.');
 
-		const leaderProfile = await Profile.findOne({user: req.user._id}).select('_id');
-		if (!leaderProfile) return res.status(404).send('Leader Id does not exist.');
+		const leaderId = await getLeader(req.user._id);
+		if (!leaderId) 
+			return res.status(403).send('Only leader allows to delete the group.');
 		
-		if (!group.leader.equals(leaderProfile))
+		if (!group.leader.equals(leaderId))
 			return res.status(403).send('Only the leader can update the group.');
 
 		const newPlan = await Plan.findById(planId).session(session);
@@ -262,7 +269,11 @@ router.delete('/:id', auth, async (req, res) => {
 		const group = await Group.findById(req.params.id).session(session);
 		if (!group) return res.status(404).send('Group not found.');
 
-		if (!group.leader.equals(req.user._id))
+		const leaderId = await getLeader(req.user._id);
+		if (!leaderId) 
+			return res.status(403).send('Only leader allows to delete the group.');
+
+		if (!group.leader.equals(leaderId))
 			return res.status(403).send('Only leader allows to delete the group.');
 
 		if (group.plan) {
