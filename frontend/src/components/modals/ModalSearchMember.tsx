@@ -50,12 +50,10 @@ const ModalSearchMember = ({ isOpen, onClose }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (textRef.current) {
-      console.log(textRef.current.value);
       const email = textRef.current.value;
       try {
         // search member API
         const { data } = await groupService.searchMember(email);
-        console.log(data)
 
         const members = data.map((mem) => ({
           id: mem._id,

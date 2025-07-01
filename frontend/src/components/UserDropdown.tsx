@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../contexts/AuthProvider";
 import profileService from "../services/profile-service";
+import { AxiosError, isAxiosError } from "axios";
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,23 +19,24 @@ const UserDropdown = () => {
 
     const reqProfile = async () => {
       try {
-        const res = await request;
-        const data = res.data;
-
-        if (!data) {
-          return;
-        }
+        const { data } = await request;
 
         setProfileImage(data.profileImage);
-      } catch (error: any) {
-        console.log(error.response.data);
+      } catch (error: any | AxiosError) {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        } else {
+          console.log(error);
+        }
       }
     };
     reqProfile();
     return () => {
       cancel(); // cancel request in case user navigate away before get response
     };
-  });
+  }, []);
 
   return (
     <div className="flex justify-center items-center p-8">

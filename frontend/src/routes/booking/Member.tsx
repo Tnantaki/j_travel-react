@@ -4,6 +4,8 @@ import ModalSearchMember from "../../components/modals/ModalSearchMember";
 import MotionButton from "../../components/common/MotionButton";
 import { SearchedMemberType, useBooking } from "../../contexts/BookingProvider";
 import groupService, { ReqGroupType } from "../../services/group-service";
+import ModalConfirmGroup from "../../components/modals/ModalConfirmGroup";
+import { RxCross2 } from "react-icons/rx";
 
 interface Props {
   nextStep: () => void;
@@ -13,6 +15,8 @@ interface Props {
 const Member = ({ nextStep, prevStep }: Props) => {
   const { booking, bookDispatch } = useBooking();
   const [IsOpenMember, setIsOpenMember] = useState<boolean>(false);
+  const [IsOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
 
   const handleChooseMember = async () => {
@@ -28,13 +32,18 @@ const Member = ({ nextStep, prevStep }: Props) => {
       const { data: exisedGroup } = await getGroup;
       const leaderGroups = exisedGroup.leaderGroups;
 
+      console.log('group id - ', booking.groupId)
+      console.log('group', group)
+
       if (
         leaderGroups.length &&
         leaderGroups[leaderGroups.length - 1]._id === booking.groupId
       ) {
-        await groupService.updateGroup(group);
+        console.log("update exited group");
+        await groupService.updateGroup(group, booking.groupId);
         nextStep();
       } else {
+        console.log("create new group");
         const { data } = await groupService.createGroup(group);
 
         if (data._id) {
@@ -56,15 +65,25 @@ const Member = ({ nextStep, prevStep }: Props) => {
     );
   };
 
-  const renderMemberList = (member: SearchedMemberType) => {
+  const renderMemberList = (member: SearchedMemberType, isLeader: boolean) => {
     return (
       <li
         key={member.id}
-        className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md"
+        className="bg-slate-300 border-slate-500 border-1 flex flex-col px-6 py-4 rounded-md relative"
       >
-        <div className="grid grid-cols-2 w-full gap-2">
+        <div className="grid grid-cols-2 w-full gap-2 ">
           {renderMemberParagraph(member.name, "name")}
           {renderMemberParagraph(member.email, "email")}
+          {!isLeader && (
+            <button
+              className="absolute right-2 top-0 translate-y-1/2 bg-char-ter rounded-full hover:bg-info-error hover:cursor-pointer"
+              onClick={() =>
+                bookDispatch({ type: "del_member", memberId: member.id })
+              }
+            >
+              <RxCross2 className="size-10 p-1 text-blue-50" />
+            </button>
+          )}
         </div>
       </li>
     );
@@ -76,8 +95,8 @@ const Member = ({ nextStep, prevStep }: Props) => {
         <h4 className="mb-2">Member</h4>
         <div className="booking-sub-frame">
           <ul className="flex flex-col gap-4 w-full">
-            {renderMemberList(booking.leader!)}
-            {booking.members.map((member) => renderMemberList(member))}
+            {renderMemberList(booking.leader!, true)}
+            {booking.members.map((member) => renderMemberList(member, false))}
             <Button
               rounded="full"
               size="sm"
@@ -90,6 +109,12 @@ const Member = ({ nextStep, prevStep }: Props) => {
               isOpen={IsOpenMember}
               onClose={() => setIsOpenMember(!IsOpenMember)}
             />
+            <ModalConfirmGroup
+              message="Are you sure to create group."
+              isOpen={IsOpenConfirm}
+              onYes={handleChooseMember}
+              onNo={() => setIsOpenConfirm(false)}
+            />
           </ul>
         </div>
       </div>
@@ -97,7 +122,7 @@ const Member = ({ nextStep, prevStep }: Props) => {
         <MotionButton rounded="full" onClick={prevStep}>
           Previous
         </MotionButton>
-        <MotionButton rounded="full" onClick={handleChooseMember}>
+        <MotionButton rounded="full" onClick={() => setIsOpenConfirm(true)}>
           Next
         </MotionButton>
       </div>

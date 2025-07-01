@@ -37,6 +37,11 @@ interface AddMember {
   member: SearchedMemberType;
 }
 
+interface DelMember {
+  type: "del_member";
+  memberId: string;
+}
+
 interface AddGroup {
   type: "add_groupId";
   groupId: string;
@@ -76,6 +81,15 @@ const bookingReducer = (
         leader: book.leader,
         planId: book.planId,
         members: [...book.members, action.member],
+        groupId: book.groupId,
+        startDate: book.startDate,
+        endDate: book.endDate,
+      };
+    case "del_member":
+      return {
+        leader: book.leader,
+        planId: book.planId,
+        members: book.members.filter((member) => member.id !== action.memberId),
         groupId: book.groupId,
         startDate: book.startDate,
         endDate: book.endDate,
@@ -137,6 +151,7 @@ export type BookingAction =
   | AddPlan
   | AddLeader
   | AddMember
+  | DelMember
   | AddGroup
   | SelectDate;
 export const useBooking = () => useContext(BookingContext);

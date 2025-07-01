@@ -60,7 +60,6 @@ const Booking = () => {
     <section className="bg-blue-100 justify-center hero sec-padding">
       <FadeInSection className="page-container flex flex-col items-center my-5 min-h-full">
         <h3 className="text-char-pri self-start mb-4">Booking</h3>
-        {/* <ul className="flex flex-row items-center bg-frame-sec-tint border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-4 pt-2 sm:px-12 sm:pt-9 pb-2"> */}
         <ul className="flex flex-row items-center bg-blue-50 border-slate-300 border-1 shadow-lg w-full rounded-2xl justify-evenly mb-6 px-4 pt-2 sm:px-12 sm:pt-9 pb-2">
           {steps.map((step, idx) => (
             <Fragment key={idx}>

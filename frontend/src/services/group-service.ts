@@ -24,8 +24,8 @@ export interface ResMemberGroupType {
 }
 
 interface ResGroupType {
-  leaderGroups: ResMemberGroupType[]
-  memberGroup: ResMemberGroupType[]
+  leaderGroups: ResMemberGroupType[];
+  memberGroup: ResMemberGroupType[];
 }
 
 // Client Component Type
@@ -48,8 +48,8 @@ class GroupService {
     return apiClients.post("/groups", group);
   }
 
-  updateGroup(group: ReqGroupType) {
-    return apiClients.put("/groups", group);
+  updateGroup(group: ReqGroupType, groupId: string) {
+    return apiClients.put(`/groups/${groupId}`, group);
   }
 
   getGroup() {

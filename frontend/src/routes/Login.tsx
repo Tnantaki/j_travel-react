@@ -33,8 +33,6 @@ const Login = () => {
   if (user) return <Navigate to="/" />;
 
   const onSubmit: SubmitHandler<FormValues> = async (userInput) => {
-    console.log(userInput);
-
     try {
       await UserService.login(userInput);
       login();

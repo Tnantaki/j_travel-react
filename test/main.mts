@@ -114,9 +114,9 @@ async function createMultiBooking() {
   printResult("Create Booking", result, "");
 }
 
-// await createMultiUser();
-// await loginMultiUser();
-// await createMutiProfile();
-// await createAdmin();
-// await createMutiPlan()
-// await createMultiBooking();
+await createMultiUser();
+await loginMultiUser();
+await createMutiProfile();
+await createAdmin();
+await createMutiPlan()
+await createMultiBooking();
