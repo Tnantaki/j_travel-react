@@ -9,6 +9,8 @@ import ModalSuccess from "../../components/modals/ModalSuccess";
 import placeHolder from "@img/background/placeholder-image.jpg";
 import groupService, { MemberType } from "../../services/group-service";
 import { AxiosError, isAxiosError } from "axios";
+import ModalCancelPlan from "../../components/modals/ModalCancelPlan";
+import { useNavigate } from "react-router";
 
 interface Props {
   prevStep: () => void;
@@ -16,16 +18,17 @@ interface Props {
 
 const Confirm = ({ prevStep }: Props) => {
   const [isConfirmSuccess, setIsConfirmSuccess] = useState<boolean>(false);
+  const [isConfirmCancel, setIsConfirmCancel] = useState<boolean>(false);
   const [leader, setLeader] = useState<MemberType>();
   const [members, setMembers] = useState<MemberType[]>();
+  const navigate = useNavigate();
 
   const { plan } = usePlan();
-  const { booking } = useBooking();
+  const { booking, bookDispatch } = useBooking();
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
   const totalMember = booking.members.length + 1; // 1 is leader
   let orderMember = 0;
 
-  console.log(booking);
   useEffect(() => {
     const { getGroup, cancel } = groupService.getGroup();
 
@@ -66,7 +69,28 @@ const Confirm = ({ prevStep }: Props) => {
       const res = await bookingService.createBooking(bookingData);
       if (res.status >= 200 && res.status < 300) {
         console.log("booking success");
+
+        // clear front-end cache
+        bookDispatch({type: 'clear'})
+
         setIsConfirmSuccess(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancelPlan = async () => {
+    try {
+      const res = await groupService.deleteGroup(booking.groupId);
+      if (res.status >= 200 && res.status < 300) {
+        setIsConfirmCancel(false);
+
+        // clear front-end cache
+        bookDispatch({type: 'clear'})
+
+        // refresh the page
+        navigate(0);
       }
     } catch (error) {
       console.log(error);
@@ -102,11 +126,11 @@ const Confirm = ({ prevStep }: Props) => {
               <p className="body1 font-medium text-char-pri">{plan!.title}</p>
               <p className="body2 text-char-pri-tint me-1">Departure date:</p>
               <p className="body1 text-char-pri">
-                {format(booking.startDate!, "dd MMM yyyy")}
+                {booking.startDate && format(booking.startDate, "dd MMM yyyy")}
               </p>
               <p className="body2 text-char-pri-tint me-1">Reture date:</p>
               <p className="body1 text-char-pri">
-                {format(booking.endDate!, "dd MMM yyyy")}
+                {booking.startDate && format(booking.endDate!, "dd MMM yyyy")}
               </p>
             </div>
           </div>
@@ -144,12 +168,26 @@ const Confirm = ({ prevStep }: Props) => {
         <MotionButton rounded="full" onClick={prevStep}>
           Previous
         </MotionButton>
-        <MotionButton rounded="full" onClick={handleConfirm}>
-          Confirm
-        </MotionButton>
+        <div className="flex gap-4">
+          <MotionButton
+            rounded="full"
+            className="bg-red-500 border-red-500 shadow-red-700/50"
+            onClick={() => setIsConfirmCancel(true)}
+          >
+            Cancel
+          </MotionButton>
+          <MotionButton rounded="full" onClick={handleConfirm}>
+            Confirm
+          </MotionButton>
+        </div>
       </div>
+      <ModalCancelPlan
+        isOpen={isConfirmCancel}
+        onDelete={handleCancelPlan}
+        onClose={() => setIsConfirmCancel(false)}
+      />
       <ModalSuccess
-        message={`You have booking the plan
+        message={`You have booking the plan.
           Wait for admin to contact.`}
         isOpen={isConfirmSuccess}
         to="/account/book"

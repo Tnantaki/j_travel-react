@@ -61,9 +61,9 @@ class GroupService {
     return { getGroup, cancel: () => controller.abort() };
   }
 
-  // deleteProfile() {
-  //   return apiClients.delete("/profiles/me");
-  // }
+  deleteGroup(groupId: string) {
+    return apiClients.delete(`/groups/${groupId}`);
+  }
 
   searchMember(email: string) {
     return apiClients.get<ResSearchedMemberType[]>(

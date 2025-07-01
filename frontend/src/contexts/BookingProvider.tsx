@@ -53,6 +53,10 @@ interface SelectDate {
   endDate: Date;
 }
 
+interface ClearBooking {
+  type: "clear";
+}
+
 const bookingReducer = (
   book: BookingType,
   action: BookingAction
@@ -112,6 +116,15 @@ const bookingReducer = (
         startDate: action.startDate,
         endDate: action.endDate,
       };
+    case "clear":
+      return {
+        planId: "",
+        leader: undefined,
+        members: [],
+        groupId: "",
+        startDate: undefined,
+        endDate: undefined,
+      };
   }
 };
 
@@ -153,6 +166,7 @@ export type BookingAction =
   | AddMember
   | DelMember
   | AddGroup
-  | SelectDate;
+  | SelectDate
+  | ClearBooking;
 export const useBooking = () => useContext(BookingContext);
 export default BookingProvider;

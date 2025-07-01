@@ -32,18 +32,13 @@ const Member = ({ nextStep, prevStep }: Props) => {
       const { data: exisedGroup } = await getGroup;
       const leaderGroups = exisedGroup.leaderGroups;
 
-      console.log('group id - ', booking.groupId)
-      console.log('group', group)
-
       if (
         leaderGroups.length &&
         leaderGroups[leaderGroups.length - 1]._id === booking.groupId
       ) {
-        console.log("update exited group");
         await groupService.updateGroup(group, booking.groupId);
         nextStep();
       } else {
-        console.log("create new group");
         const { data } = await groupService.createGroup(group);
 
         if (data._id) {
