@@ -16,16 +16,31 @@ const Member = ({ nextStep, prevStep }: Props) => {
   const toggleModal = () => setIsOpenMember(!IsOpenMember);
 
   const handleChooseMember = async () => {
+    const { getGroup } = groupService.getGroup();
+
     const group: ReqGroupType = {
       plan: booking.planId,
       members: booking.members.map((m) => m.id),
     };
 
     try {
-      const res = await groupService.createGroup(group);
-      if (res.data._id) {
-        bookDispatch({ type: "add_groupId", groupId: res.data._id });
+      // Check there is exist group
+      const { data: exisedGroup } = await getGroup;
+      const leaderGroups = exisedGroup.leaderGroups;
+
+      if (
+        leaderGroups.length &&
+        leaderGroups[leaderGroups.length - 1]._id === booking.groupId
+      ) {
+        await groupService.updateGroup(group);
         nextStep();
+      } else {
+        const { data } = await groupService.createGroup(group);
+
+        if (data._id) {
+          bookDispatch({ type: "add_groupId", groupId: data._id });
+          nextStep();
+        }
       }
     } catch (error) {
       console.log(error);

@@ -48,9 +48,9 @@ class GroupService {
     return apiClients.post("/groups", group);
   }
 
-  // updateProfile(profile: ProfileType) {
-  //   return apiClients.put("/profiles/me", this.convertProfileType(profile));
-  // }
+  updateGroup(group: ReqGroupType) {
+    return apiClients.put("/groups", group);
+  }
 
   getGroup() {
     const controller = new AbortController();
