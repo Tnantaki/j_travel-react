@@ -194,8 +194,11 @@ router.put('/:id', auth, async (req, res) => {
 	try {
 		const group = await Group.findById(req.params.id).session(session);
 		if (!group) return res.status(404).send('Group not found.');
+
+		const leaderProfile = await Profile.findOne({user: req.user._id}).select('_id');
+		if (!leaderProfile) return res.status(404).send('Leader Id does not exist.');
 		
-		if (!group.leader.equals(req.user._id))
+		if (!group.leader.equals(leaderProfile))
 			return res.status(403).send('Only the leader can update the group.');
 
 		const newPlan = await Plan.findById(planId).session(session);
