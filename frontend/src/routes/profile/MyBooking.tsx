@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import bookingService, { BookingType } from "../../services/booking-service";
 import ModalBookingInfo from "../../components/modals/ModalBookingInfo";
 import placeHolder from "@img/background/placeholder-image.jpg";
+import { AxiosError, isAxiosError } from "axios";
 
 // const bookings = [
 //   {
@@ -31,8 +32,14 @@ const MyBooking = () => {
         }
 
         setBooks(data);
-      } catch (error: any) {
-        console.log(error);
+      } catch (error: any | AxiosError) {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            console.log(error.response.data);
+          }
+        } else {
+          console.log(error.response.data);
+        }
       }
     };
     reqBookings();
@@ -62,7 +69,11 @@ const MyBooking = () => {
               <div className="flex flex-row gap-2">
                 <img
                   className="size-20 shrink-0 rounded-sm"
-          src={book.plan.images.length ? book.plan.images[0].imageUrl : placeHolder}
+                  src={
+                    book.plan.images.length
+                      ? book.plan.images[0].imageUrl
+                      : placeHolder
+                  }
                 />
                 <div className="flex flex-col justify-between">
                   <div className="flex items-center">

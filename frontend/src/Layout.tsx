@@ -5,7 +5,7 @@ import { PlanType } from "./services/plan-service";
 
 export type PlanContextType = {
   plan: PlanType | null;
-  setPlan: Dispatch<SetStateAction<PlanType>>;
+  setPlan: Dispatch<SetStateAction<PlanType | null>>;
 };
 
 const Layout = () => {

@@ -4,10 +4,10 @@ import { usePlan } from "../../Layout";
 
 const ProtectRoute = () => {
   const { user } = useAuth();
-  const { plan } = usePlan();
+  const { plan, setPlan } = usePlan();
 
   if (!user) return <Navigate to="/login" />;
-  return <Outlet context={{ plan }} />;
+  return <Outlet context={{ plan, setPlan }} />;
 };
 
 export default ProtectRoute;

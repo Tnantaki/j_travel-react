@@ -23,7 +23,7 @@ const Confirm = ({ prevStep }: Props) => {
   const [members, setMembers] = useState<MemberType[]>();
   const navigate = useNavigate();
 
-  const { plan } = usePlan();
+  const { plan, setPlan } = usePlan();
   const { booking, bookDispatch } = useBooking();
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
   const totalMember = booking.members.length + 1; // 1 is leader
@@ -70,9 +70,6 @@ const Confirm = ({ prevStep }: Props) => {
       if (res.status >= 200 && res.status < 300) {
         console.log("booking success");
 
-        // clear front-end cache
-        bookDispatch({type: 'clear'})
-
         setIsConfirmSuccess(true);
       }
     } catch (error) {
@@ -87,7 +84,8 @@ const Confirm = ({ prevStep }: Props) => {
         setIsConfirmCancel(false);
 
         // clear front-end cache
-        bookDispatch({type: 'clear'})
+        bookDispatch({ type: "clear" });
+        setPlan(null);
 
         // refresh the page
         navigate(0);
@@ -95,6 +93,14 @@ const Confirm = ({ prevStep }: Props) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleContinue = () => {
+    navigate("/account/book");
+
+    // clear front-end cache
+    bookDispatch({ type: "clear" });
+    setPlan(null);
   };
 
   const renderMemberTableRow = (member: MemberType) => {
@@ -105,7 +111,7 @@ const Confirm = ({ prevStep }: Props) => {
         <td>{orderMember}</td>
         <td>{member.name}</td>
         <td>{getAge(member.birthday)}</td>
-        <td>{plan!.price}</td>
+        <td>{plan && plan.price}</td>
       </tr>
     );
   };
@@ -118,12 +124,18 @@ const Confirm = ({ prevStep }: Props) => {
           <h4 className="mb-2">Package</h4>
           <div className="flex gap-4">
             <img
-              src={plan!.images.length ? plan!.images[0].imageUrl : placeHolder}
+              src={
+                plan && plan.images.length
+                  ? plan!.images[0].imageUrl
+                  : placeHolder
+              }
               className="size-32 rounded-md"
             />
             <div className="grid grid-cols-2 justify-between">
               <p className="body2 text-char-pri-tint me-1">Package:</p>
-              <p className="body1 font-medium text-char-pri">{plan!.title}</p>
+              <p className="body1 font-medium text-char-pri">
+                {plan && plan.title}
+              </p>
               <p className="body2 text-char-pri-tint me-1">Departure date:</p>
               <p className="body1 text-char-pri">
                 {booking.startDate && format(booking.startDate, "dd MMM yyyy")}
@@ -159,7 +171,7 @@ const Confirm = ({ prevStep }: Props) => {
           <div className="flex flex-row items-center">
             <p className="body2 text-char-pri-tint me-4">Total Price:</p>
             <p className="body1 font-medium text-char-pri">
-              {totalMember * plan!.price} Bath
+              {plan && totalMember * plan!.price} Bath
             </p>
           </div>
         </div>
@@ -190,7 +202,7 @@ const Confirm = ({ prevStep }: Props) => {
         message={`You have booking the plan.
           Wait for admin to contact.`}
         isOpen={isConfirmSuccess}
-        to="/account/book"
+        onClose={handleContinue}
       />
     </>
   );
