@@ -149,7 +149,7 @@ router.patch('/cancel-booking/:id', auth, async (req, res) => {
 	if (!profile) res.status(400).send('Profile not found.');
 
 	const group = booking.group;
-	const isLeader = group.leader.toString() === profile.user.toString();
+	const isLeader = group.leader.toString() === profile._id.toString();
 	if (!isLeader)
 		return res.status(403).send('Access denied. You must be the leader of this group');
 
@@ -173,7 +173,7 @@ router.patch('/pay-booking/:id', auth, async (req, res) => {
 	if (!profile) res.status(400).send('Profile not found.');
 
 	const group = booking.group;
-	const isLeader = group.leader.toString() === profile.user.toString();
+	const isLeader = group.leader.toString() === profile._id.toString();
 	if (!isLeader)
 		return res.status(403).send('Access denied. You must be the leader of this group');
 
@@ -184,7 +184,8 @@ router.patch('/pay-booking/:id', auth, async (req, res) => {
 				status: 'confirmed',
 				paymentStatus: 'paid'
 			}
-		}
+		},
+		{new: true, runValidators: true}
 	)
 	if (!newBooking)
 		return res.status(500).send('Failed to update booking.');
