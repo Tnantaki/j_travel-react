@@ -49,9 +49,9 @@ function validateUpdate(booking) {
 		group: Joi.forbidden(),
 		firstDay: Joi.date(),
 		lastDay: Joi.date(),
-		status: Joi.string.valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed'),
-		paymentStatus: Joi.string.valid('unpaid', 'paid', 'refunned')
-	}).min(1);
+		status: Joi.string().valid('pending', 'confirmed', 'cancelled', 'traveling', 'completed'),
+		paymentStatus: Joi.string().valid('unpaid', 'paid', 'refunned')
+	});
 
 	return schema.validate(booking);
 }
