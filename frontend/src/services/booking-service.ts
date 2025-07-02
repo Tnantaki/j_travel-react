@@ -2,46 +2,72 @@ import apiClients from "./api-clients";
 import { ResMemberGroupType } from "./group-service";
 import { PlanType } from "./plan-service";
 
-interface ReqBookingType {
+export type Status =
+  | "pending"
+  | "confirmed"
+  | "cancelled"
+  | "traveling"
+  | "completed";
+
+interface BookingReq {
   plan: string;
   group: string;
   firstDay: string;
   lastDay: string;
 }
 
-interface ResBookingType {
+interface BookingRes {
   _id: string;
   plan: PlanType;
   group: ResMemberGroupType;
   firstDay: string;
   lastDay: string;
-  status: string;
+  status: Status;
   paymentStatus: string;
 }
 
-export interface BookingType {
+export interface Booking {
   _id: string;
   plan: PlanType;
   group: ResMemberGroupType;
   firstDay: string;
   lastDay: string;
-  status: string;
+  status: Status;
   paymentStatus: string;
 }
 
 class bookingService {
-  createBooking(booking: ReqBookingType) {
+  createBooking(booking: BookingReq) {
     return apiClients.post("/bookings", booking);
   }
 
-  getBooking() {
+  getAll() {
     const controller = new AbortController();
 
-    const request = apiClients.get<ResBookingType[]>("/bookings/me", {
+    const request = apiClients.get<BookingRes[]>("/bookings/me", {
       signal: controller.signal,
     });
     return { request, cancel: () => controller.abort() };
   }
+
+  getOne() {
+    const controller = new AbortController();
+
+    const getBooking = (bookingId: string) =>
+      apiClients.get<Booking>(`/bookings/${bookingId}`, {
+        signal: controller.signal,
+      });
+    return { getBooking, cancel: () => controller.abort() };
+  }
+
+  pay(bookingId: string) {
+    return apiClients.patch(`/pay-bookings/${bookingId}`);
+  }
+
+  cancel(bookingId: string) {
+    return apiClients.patch(`/cancel-bookings/${bookingId}`);
+  }
+
 }
 
 export default new bookingService();

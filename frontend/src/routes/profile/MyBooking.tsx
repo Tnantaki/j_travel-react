@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import bookingService, { BookingType } from "../../services/booking-service";
+import bookingService, { Booking } from "../../services/booking-service";
 import ModalBookingInfo from "../../components/modals/ModalBookingInfo";
 import placeHolder from "@img/background/placeholder-image.jpg";
 import { AxiosError, isAxiosError } from "axios";
+import Status from "../../components/common/Status";
 
 // const bookings = [
 //   {
@@ -15,12 +16,12 @@ import { AxiosError, isAxiosError } from "axios";
 // ];
 
 const MyBooking = () => {
-  const [books, setBooks] = useState<BookingType[]>([]);
-  const [currentBook, setCurrentBook] = useState<BookingType>();
+  const [books, setBooks] = useState<Booking[]>([]);
+  const [currentBook, setCurrentBook] = useState<Booking>();
   const [isOpenModalBook, setIsOpenModalBook] = useState<boolean>(false);
 
   useEffect(() => {
-    const { request, cancel } = bookingService.getBooking();
+    const { request, cancel } = bookingService.getAll();
 
     const reqBookings = async () => {
       try {
@@ -48,7 +49,7 @@ const MyBooking = () => {
     };
   }, []);
 
-  const handleViewMore = (book: BookingType) => {
+  const handleViewMore = (book: Booking) => {
     setCurrentBook(book);
     setIsOpenModalBook(true);
   };
@@ -98,7 +99,7 @@ const MyBooking = () => {
               <div className="flex flex-col justify-between">
                 <div className="flex items-center">
                   <p className="body3 text-char-pri-tint me-1">status:</p>
-                  <p className="body2 text-char-pri">{book.status}</p>
+                  <Status status={book.status} />
                 </div>
                 <button
                   className="body3 text-char-pri self-end hover:underline hover:cursor-pointer"
@@ -113,7 +114,7 @@ const MyBooking = () => {
       </ul>
       {currentBook && (
         <ModalBookingInfo
-          book={currentBook}
+          bookingId={currentBook._id}
           isOpen={isOpenModalBook}
           onClose={() => setIsOpenModalBook(false)}
         />

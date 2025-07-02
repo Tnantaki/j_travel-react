@@ -1,6 +1,6 @@
 import apiClients from "./api-clients";
 
-export type GenderType = "male" | "female";
+export type Gender = "male" | "female";
 
 interface Address {
   street: string;
@@ -19,7 +19,7 @@ export interface ProfileAPI {
   phone: string;
   email: string;
   birthday: string;
-  gender: GenderType;
+  gender: Gender;
   idNumber: string;
   passportNumber: string;
   address: Address;
@@ -33,7 +33,7 @@ export interface ProfileType {
   age: string;
   phone: string;
   email: string;
-  gender: GenderType;
+  gender: Gender;
   idNo: string;
   passportNo: string;
   address: Address;

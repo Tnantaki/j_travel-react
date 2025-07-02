@@ -1,5 +1,5 @@
 import apiClients from "./api-clients";
-import { GenderType } from "./profile-service";
+import { Gender } from "./profile-service";
 
 // Request API Type
 export interface ReqGroupType {
@@ -13,7 +13,7 @@ export interface ResMemberType {
   username: string; // name
   phone: string;
   birthday: string;
-  gender: GenderType;
+  gender: Gender;
 }
 
 export interface ResMemberGroupType {
@@ -33,7 +33,7 @@ export interface MemberType {
   id: string;
   name: string;
   birthday: Date;
-  gender: GenderType;
+  gender: Gender;
   phone: string;
 }
 
