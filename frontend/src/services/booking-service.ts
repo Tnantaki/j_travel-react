@@ -61,11 +61,11 @@ class bookingService {
   }
 
   pay(bookingId: string) {
-    return apiClients.patch(`/pay-bookings/${bookingId}`);
+    return apiClients.patch(`bookings/pay-booking/${bookingId}`);
   }
 
   cancel(bookingId: string) {
-    return apiClients.patch(`/cancel-bookings/${bookingId}`);
+    return apiClients.patch(`bookings/cancel-booking/${bookingId}`);
   }
 
 }

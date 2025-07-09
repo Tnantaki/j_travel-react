@@ -6,9 +6,10 @@ import placeHolder from "@img/background/placeholder-image.jpg";
 
 interface Props {
   books: Booking[];
+  updatedBooks?: () => void
 }
 
-const BookingList = ({ books }: Props) => {
+const BookingList = ({ books, updatedBooks }: Props) => {
   const [currentBook, setCurrentBook] = useState<Booking>();
   const [isOpenModalBook, setIsOpenModalBook] = useState<boolean>(false);
 
@@ -79,6 +80,7 @@ const BookingList = ({ books }: Props) => {
           bookingId={currentBook._id}
           isOpen={isOpenModalBook}
           onClose={() => setIsOpenModalBook(false)}
+          updatedBooks={updatedBooks}
         />
       )}
     </div>

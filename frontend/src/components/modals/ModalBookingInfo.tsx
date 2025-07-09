@@ -13,9 +13,15 @@ interface Props {
   isOpen: boolean;
   bookingId: string;
   onClose?: () => void;
+  updatedBooks?: () => void;
 }
 
-const ModalBookingInfo = ({ isOpen, onClose, bookingId }: Props) => {
+const ModalBookingInfo = ({
+  isOpen,
+  onClose,
+  bookingId,
+  updatedBooks,
+}: Props) => {
   const [book, setBook] = useState<Booking>();
   const [totalMember, setTotalMember] = useState(0);
 
@@ -51,6 +57,9 @@ const ModalBookingInfo = ({ isOpen, onClose, bookingId }: Props) => {
     try {
       console.log("book id:", bookingId);
       bookingService.pay(bookingId);
+      if (updatedBooks) {
+        updatedBooks();
+      }
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
         if (error.response) {
@@ -66,6 +75,9 @@ const ModalBookingInfo = ({ isOpen, onClose, bookingId }: Props) => {
     try {
       console.log("book id:", bookingId);
       bookingService.cancel(bookingId);
+      if (updatedBooks) {
+        updatedBooks();
+      }
     } catch (error: any | AxiosError) {
       if (isAxiosError(error)) {
         if (error.response) {
@@ -171,24 +183,25 @@ const ModalBookingInfo = ({ isOpen, onClose, bookingId }: Props) => {
                     </p>
                   </div>
                 </div>
-                {book.paymentStatus === "unpaid" && (
-                  <div className="flex gap-4">
-                    <Button
-                      size="sm"
-                      className="self-end"
-                      onClick={handleBookingPay}
-                    >
-                      Pay
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="self-end bg-red-400 border-red-400"
-                      onClick={handleBookingCancel}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                )}
+                {book.paymentStatus === "unpaid" &&
+                  book.status === "pending" && (
+                    <div className="flex gap-4">
+                      <Button
+                        size="sm"
+                        className="self-end"
+                        onClick={handleBookingPay}
+                      >
+                        Pay
+                      </Button>
+                      <Button
+                        size="sm"
+                        className="self-end bg-red-400 border-red-400"
+                        onClick={handleBookingCancel}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
               </div>
             </div>
           ) : (
