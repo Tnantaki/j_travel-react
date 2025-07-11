@@ -3,7 +3,6 @@ import Button from "../../components/common/Button";
 import { useState } from "react";
 import ModalPassword from "../../components/modals/ModalPassword";
 import ModalDelete from "../../components/modals/ModalDelete";
-import profileService from "../../services/profile-service";
 import ModalSuccess from "../../components/modals/ModalSuccess";
 import userService from "../../services/user-service";
 import { useAuth } from "../../contexts/AuthProvider";

@@ -8,8 +8,35 @@ import planService, { PlanType } from "../../services/plan-service";
 import { AxiosError, isAxiosError } from "axios";
 
 const Packages = () => {
-  const [plans, setPlans] = useState<PlanType[]>([])
-  
+  const [plans, setPlans] = useState<PlanType[]>([]);
+  const [titleSearch, setTitleSearch] = useState("");
+  const [filterPrice, setFilterPrice] = useState(-1);
+  const [filterDay, setFilterDay] = useState(0);
+
+  const filterPlans = plans.filter((plan) => {
+    const nameMatch = plan.title
+      .toLowerCase()
+      .includes(titleSearch.toLowerCase());
+    let priceMatch;
+
+    if (filterPrice === -1) {
+      priceMatch = true;
+    } else {
+      const max = filterPrice + 10000;
+      priceMatch = plan.price >= filterPrice && plan.price <= max;
+    }
+    let dayMatch;
+
+    if (filterDay === 0) {
+      dayMatch = true;
+    } else if (filterDay === 7) {
+      dayMatch = plan.duration >= filterDay;
+    } else {
+      dayMatch = plan.duration === filterDay;
+    }
+    return nameMatch && priceMatch && dayMatch;
+  });
+
   useEffect(() => {
     const { request, cancel } = planService.getAll();
 
@@ -21,7 +48,7 @@ const Packages = () => {
         if (!data) {
           return console.log(res);
         }
-        setPlans(data)
+        setPlans(data);
       } catch (error: any | AxiosError) {
         if (isAxiosError(error)) {
           if (error.response) {
@@ -48,15 +75,15 @@ const Packages = () => {
             landscapes and traditions of this incredible country.
           </p>
           <div className="lg:w-[800px]">
-            <SearchPlan />
+            <SearchPlan onSearch={setTitleSearch} />
             <div className="flex gap-4 self-start mt-2 ">
-              <SelectPrice />
-              <SelectDuration />
+              <SelectPrice selectPrice={setFilterPrice} />
+              <SelectDuration selectDay={setFilterDay} />
             </div>
           </div>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-12">
-          {plans.map((plan, i) => (
+          {filterPlans.map((plan, i) => (
             <Card key={i} plan={plan} />
           ))}
         </div>

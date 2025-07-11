@@ -2,17 +2,18 @@ import { SelectHTMLAttributes } from "react";
 
 interface Options {
   label: string;
-  value: string | number;
+  value: number;
 }
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
+  handleSelect: (value: number) => void;
   options: Options[];
   label?: string;
 }
 
-const Select = ({ options, label }: Props) => {
+const Select = ({ options, label, handleSelect }: Props) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
+    handleSelect(parseInt(e.target.value));
   };
 
   return (
