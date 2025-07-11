@@ -73,6 +73,9 @@ class UserService {
     return apiClients.post("/users/me/change-password", password);
   }
 
+  deleteUser() {
+    return apiClients.delete("/users/me");
+  }
 }
 
 export default new UserService();

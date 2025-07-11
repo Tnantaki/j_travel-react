@@ -19,6 +19,7 @@ export interface PlanType {
   price: number;
   duration: number;
   schedules: ScheduleType[];
+  seatsAvailable?: number;
 }
 
 export interface PlanInput extends PlanType {
@@ -31,15 +32,15 @@ export function handleFormImage(images: ImageType[]) {
   }
   const formData = new FormData();
 
-  let countFile = 0
+  let countFile = 0;
   images.forEach((image) => {
-    console.log(image)
+    console.log(image);
     if (!image.file.rawFile) {
       return;
     }
 
     formData.append("images", image.file.rawFile); // .rawFile is important in react-admin
-    countFile++
+    countFile++;
     if (image.tag) {
       formData.append("tag", image.tag);
     }
@@ -49,7 +50,7 @@ export function handleFormImage(images: ImageType[]) {
   });
 
   if (countFile === 0) {
-    return undefined
+    return undefined;
   }
 
   return formData;
@@ -67,6 +68,7 @@ function handlePlanData(plan: PlanType) {
     title: plan.title,
     description: plan.description,
     price: plan.price,
+    seatsAvailable: plan.seatsAvailable,
     schedules,
     duration: schedules.length,
   };

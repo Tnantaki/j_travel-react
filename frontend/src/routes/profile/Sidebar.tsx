@@ -5,6 +5,8 @@ import ModalPassword from "../../components/modals/ModalPassword";
 import ModalDelete from "../../components/modals/ModalDelete";
 import profileService from "../../services/profile-service";
 import ModalSuccess from "../../components/modals/ModalSuccess";
+import userService from "../../services/user-service";
+import { useAuth } from "../../contexts/AuthProvider";
 
 export interface ProfileMenu {
   label: string;
@@ -21,6 +23,8 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
   const [IsOpenSuccess, setIsOpenSuccess] = useState<boolean>(false);
   const [popupDeleteProfile, setPopupDeleteProfile] = useState(false);
 
+  const { logout } = useAuth();
+
   const onSuccess = () => {
     setIsOpenPassword(false);
     setIsOpenSuccess(true);
@@ -28,7 +32,11 @@ const Sidebar = ({ menu, closeMenu }: Props) => {
 
   const onDelete = async () => {
     try {
-      await profileService.deleteProfile();
+      await userService.deleteUser();
+
+      if (logout) {
+        logout();
+      }
     } catch (error) {
       console.log("error", error);
     }

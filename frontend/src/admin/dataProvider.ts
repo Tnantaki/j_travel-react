@@ -137,6 +137,7 @@ export const dataProvider: DataProvider = {
     }
     if (resource === "plans") {
       const planData: PlanType = params.data.plan;
+      console.log(params.data.plan)
       const { data } = await axios.post(
         `${apiUrl}/${resource}`,
         planData,
