@@ -77,7 +77,8 @@ const BookingList = ({ books, updatedBooks }: Props) => {
       </ul>
       {currentBook && (
         <ModalBookingInfo
-          bookingId={currentBook._id}
+          // bookingId={currentBook._id}
+          book={currentBook}
           isOpen={isOpenModalBook}
           onClose={() => setIsOpenModalBook(false)}
           updatedBooks={updatedBooks}

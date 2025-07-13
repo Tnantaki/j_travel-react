@@ -4,59 +4,26 @@ import bookingService, { Booking } from "../../services/booking-service";
 import { getAge } from "../../utils/age";
 import groupService, { MemberType } from "../../services/group-service";
 import placeHolder from "@img/background/placeholder-image.jpg";
-import { useEffect, useState } from "react";
 import { AxiosError, isAxiosError } from "axios";
 import Button from "../common/Button";
 import Status from "../common/Status";
 
 interface Props {
   isOpen: boolean;
-  bookingId: string;
+  book: Booking;
   onClose?: () => void;
   updatedBooks?: () => void;
 }
 
-const ModalBookingInfo = ({
-  isOpen,
-  onClose,
-  bookingId,
-  updatedBooks,
-}: Props) => {
-  const [book, setBook] = useState<Booking>();
-  const [totalMember, setTotalMember] = useState(0);
+const ModalBookingInfo = ({ isOpen, onClose, book, updatedBooks }: Props) => {
+  const totalMember = book.group.members.length + 1; // + 1(leader)
 
   const columns = ["No.", "Name", "Age", "Price(Bath)"];
   let orderMember = 0;
 
-  useEffect(() => {
-    const { getBooking, cancel } = bookingService.getOne();
-
-    const reqGroup = async () => {
-      try {
-        const { data } = await getBooking(bookingId);
-
-        setBook(data);
-        setTotalMember(data.group.members.length + 1); // + 1(leader)
-      } catch (error: any | AxiosError) {
-        if (isAxiosError(error)) {
-          if (error.response) {
-            console.log(error.response.data);
-          }
-        } else {
-          console.log(error.response.data);
-        }
-      }
-    };
-    reqGroup();
-    return () => {
-      cancel(); // cancel request in case user navigate away before get response
-    };
-  }, [book]);
-
   const handleBookingPay = () => {
     try {
-      console.log("book id:", bookingId);
-      bookingService.pay(bookingId);
+      bookingService.pay(book._id);
       if (updatedBooks) {
         updatedBooks();
       }
@@ -73,8 +40,7 @@ const ModalBookingInfo = ({
 
   const handleBookingCancel = () => {
     try {
-      console.log("book id:", bookingId);
-      bookingService.cancel(bookingId);
+      bookingService.cancel(book._id);
       if (updatedBooks) {
         updatedBooks();
       }
