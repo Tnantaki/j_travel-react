@@ -1,7 +1,7 @@
 import Modal from "./Modal";
 import Button from "../common/Button";
 import { IoIosSearch } from "react-icons/io";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchedMemberType, useBooking } from "../../contexts/BookingProvider";
 import { FaExclamationCircle } from "react-icons/fa";
 import groupService from "../../services/group-service";
