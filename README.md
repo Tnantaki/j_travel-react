@@ -56,9 +56,24 @@ Backend
     cd j_travel-react
     ```
 
-2. Setup Backend
+2. Create `.env` file
+    ```
+    # AWS config
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRETE_ACCESS_KEY=
+    AWS_REGION=
+    AWS_BUCKET_NAME=
+
+    # MongoDB Connection
+    MONGODB_URI=
+
+    PORT=
+    NODE_ENV={production | test}
+    ```
+
+3. Setup Backend
     ```
     docker-compose up --build
     ```
 
-    The frontend will run on http://localhost/j-travel and connect to the backend at http://localhost:3000.
+    The frontend will run on http://localhost:3050/j-travel
